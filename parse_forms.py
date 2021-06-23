@@ -37,11 +37,24 @@ class FormParser:
         ],
     }
 
-    valid_rows = pd.DataFrame()
-    invalid_rows = pd.DataFrame()
+    # valid_rows = pd.DataFrame()
+    # invalid_rows = pd.DataFrame()
 
     temp_valid_rows = pd.DataFrame()
     temp_invalid_rows = pd.DataFrame()
+
+    empty_dataframe = pd.DataFrame()
+
+    asset_dataframes = {
+        "psa gps": {
+            "valid": empty_dataframe,
+            "invalid": empty_dataframe
+        },
+        "psa water sensor install": {
+            "valid": empty_dataframe,
+            "invalid": empty_dataframe
+        }
+    }
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -142,6 +155,11 @@ class FormParser:
     def close_con(self):
         self.con.close()
 
+    def save_all_to_excel(self, asset_dataframes):
+        for key, value in asset_dataframes.items():
+            self.convert_to_excel(value.get("valid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-valid-gps.xlsx'.format(key))
+            self.convert_to_excel(value.get("invalid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-invalid-gps.xlsx'.format(key))
+
 
     def parse_form(self, row_entry, form_version_key):
         entry = json.loads(row_entry.get("data"))
@@ -195,6 +213,20 @@ class FormParser:
 
             table_list = self.asset_names.get(asset_name)
 
+
+            valid_rows = None
+            invalid_rows = None
+
+            # print(self.asset_dataframes.get(asset_name))
+            if self.asset_dataframes.get(asset_name):
+                # print(self.asset_dataframes.get(asset_name))
+                valid_rows = self.asset_dataframes.get(asset_name).get("valid")
+                invalid_rows = self.asset_dataframes.get(asset_name).get("invalid")
+            else:
+                row_entry["error"] = "no dataframes added"
+                # invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+                continue
+
             if table_list:
                 for table in table_list:
                     table_key = table.get("table_keys").get(form_version)
@@ -203,28 +235,29 @@ class FormParser:
                         valid_row = self.parse_form(row_entry, table_key)
 
                         if valid_row:
-                            self.valid_rows = self.valid_rows.append(self.temp_valid_rows)
+                            self.asset_dataframes[asset_name]["valid"] = valid_rows.append(self.temp_valid_rows)
                         else:
-                            self.invalid_rows = self.invalid_rows.append(self.temp_invalid_rows)
+                            self.asset_dataframes[asset_name]["invalid"] = invalid_rows.append(self.temp_invalid_rows)
                     else:
                         row_entry["error"] = "no key available"
-                        self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
+                        self.asset_dataframes[asset_name]["invalid"] = invalid_rows.append(row_entry, ignore_index=True)
 
             else:
                 row_entry["error"] = "no key available"
-                self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
+                self.asset_dataframes[asset_name]["invalid"] = invalid_rows.append(row_entry, ignore_index=True)
 
-            
+            # print(valid_rows)
 
+            # print(invalid_rows)
 
+        # valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
+        # invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
 
-        self.valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
-        self.invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
+        self.save_all_to_excel(self.asset_dataframes)
 
+        # print(self.asset_dataframes["psa gps"]["valid"])
+        # print(self.asset_dataframes["psa gps"]["invalid"])
     
-
-    
-
 fp = FormParser()
 fp.parse_forms()
 fp.close_con()
