@@ -205,13 +205,11 @@ def parse_forms():
                     else:
                         invalid_rows = invalid_rows.append(temp_invalid_rows)
                 else:
-                    row_entry["error"] = str(data.get("db_names")) + "no key available"
+                    row_entry["error"] = "no key available"
                     invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
 
-               
-
         else:
-            row_entry["error"] = str(data.get("db_names")) + "no key available"
+            row_entry["error"] = "no key available"
             invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
 
         
