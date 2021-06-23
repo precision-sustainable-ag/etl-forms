@@ -4,7 +4,7 @@ import re
 import sqlite3
 import sys
 
-import psa_gps_dicts.version_vFTrkLn3MMbs9wCLEBBh4s as psa_gps_v1
+import psa_gps.version_vFTrkLn3MMbs9wCLEBBh4s as psa_gps_v1
 import psa_water_sensor_install.version_vuiiHRr2MJSGzFwSncyLP9 as psa_water_sensor_install_v1
 
 
@@ -15,15 +15,26 @@ con = sqlite3.connect("python.db")
 
 cur = con.cursor()
 
-data = pd.read_excel('version_vuiiHRr2MJSGzFwSncyLP9.xlsx') 
+# data = pd.read_excel('version_vuiiHRr2MJSGzFwSncyLP9.xlsx') 
+data = pd.read_csv('all_data.csv') 
 
 asset_names = {
-    "psa gps": {
-        "vFTrkLn3MMbs9wCLEBBh4s": psa_gps_v1.data
-    },
-    "psa water sensor install": {
-        "vuiiHRr2MJSGzFwSncyLP9": psa_water_sensor_install_v1.data
-    }
+    "psa gps": [
+        {   
+            "table_name": "gps",
+            "table_keys": {
+                "vFTrkLn3MMbs9wCLEBBh4s": psa_gps_v1.data
+            }
+        }
+    ],
+    "psa water sensor install": [
+        {   
+            "table_name": "wsensor_install",
+            "table_keys": {
+                "vuiiHRr2MJSGzFwSncyLP9": psa_water_sensor_install_v1.data
+            }
+        }
+    ],
 }
 
 def convert_data(data, conversions):
@@ -169,18 +180,42 @@ def parse_forms():
     for index, row_entry in data.iterrows():
         temp_valid_rows = pd.DataFrame()
         temp_invalid_rows = pd.DataFrame()
+        global asset_names
 
         asset_name = row_entry.get("asset_name")
         entry = json.loads(row_entry.get("data"))
         form_version = entry.get("__version__")
-        form_version_key = asset_names.get(asset_name).get(form_version)
+        # form_version_key = asset_names.get(asset_name).get(form_version)
 
-        valid_row = parse_form(row_entry, form_version_key)
+        table_list = asset_names.get(asset_name)
 
-        if valid_row:
-            valid_rows = valid_rows.append(temp_valid_rows)
+        if table_list:
+            for table in table_list:
+                # valid_rows = valid_rows.append(row_entry, ignore_index=True)
+                # print(table.get("table_keys"))
+
+                table_key = table.get("table_keys").get(form_version)
+
+                if table_key:
+                     # print(table_key)
+                    valid_row = parse_form(row_entry, table_key)
+
+                    if valid_row:
+                        valid_rows = valid_rows.append(temp_valid_rows)
+                    else:
+                        invalid_rows = invalid_rows.append(temp_invalid_rows)
+                else:
+                    row_entry["error"] = str(data.get("db_names")) + "no key available"
+                    invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+
+               
+
         else:
-            invalid_rows = invalid_rows.append(temp_invalid_rows)
+            row_entry["error"] = str(data.get("db_names")) + "no key available"
+            invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+
+        
+
 
 
     valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)

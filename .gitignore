@@ -2,3 +2,5 @@
 *.csv
 *.db
 python.db
+sqlite_dbs/**
+excel_dump/**
