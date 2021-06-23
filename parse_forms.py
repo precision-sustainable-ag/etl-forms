@@ -122,6 +122,11 @@ class FormParser:
         
         data.to_sql(table, con, if_exists="replace")
 
+    def convert_to_excel(self, data, file_path):
+        # valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
+        # invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
+        data.to_excel (file_path, index = False, header=True)
+
     def query_table(self, query):
         cur.execute(query)
         
@@ -132,14 +137,13 @@ class FormParser:
         #     print(row)
         #     print('\n')
 
-    def convert_to_excel(self, data, file_path):
-        # valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
-        # invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
-        data.to_excel (file_path, index = False, header=True)
+    # def test_data(self, data):
+
+    def close_con(self):
+        self.con.close()
+
 
     def parse_form(self, row_entry, form_version_key):
-        # nonlocal temp_valid_rows
-        # nonlocal temp_invalid_rows
         entry = json.loads(row_entry.get("data"))
         for kobo_row in form_version_key:
             new_row = {}
@@ -165,7 +169,6 @@ class FormParser:
 
                     if "uid" in self.temp_invalid_rows:
                         if not (self.temp_invalid_rows["uid"] == row_entry["uid"]).any():
-                            # row_entry.insert({"error": message}, True)
                             print(row_entry)
                             self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                     else:
@@ -181,9 +184,6 @@ class FormParser:
         return True
 
     def parse_forms(self):
-        # valid_rows = pd.DataFrame()
-        # invalid_rows = pd.DataFrame()
-
         for index, row_entry in self.data.iterrows():
             self.temp_valid_rows = pd.DataFrame()
             self.temp_invalid_rows = pd.DataFrame()
@@ -192,19 +192,14 @@ class FormParser:
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
-            # form_version_key = asset_names.get(asset_name).get(form_version)
 
             table_list = self.asset_names.get(asset_name)
 
             if table_list:
                 for table in table_list:
-                    # valid_rows = valid_rows.append(row_entry, ignore_index=True)
-                    # print(table.get("table_keys"))
-
                     table_key = table.get("table_keys").get(form_version)
 
                     if table_key:
-                        # print(table_key)
                         valid_row = self.parse_form(row_entry, table_key)
 
                         if valid_row:
@@ -228,7 +223,8 @@ class FormParser:
 
     
 
-    con.close()
+    
 
 fp = FormParser()
 fp.parse_forms()
+fp.close_con()
