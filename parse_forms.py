@@ -29,24 +29,15 @@ asset_names = {
 def convert_data(data, conversions):
     if not data or not conversions:
         return data
-    
-    def strip_data(data):
-        return "".join(data.split())
-
-    def upper_case_data(data):
-        return data.upper()
-
-    def lower_case_data(data):
-        return data.lower()
 
     if "to_uppercase" in conversions:
-        data = upper_case_data(data)
+        data = data.upper()
 
     if "to_lowercase" in conversions:
-        data = lower_case_data(data)
+        data = data.lower()
 
     if "strip_whitespace" in conversions:
-        data = strip_data(data)
+        data = "".join(data.split())
 
     return data
 
@@ -98,6 +89,9 @@ def add_cols(new_row, extra_cols):
 
 
 def split_data(names, data, seperator, indices, new_row):
+    if not data:
+        return new_row
+    
     split = data.split(seperator)
     
     for index, name in enumerate(names):
