@@ -5,6 +5,8 @@ import sqlite3
 import sys
 
 import psa_gps_dicts.version_vFTrkLn3MMbs9wCLEBBh4s as psa_gps_v1
+import psa_water_sensor_install.version_vuiiHRr2MJSGzFwSncyLP9 as psa_water_sensor_install_v1
+
 
 # print(psa_gps_v1.data)
 
@@ -13,11 +15,14 @@ con = sqlite3.connect("python.db")
 
 cur = con.cursor()
 
-data = pd.read_excel('version_vFTrkLn3MMbs9wCLEBBh4s.xlsx') 
+data = pd.read_excel('version_vuiiHRr2MJSGzFwSncyLP9.xlsx') 
 
 asset_names = {
     "psa gps": {
         "vFTrkLn3MMbs9wCLEBBh4s": psa_gps_v1.data
+    },
+    "psa water sensor install": {
+        "vuiiHRr2MJSGzFwSncyLP9": psa_water_sensor_install_v1.data
     }
 }
 
@@ -81,9 +86,9 @@ def test_data(data, tests):
             response = functions.get(name_and_params[0])(data, name_and_params[1])
 
         if response == False:
-            return False
+            return False, "{} failed test {}".format(data, test)
 
-    return True
+    return True, "Passed all tests"
 
 def add_cols(new_row, extra_cols):
     if not extra_cols:
@@ -100,17 +105,26 @@ def split_data(names, data, seperator, indices, new_row):
     
     return new_row
 
+def convert_to_sql(data, table):
+    # valid_rows.to_sql("valid_gps", con, if_exists="replace")
+    # invalid_rows.to_sql("invalid_gps", con, if_exists="replace")
+    
+    data.to_sql(table, con, if_exists="replace")
 
+def query_table(query):
+    cur.execute(query)
+    
+    # for row in cur.execute('SELECT * FROM valid_gps;'):
+    #     print(row)
+    #     print('\n')
+    # for row in cur.execute('SELECT * FROM invalid_gps;'):
+    #     print(row)
+    #     print('\n')
 
-# for index, row_entry in data.iterrows():
-#     asset_name = row_entry.get("asset_name")
-#     entry = json.loads(row_entry.get("data"))
-#     form_version = entry.get("__version__")
-#     form_version_key = asset_names.get(asset_name).get(form_version)
-
-
-
-
+def convert_to_excel(data, file_path):
+    # valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
+    # invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
+    data.to_excel (file_path, index = False, header=True)
 
 def parse_forms():
     valid_rows = pd.DataFrame()
@@ -123,48 +137,40 @@ def parse_forms():
             new_row = {}
 
             row_is_valid = True
-            for row in kobo_row.get("row_data_needed_from_form"):
-                add_cols(new_row, row.get("extra_cols"))
-                for data in row.get("cols_from_form"):
-                    converted_data = convert_data(entry.get(data.get("kobo_name")), data.get("conversions"))
 
-                    if test_data(converted_data, data.get("tests")):
-                        if len(data.get("db_names")) == 1:
-                            new_row[data.get("db_names")[0]] = converted_data
-                        else:
-                            data = split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
+            if kobo_row.get("extra_cols"):
+                add_cols(new_row, kobo_row.get("extra_cols"))
+
+            for data in kobo_row.get("cols_from_form"):
+                converted_data = convert_data(entry.get(data.get("kobo_name")), data.get("conversions"))
+
+                if data.get("tests"):
+                    status, message = test_data(converted_data, data.get("tests"))
+
+                if status:
+                    if len(data.get("db_names")) == 1:
+                        new_row[data.get("db_names")[0]] = converted_data
                     else:
-                        row_is_valid = False
-
-                        if "uid" in temp_invalid_rows:
-                            if not (temp_invalid_rows["uid"] == row_entry["uid"]).any():
-                                temp_invalid_rows = temp_invalid_rows.append(row_entry, ignore_index=True)
-                        else:
-                            temp_invalid_rows = temp_invalid_rows.append(row_entry, ignore_index=True)
-                        
-                        break
-                if row_is_valid:
-                    temp_valid_rows = temp_valid_rows.append(new_row, ignore_index=True)
+                        data = split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
                 else:
-                    return False
+                    row_is_valid = False
+
+                    if "uid" in temp_invalid_rows:
+                        if not (temp_invalid_rows["uid"] == row_entry["uid"]).any():
+                            # row_entry.insert({"error": message}, True)
+                            print(row_entry)
+                            temp_invalid_rows = temp_invalid_rows.append(row_entry, ignore_index=True)
+                    else:
+                        row_entry["error"] = str(data.get("db_names")) + "failed tests"
+                        temp_invalid_rows = temp_invalid_rows.append(row_entry, ignore_index=True)
+                    
+                    break
+            if row_is_valid:
+                temp_valid_rows = temp_valid_rows.append(new_row, ignore_index=True)
+            else:
+                return False
 
         return True
-
-
-        # valid_rows.to_sql("valid_gps", con, if_exists="replace")
-        # invalid_rows.to_sql("invalid_gps", con, if_exists="replace")
-
-        # for row in cur.execute('SELECT * FROM valid_gps;'):
-        #     print(row)
-        #     print('\n')
-        # for row in cur.execute('SELECT * FROM invalid_gps;'):
-        #     print(row)
-        #     print('\n')
-
-        con.close()
-
-        # valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
-        # invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
 
     for index, row_entry in data.iterrows():
         temp_valid_rows = pd.DataFrame()
@@ -187,3 +193,5 @@ def parse_forms():
     invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
 
 parse_forms()
+
+con.close()
