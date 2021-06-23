@@ -157,8 +157,8 @@ class FormParser:
 
     def save_all_to_excel(self, asset_dataframes):
         for key, value in asset_dataframes.items():
-            self.convert_to_excel(value.get("valid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-valid-gps.xlsx'.format(key))
-            self.convert_to_excel(value.get("invalid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-invalid-gps.xlsx'.format(key))
+            self.convert_to_excel(value.get("valid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-valid.xlsx'.format(key))
+            self.convert_to_excel(value.get("invalid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-invalid.xlsx'.format(key))
 
 
     def parse_form(self, row_entry, form_version_key):
