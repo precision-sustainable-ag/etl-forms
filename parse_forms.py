@@ -11,7 +11,7 @@ class FormParser:
     # print(psa_gps_v1.data)
 
     # Create a SQL connection to our SQLite database
-    con = sqlite3.connect("python.db")
+    con = sqlite3.connect('sqlite_dbs/python.db')
 
     cur = con.cursor()
 
@@ -235,28 +235,18 @@ class FormParser:
                         valid_row = self.parse_form(row_entry, table_key)
 
                         if valid_row:
-                            self.asset_dataframes[asset_name]["valid"] = valid_rows.append(self.temp_valid_rows)
+                            self.asset_dataframes.get(asset_name)["valid"] = valid_rows.append(self.temp_valid_rows)
                         else:
-                            self.asset_dataframes[asset_name]["invalid"] = invalid_rows.append(self.temp_invalid_rows)
+                            self.asset_dataframes.get(asset_name)["invalid"] = invalid_rows.append(self.temp_invalid_rows)
                     else:
                         row_entry["error"] = "no key available"
-                        self.asset_dataframes[asset_name]["invalid"] = invalid_rows.append(row_entry, ignore_index=True)
+                        self.asset_dataframes.get(asset_name)["invalid"] = invalid_rows.append(row_entry, ignore_index=True)
 
             else:
                 row_entry["error"] = "no key available"
-                self.asset_dataframes[asset_name]["invalid"] = invalid_rows.append(row_entry, ignore_index=True)
-
-            # print(valid_rows)
-
-            # print(invalid_rows)
-
-        # valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
-        # invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
+                self.asset_dataframes.get(asset_name)["invalid"] = invalid_rows.append(row_entry, ignore_index=True)
 
         self.save_all_to_excel(self.asset_dataframes)
-
-        # print(self.asset_dataframes["psa gps"]["valid"])
-        # print(self.asset_dataframes["psa gps"]["invalid"])
     
 fp = FormParser()
 fp.parse_forms()
