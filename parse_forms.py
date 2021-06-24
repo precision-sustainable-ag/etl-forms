@@ -216,8 +216,6 @@ class FormParser:
                 "rawuid": row_entry.get("uid"),
                 "parsed_at": time.time()
             }
-            # new_row["rawuid"] = row_entry.get("uid")
-            # new_row["parsed_at"] = time.time()
 
             row_is_valid = True
 
