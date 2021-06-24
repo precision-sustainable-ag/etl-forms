@@ -27,6 +27,7 @@ class FormParser:
                 }
             }
         ],
+
         "psa water sensor install": [
             {   
                 "table_name": "wsensor_install",
@@ -35,6 +36,48 @@ class FormParser:
                 }
             }
         ],
+
+        # "psa decomp bag pre wt": [
+        #     {   
+        #         "table_name": "decomp_biomass_fresh__decomp_bag_pre_wt",
+        #         "table_keys": {
+        #             "vQnB8sJFc8JEhYJqXiYQRy": psa_water_sensor_install_v1.data
+        #         }
+        #     }
+        # ],
+
+        # "psa decomp bag dry wt": [
+        #     {   
+        #         "table_name": "decomp_biomass_dry__decomp_bag_dry_wt",
+        #         "table_keys": {
+        #             "vDqdEsDav5K6hSRHrgYJmM": psa_water_sensor_install_v1.data
+        #         }
+        #     }
+        # ],
+
+        # "psa decomp bag collect": [
+        #     {   
+        #         "table_name": "decomp_biomass_dry__decomp_bag_collect",
+        #         "table_keys": {
+        #             "vQnB8sJFc8JEhYJqXiYQRy": psa_water_sensor_install_v1.data
+        #         }
+        #     }
+        # ],
+
+        # "psa biomass decomp bag": [
+        #     {   
+        #         "table_name": "biomass_in_field__biomass_decomp_bag",
+        #         "table_keys": {
+        #             "vQnB8sJFc8JEhYJqXiYQRy": psa_water_sensor_install_v1.data
+        #         }
+        #     },
+        #     {   
+        #         "table_name": "decomp_biomass_fresh__biomass_decomp_bag ",
+        #         "table_keys": {
+        #             "vQnB8sJFc8JEhYJqXiYQRy": psa_water_sensor_install_v1.data
+        #         }
+        #     },
+        # ],
     }
 
     # valid_rows = pd.DataFrame()
@@ -178,7 +221,7 @@ class FormParser:
                     status, message = self.test_data(converted_data, data.get("tests"))
 
                 if status:
-                    if len(data.get("db_names")) == 1:
+                    if not data.get("separator"):
                         new_row[data.get("db_names")[0]] = converted_data
                     else:
                         data = self.split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)

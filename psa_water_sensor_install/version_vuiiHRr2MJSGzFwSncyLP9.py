@@ -12,8 +12,8 @@ data = [
             {
                 "kobo_name": "In_which_subplot_are_ur_sensors_installed",
                 "db_names": ["subplot"],
-                "separator": None,
-                "indices": None,
+                "separator": "_",
+                "indices": [1],
                 "tests": None,
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -63,7 +63,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "_submitted_by",
@@ -71,7 +71,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "What_is_the_GPS_loca_on_of_your_bare_node",

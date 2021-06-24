@@ -15,7 +15,7 @@ data = [
             #     "separator": None,
             #     "indices": None,
             #     "tests": None,
-            #     "conversions": ["strip_whitespace", "to_uppercase"],
+            #     "conversions": [],
             # },
             {
                 "kobo_name": "Scan_the_barcode_on_side_of_your_Gateway",
@@ -23,7 +23,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "Scan_your_bare_node",
@@ -31,7 +31,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "Scan_your_cover_crop_node",
@@ -39,7 +39,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "code",
@@ -47,7 +47,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "code",
@@ -55,7 +55,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "Any_issues_to_report_about_your_sensors",
@@ -63,7 +63,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "_submitted_by",
@@ -71,7 +71,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "What_is_the_GPS_loca_on_of_your_bare_node",
