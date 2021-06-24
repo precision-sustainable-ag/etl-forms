@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import sqlite3
 import sys
+import time
 
 import psa_gps.version_vFTrkLn3MMbs9wCLEBBh4s as psa_gps_v1
 import psa_water_sensor_install.version_vuiiHRr2MJSGzFwSncyLP9 as psa_water_sensor_install_v1
@@ -211,7 +212,12 @@ class FormParser:
     def parse_form(self, row_entry, form_version_key):
         entry = json.loads(row_entry.get("data"))
         for kobo_row in form_version_key:
-            new_row = {}
+            new_row = {
+                "rawuid": row_entry.get("uid"),
+                "parsed_at": time.time()
+            }
+            # new_row["rawuid"] = row_entry.get("uid")
+            # new_row["parsed_at"] = time.time()
 
             row_is_valid = True
 
