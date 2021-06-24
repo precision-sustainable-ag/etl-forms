@@ -12,13 +12,13 @@ data = [
             # {
             #     "kobo_name": "In_which_subplot_are_ur_sensors_installed",
             #     "db_names": ["subplot"],
-            #     "separator": None,
-            #     "indices": None,
+            #     "separator": "_",
+            #     "indices": [1],
             #     "tests": None,
             #     "conversions": [],
             # },
             {
-                "kobo_name": "Scan_the_barcode_on_side_of_your_Gateway",
+                "kobo_name": "barcode_gateway",
                 "db_names": ["gateway_serial_no"],
                 "separator": None,
                 "indices": None,
@@ -26,7 +26,7 @@ data = [
                 "conversions": [],
             },
             {
-                "kobo_name": "Scan_your_bare_node",
+                "kobo_name": "group_uv9yg82/bare_node_rep1",
                 "db_names": ["bare_node_serial_no"],
                 "separator": None,
                 "indices": None,
@@ -34,7 +34,7 @@ data = [
                 "conversions": [],
             },
             {
-                "kobo_name": "Scan_your_cover_crop_node",
+                "kobo_name": "group_uv9yg82/cover_crop_node_rep1",
                 "db_names": ["cover_node_serial_no"],
                 "separator": None,
                 "indices": None,
@@ -42,7 +42,7 @@ data = [
                 "conversions": [],
             },
             {
-                "kobo_name": "code",
+                "kobo_name": "farm_info_group/date_install",
                 "db_names": ["time_begin"],
                 "separator": None,
                 "indices": None,
@@ -74,7 +74,7 @@ data = [
                 "conversions": [],
             },
             {
-                "kobo_name": "What_is_the_GPS_loca_on_of_your_bare_node",
+                "kobo_name": "group_uv9yg82/gps_bare_node_rep1",
                 "db_names": ["bare_lon_REAL", "bare_lat_REAL"],
                 "separator": " ",
                 "indices": [0,1],
@@ -82,7 +82,7 @@ data = [
                 "conversions": [],         
             },
             {
-                "kobo_name": "What_is_the_GPS_loca_your_cover_crop_node",
+                "kobo_name": "group_uv9yg82/gps_cover_crop_node_rep1",
                 "db_names": ["cover_lon_REAL", "cover_lat_REAL"],
                 "separator": " ",
                 "indices": [0,1],
@@ -90,7 +90,103 @@ data = [
                 "conversions": [],         
             },
         ],
-        "extra_cols": None
+        "extra_cols": [
+            {"name": "subplot", "value": 1}
+        ]
     },
-    
+    {
+        "cols_from_form": [
+            {
+                "kobo_name": "farm_info_group/code",
+                "db_names": ["code"],
+                "separator": None,
+                "indices": None,
+                "tests": ["not_null", "check_reqex [A-Z]{3}"],
+                "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            # {
+            #     "kobo_name": "In_which_subplot_are_ur_sensors_installed",
+            #     "db_names": ["subplot"],
+            #     "separator": "_",
+            #     "indices": [1],
+            #     "tests": None,
+            #     "conversions": [],
+            # },
+            {
+                "kobo_name": "barcode_gateway",
+                "db_names": ["gateway_serial_no"],
+                "separator": None,
+                "indices": None,
+                "tests": None,
+                "conversions": [],
+            },
+            {
+                "kobo_name": "group_uv9yg82/bare_node_rep2",
+                "db_names": ["bare_node_serial_no"],
+                "separator": None,
+                "indices": None,
+                "tests": None,
+                "conversions": [],
+            },
+            {
+                "kobo_name": "group_uv9yg82/cover_crop_node_rep2",
+                "db_names": ["cover_node_serial_no"],
+                "separator": None,
+                "indices": None,
+                "tests": None,
+                "conversions": [],
+            },
+            {
+                "kobo_name": "farm_info_group/date_install",
+                "db_names": ["time_begin"],
+                "separator": None,
+                "indices": None,
+                "tests": None,
+                "conversions": [],
+            },
+            {
+                "kobo_name": "code",
+                "db_names": ["time_end"],
+                "separator": None,
+                "indices": None,
+                "tests": None,
+                "conversions": [],
+            },
+            {
+                "kobo_name": "Any_issues_to_report_about_your_sensors",
+                "db_names": ["notes"],
+                "separator": None,
+                "indices": None,
+                "tests": None,
+                "conversions": [],
+            },
+            {
+                "kobo_name": "_submitted_by",
+                "db_names": ["submitted_by"],
+                "separator": None,
+                "indices": None,
+                "tests": None,
+                "conversions": [],
+            },
+            {
+                "kobo_name": "group_uv9yg82/gps_bare_node_rep2",
+                "db_names": ["bare_lon_REAL", "bare_lat_REAL"],
+                "separator": " ",
+                "indices": [0,1],
+                "tests": ["not_null"],
+                "conversions": [],         
+            },
+            {
+                "kobo_name": "group_uv9yg82/gps_cover_crop_node_rep2",
+                "db_names": ["cover_lon_REAL", "cover_lat_REAL"],
+                "separator": " ",
+                "indices": [0,1],
+                "tests": ["not_null"],
+                "conversions": [],         
+            },
+        ],
+        "extra_cols": [
+            {"name": "subplot", "value": 2}
+        ]
+    },
 ]

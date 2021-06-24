@@ -6,6 +6,9 @@ import sys
 
 import psa_gps.version_vFTrkLn3MMbs9wCLEBBh4s as psa_gps_v1
 import psa_water_sensor_install.version_vuiiHRr2MJSGzFwSncyLP9 as psa_water_sensor_install_v1
+import psa_water_sensor_install.version_vCK5tppVaNkkfWMhtddxEb as psa_water_sensor_install_v2
+
+
 
 class FormParser:
     # print(psa_gps_v1.data)
@@ -32,7 +35,8 @@ class FormParser:
             {   
                 "table_name": "wsensor_install",
                 "table_keys": {
-                    "vuiiHRr2MJSGzFwSncyLP9": psa_water_sensor_install_v1.data
+                    "vuiiHRr2MJSGzFwSncyLP9": psa_water_sensor_install_v1.data,
+                    "vCK5tppVaNkkfWMhtddxEb": psa_water_sensor_install_v2.data
                 }
             }
         ],

@@ -15,7 +15,7 @@ data = [
                 "separator": "_",
                 "indices": [1],
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "Scan_the_barcode_on_side_of_your_Gateway",
@@ -23,7 +23,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "Scan_your_bare_node",
@@ -31,7 +31,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "Scan_your_cover_crop_node",
@@ -39,15 +39,15 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
-                "kobo_name": "code",
+                "kobo_name": "What_day_did_you_install_the_sensors",
                 "db_names": ["time_begin"],
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "code",
@@ -55,7 +55,7 @@ data = [
                 "separator": None,
                 "indices": None,
                 "tests": None,
-                "conversions": ["strip_whitespace", "to_uppercase"],
+                "conversions": [],
             },
             {
                 "kobo_name": "Any_issues_to_report_about_your_sensors",
