@@ -4,10 +4,14 @@ import re
 import sqlite3
 import sys
 import time
+import datetime
 
 import psa_gps.version_vFTrkLn3MMbs9wCLEBBh4s as psa_gps_v1
+
 import psa_water_sensor_install.version_vuiiHRr2MJSGzFwSncyLP9 as psa_water_sensor_install_v1
 import psa_water_sensor_install.version_vCK5tppVaNkkfWMhtddxEb as psa_water_sensor_install_v2
+
+import psa_decomp_bag_pre_wt.version_vQnB8sJFc8JEhYJqXiYQRy as psa_decomp_bag_pre_wt_v1
 
 
 
@@ -42,14 +46,14 @@ class FormParser:
             }
         ],
 
-        # "psa decomp bag pre wt": [
-        #     {   
-        #         "table_name": "decomp_biomass_fresh__decomp_bag_pre_wt",
-        #         "table_keys": {
-        #             "vQnB8sJFc8JEhYJqXiYQRy": psa_water_sensor_install_v1.data
-        #         }
-        #     }
-        # ],
+        "psa decomp bag pre wt": [
+            {   
+                "table_name": "decomp_biomass_fresh__decomp_bag_pre_wt",
+                "table_keys": {
+                    "vQnB8sJFc8JEhYJqXiYQRy": psa_decomp_bag_pre_wt_v1.data
+                }
+            }
+        ],
 
         # "psa decomp bag dry wt": [
         #     {   
@@ -101,6 +105,10 @@ class FormParser:
         "psa water sensor install": {
             "valid": empty_dataframe,
             "invalid": empty_dataframe
+        },
+        "psa decomp bag pre wt": {
+            "valid": empty_dataframe,
+            "invalid": empty_dataframe
         }
     }
 
@@ -130,6 +138,8 @@ class FormParser:
                 return False
 
         def check_regex(data, regex):
+            if not data:
+                return True
             try:
                 regex = re.compile(regex)
             except Exception:
@@ -207,11 +217,49 @@ class FormParser:
         for key, value in asset_dataframes.items():
             self.convert_to_excel(value.get("valid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-valid.xlsx'.format(key))
             self.convert_to_excel(value.get("invalid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-invalid.xlsx'.format(key))
+    
+    def cast_data(self, data, datatype):
+        if not data:
+            return data
 
+        def convert_string(data):
+            return str(data)
+
+        def convert_int(data):
+            return int(data)
+
+        def convert_date(data):
+            return time.mktime(datetime.datetime.strptime(data, "%Y-%m-%d").timetuple())
+        
+        data_types = {
+            "string": convert_string,
+            "int": convert_int,
+            "date": convert_date
+        }
+
+        # print(data_types.get(datatype)(data))
+
+        return data_types.get(datatype)(data)
+
+    def test_and_format_data(self, data, entry, new_row):
+        converted_data = self.convert_data(entry.get(data.get("kobo_name")), data.get("conversions"))
+
+        status = True
+
+        if data.get("tests"):
+            status, message = self.test_data(converted_data, data.get("tests"))
+
+        if data.get("datatype"):
+            converted_data = self.cast_data(converted_data, data.get("datatype"))
+
+        return status, converted_data
 
     def parse_form(self, row_entry, form_version_key):
         entry = json.loads(row_entry.get("data"))
+        
         for kobo_row in form_version_key:
+            
+
             new_row = {
                 "rawuid": row_entry.get("uid"),
                 "parsed_at": time.time()
@@ -223,10 +271,7 @@ class FormParser:
                 self.add_cols(new_row, kobo_row.get("extra_cols"))
 
             for data in kobo_row.get("cols_from_form"):
-                converted_data = self.convert_data(entry.get(data.get("kobo_name")), data.get("conversions"))
-
-                if data.get("tests"):
-                    status, message = self.test_data(converted_data, data.get("tests"))
+                status, converted_data = self.test_and_format_data(data, entry, new_row)
 
                 if status:
                     if not data.get("separator"):
@@ -238,7 +283,7 @@ class FormParser:
 
                     if "uid" in self.temp_invalid_rows:
                         if not (self.temp_invalid_rows["uid"] == row_entry["uid"]).any():
-                            print(row_entry)
+                            # print(row_entry)
                             self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                     else:
                         row_entry["error"] = str(data.get("db_names")) + "failed tests"
