@@ -4,14 +4,16 @@ data = [
             {
                 "kobo_name": "What_is_your_Farm_Code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_reqex [A-Z]{3}"],
+                "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
                 "kobo_name": "In_which_subplot_are_ur_sensors_installed",
                 "db_names": ["subplot"],
-                "separator": "_",
-                "indices": [1],
+                "multi_select": {
+                    "subplot_1": 1,
+                    "subplot_2": 2
+                }
             },
             {
                 "kobo_name": "Scan_the_barcode_on_side_of_your_Gateway",

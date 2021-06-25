@@ -252,6 +252,9 @@ class FormParser:
         if data.get("datatype"):
             converted_data = self.cast_data(converted_data, data.get("datatype"))
 
+        if data.get("multi_select"):
+            converted_data = data.get("multi_select").get(converted_data)
+
         return status, converted_data
 
     def parse_form(self, row_entry, form_version_key):
