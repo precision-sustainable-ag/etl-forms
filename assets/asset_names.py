@@ -8,6 +8,8 @@ import psa_decomp_bag_pre_wt.version_vZvVu9PdqRHLeeJGbGha3z as psa_decomp_bag_pr
 import psa_decomp_bag_pre_wt.version_vgaKFRKRg54E2Z7fvayCxf as psa_decomp_bag_pre_wt_v3
 import psa_decomp_bag_pre_wt.version_vzazAbS9satE4PXaGNKwBE as psa_decomp_bag_pre_wt_v4 
 
+import psa_bag_dry_wt.version_vDqdEsDav5K6hSRHrgYJmM as psa_bag_dry_wt_v1
+
 asset_names = {
     "psa gps": [
         {   
@@ -40,14 +42,14 @@ asset_names = {
         }
     ],
 
-    # "psa decomp bag dry wt": [
-    #     {   
-    #         "table_name": "decomp_biomass_dry__decomp_bag_dry_wt",
-    #         "table_keys": {
-    #             "vDqdEsDav5K6hSRHrgYJmM": psa_water_sensor_install_v1.data
-    #         }
-    #     }
-    # ],
+    "psa decomp bag dry wt": [
+        {   
+            "table_name": "decomp_biomass_dry__decomp_bag_dry_wt",
+            "table_keys": {
+                "vDqdEsDav5K6hSRHrgYJmM": psa_bag_dry_wt_v1.data
+            }
+        }
+    ],
 
     # "psa decomp bag collect": [
     #     {   

@@ -206,7 +206,7 @@ class FormParser:
 
             if row_passed_tests:
                 if kobo_row.get("completeness_cols"):
-                    # print(new_row.values())
+                    # print(new_row)
                     # if all(col in kobo_row.get("all_cols") for col in new_row):
                     #     print(new_row)
                     # if all(col in kobo_row.get("completeness_cols") for col in new_row) or not any(col in kobo_row.get("completeness_cols") for col in new_row) and not all(col in kobo_row.get("all_cols") for col in new_row):
@@ -223,15 +223,25 @@ class FormParser:
                         if new_row.get(col) != None:
                             row_is_not_null = True
                             break
+                    
+                    existing_rows = 0
+                    for col in kobo_row.get("completeness_cols"):
+                        if new_row.get(col) != None:
+                            existing_rows += 1
 
-                    if all(col in kobo_row.get("completeness_cols") for col in new_row) or not any(col in kobo_row.get("completeness_cols") for col in new_row):
+                    if existing_rows == 0 or existing_rows == len(kobo_row.get("completeness_cols")):
                         row_is_complete = True
+
+                    # if all(col in kobo_row.get("completeness_cols") for col in new_row) or not any(col in kobo_row.get("completeness_cols") for col in new_row):
+                    #     row_is_complete = True
                     
                     if row_is_complete and row_is_not_null:
                         new_row["rawuid"] = row_entry.get("uid")
                         new_row["parsed_at"] = time.time()
                         self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
                     else:
+                        # print(col in kobo_row.get("completeness_cols") for col in new_row)
+                        # print(new_row)
                         row_entry["error"] = str(kobo_row.get("completeness_cols")) + " failed completeness cols"
                         self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                 else:

@@ -14,5 +14,9 @@ asset_dataframes = {
     "psa decomp bag pre wt": {
         "valid": empty_dataframe,
         "invalid": empty_dataframe
+    },
+    "psa decomp bag dry wt": {
+        "valid": empty_dataframe,
+        "invalid": empty_dataframe
     }
 }
