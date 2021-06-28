@@ -7,14 +7,6 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
-            # {
-            #     "kobo_name": "In_which_subplot_are_ur_sensors_installed",
-            #     "db_names": ["subplot"],
-            #     "separator": "_",
-            #     "indices": [1],
-            #     "tests": None,
-            #     "conversions": [],
-            # },
             {
                 "kobo_name": "barcode_gateway",
                 "db_names": ["gateway_serial_no"],
@@ -48,22 +40,20 @@ data = [
                 "kobo_name": "group_uv9yg82/gps_bare_node_rep1",
                 "db_names": ["bare_lon_REAL", "bare_lat_REAL"],
                 "separator": " ",
-                "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
+                "indices": [0,1],       
             },
             {
                 "kobo_name": "group_uv9yg82/gps_cover_crop_node_rep1",
                 "db_names": ["cover_lon_REAL", "cover_lat_REAL"],
                 "separator": " ",
-                "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
+                "indices": [0,1],       
             },
         ],
         "extra_cols": [
             {"name": "subplot", "value": 1}
-        ]
+        ],
+        "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
+        "all_cols": ["code", "subplot", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "time_end", "bare_lon", "bare_lat", "cover_lon", "cover_lat"]
     },
     {
         "cols_from_form": [
@@ -114,21 +104,19 @@ data = [
                 "kobo_name": "group_uv9yg82/gps_bare_node_rep2",
                 "db_names": ["bare_lon_REAL", "bare_lat_REAL"],
                 "separator": " ",
-                "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
+                "indices": [0,1],        
             },
             {
                 "kobo_name": "group_uv9yg82/gps_cover_crop_node_rep2",
                 "db_names": ["cover_lon_REAL", "cover_lat_REAL"],
                 "separator": " ",
-                "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
+                "indices": [0,1],        
             },
         ],
         "extra_cols": [
             {"name": "subplot", "value": 2}
-        ]
+        ],
+        "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
+        "all_cols": ["code", "subplot", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "time_end", "bare_lon", "bare_lat", "cover_lon", "cover_lat"]
     },
 ]

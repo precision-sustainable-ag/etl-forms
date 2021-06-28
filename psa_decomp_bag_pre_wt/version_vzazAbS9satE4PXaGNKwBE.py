@@ -2,7 +2,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_000/barcode_bag_000",
+                "kobo_name": "group_dg1mv45_000/Scan_Decomp_Bag_Barcode_001_000",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -10,7 +10,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_000/pre_bag_wt_grams_000",
+                "kobo_name": "group_dg1mv45_000/PreWeight_grams_001_000",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -22,13 +22,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_000/barcode_bag_000", "group_000/pre_bag_wt_grams_000"],    
+        "completeness_cols": ["group_dg1mv45_023/Scan_Decomp_Bag_Barcode_001_000", "group_dg1mv45_023/PreWeight_grams_001_000"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_001/barcode_bag_001",
+                "kobo_name": "group_dg1mv45_001/Scan_Decomp_Bag_Barcode_001_001",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -36,7 +36,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_001/pre_bag_wt_grams_001",
+                "kobo_name": "group_dg1mv45_001/PreWeight_grams_001_001",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -48,13 +48,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_001/barcode_bag_001", "group_001/pre_bag_wt_grams_001"],    
+        "completeness_cols": ["group_dg1mv45_001/Scan_Decomp_Bag_Barcode_001_001", "group_dg1mv45_001/PreWeight_grams_001_001"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_002/barcode_bag_002",
+                "kobo_name": "group_dg1mv45_002/Scan_Decomp_Bag_Barcode_001_002",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -62,7 +62,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_002/pre_bag_wt_grams_002",
+                "kobo_name": "group_dg1mv45_002/PreWeight_grams_001_002",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -74,13 +74,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_002/barcode_bag_002", "group_002/pre_bag_wt_grams_002"],    
+        "completeness_cols": ["group_dg1mv45_002/Scan_Decomp_Bag_Barcode_001_002", "group_dg1mv45_002/PreWeight_grams_001_002"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt", "notes", "submitted_by"]
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_003/barcode_bag_003",
+                "kobo_name": "group_dg1mv45_003/Scan_Decomp_Bag_Barcode_001_003",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -88,7 +88,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_003/pre_bag_wt_grams_003",
+                "kobo_name": "group_dg1mv45_003/PreWeight_grams_001_003",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -100,13 +100,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_003/barcode_bag_003", "group_003/pre_bag_wt_grams_003"],    
+        "completeness_cols": ["group_dg1mv45_003/Scan_Decomp_Bag_Barcode_001_003", "group_dg1mv45_003/PreWeight_grams_001_003"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_004/barcode_bag_004",
+                "kobo_name": "group_dg1mv45_004/Scan_Decomp_Bag_Barcode_001_004",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -114,7 +114,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_004/pre_bag_wt_grams_004",
+                "kobo_name": "group_dg1mv45_004/PreWeight_grams_001_004",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -126,13 +126,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_004/barcode_bag_004", "group_004/pre_bag_wt_grams_004"],    
+        "completeness_cols": ["group_dg1mv45_004/Scan_Decomp_Bag_Barcode_001_004", "group_dg1mv45_004/PreWeight_grams_001_004"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_005/barcode_bag_005",
+                "kobo_name": "group_dg1mv45_005/Scan_Decomp_Bag_Barcode_001_005",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -140,7 +140,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_005/pre_bag_wt_grams_005",
+                "kobo_name": "group_dg1mv45_005/PreWeight_grams_001_005",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -152,13 +152,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_005/barcode_bag_005", "group_005/pre_bag_wt_grams_005"],    
+        "completeness_cols": ["group_dg1mv45_005/Scan_Decomp_Bag_Barcode_001_005", "group_dg1mv45_005/PreWeight_grams_001_005"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_006/barcode_bag_006",
+                "kobo_name": "group_dg1mv45_006/Scan_Decomp_Bag_Barcode_001_006",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -166,7 +166,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_006/pre_bag_wt_grams_006",
+                "kobo_name": "group_dg1mv45_006/PreWeight_grams_001_006",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -178,13 +178,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_006/barcode_bag_006", "group_006/pre_bag_wt_grams_006"],    
+        "completeness_cols": ["group_dg1mv45_006/Scan_Decomp_Bag_Barcode_001_006", "group_dg1mv45_006/PreWeight_grams_001_006"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_007/barcode_bag_007",
+                "kobo_name": "group_dg1mv45_007/Scan_Decomp_Bag_Barcode_001_007",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -192,7 +192,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_007/pre_bag_wt_grams_007",
+                "kobo_name": "group_dg1mv45_007/PreWeight_grams_001_007",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -204,13 +204,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_007/barcode_bag_007", "group_007/pre_bag_wt_grams_007"],    
+        "completeness_cols": ["group_dg1mv45_007/Scan_Decomp_Bag_Barcode_001_007", "group_dg1mv45_007/PreWeight_grams_001_007"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_008/barcode_bag_008",
+                "kobo_name": "group_dg1mv45_008/Scan_Decomp_Bag_Barcode_001_008",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -218,7 +218,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_008/pre_bag_wt_grams_008",
+                "kobo_name": "group_dg1mv45_008/PreWeight_grams_001_008",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -230,13 +230,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_008/barcode_bag_008", "group_008/pre_bag_wt_grams_008"],    
+        "completeness_cols": ["group_dg1mv45_008/Scan_Decomp_Bag_Barcode_001_008", "group_dg1mv45_008/PreWeight_grams_001_008"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_009/barcode_bag_009",
+                "kobo_name": "group_dg1mv45_009/Scan_Decomp_Bag_Barcode_001_009",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -244,7 +244,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_009/pre_bag_wt_grams_009",
+                "kobo_name": "group_dg1mv45_009/PreWeight_grams_001_009",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -256,13 +256,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_009/barcode_bag_009", "group_009/pre_bag_wt_grams_009"],    
+        "completeness_cols": ["group_dg1mv45_009/Scan_Decomp_Bag_Barcode_001_009", "group_dg1mv45_009/PreWeight_grams_001_009"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_010/barcode_bag_010",
+                "kobo_name": "group_dg1mv45_010/Scan_Decomp_Bag_Barcode_001_010",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -270,7 +270,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_010/pre_bag_wt_grams_010",
+                "kobo_name": "group_dg1mv45_010/PreWeight_grams_001_010",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -282,13 +282,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_010/barcode_bag_010", "group_010/pre_bag_wt_grams_010"],    
+        "completeness_cols": ["group_dg1mv45_010/Scan_Decomp_Bag_Barcode_001_010", "group_dg1mv45_010/PreWeight_grams_001_010"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_011/barcode_bag_011",
+                "kobo_name": "group_dg1mv45_011/Scan_Decomp_Bag_Barcode_001_011",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -296,7 +296,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_011/pre_bag_wt_grams_011",
+                "kobo_name": "group_dg1mv45_011/PreWeight_grams_001_011",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -308,13 +308,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_011/barcode_bag_011", "group_011/pre_bag_wt_grams_011"],    
+        "completeness_cols": ["group_dg1mv45_011/Scan_Decomp_Bag_Barcode_001_011", "group_dg1mv45_011/PreWeight_grams_001_011"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_012/barcode_bag_012",
+                "kobo_name": "group_dg1mv45_012/Scan_Decomp_Bag_Barcode_001_012",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -322,7 +322,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_012/pre_bag_wt_grams_012",
+                "kobo_name": "group_dg1mv45_012/PreWeight_grams_001_012",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -334,13 +334,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_012/barcode_bag_012", "group_012/pre_bag_wt_grams_012"],    
+        "completeness_cols": ["group_dg1mv45_012/Scan_Decomp_Bag_Barcode_001_012", "group_dg1mv45_012/PreWeight_grams_001_012"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_013/barcode_bag_013",
+                "kobo_name": "group_dg1mv45_013/Scan_Decomp_Bag_Barcode_001_013",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -348,7 +348,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_013/pre_bag_wt_grams_013",
+                "kobo_name": "group_dg1mv45_013/PreWeight_grams_001_013",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -360,13 +360,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_013/barcode_bag_013", "group_013/pre_bag_wt_grams_013"],    
+        "completeness_cols": ["group_dg1mv45_013/Scan_Decomp_Bag_Barcode_001_013", "group_dg1mv45_013/PreWeight_grams_001_013"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_014/barcode_bag_014",
+                "kobo_name": "group_dg1mv45_014/Scan_Decomp_Bag_Barcode_001_014",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -374,7 +374,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_014/pre_bag_wt_grams_014",
+                "kobo_name": "group_dg1mv45_014/PreWeight_grams_001_014",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -386,13 +386,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_014/barcode_bag_014", "group_014/pre_bag_wt_grams_014"],    
+        "completeness_cols": ["group_dg1mv45_014/Scan_Decomp_Bag_Barcode_001_014", "group_dg1mv45_014/PreWeight_grams_001_014"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_015/barcode_bag_015",
+                "kobo_name": "group_dg1mv45_015/Scan_Decomp_Bag_Barcode_001_015",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -400,7 +400,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_015/pre_bag_wt_grams_015",
+                "kobo_name": "group_dg1mv45_015/PreWeight_grams_001_015",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -412,13 +412,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_015/barcode_bag_015", "group_015/pre_bag_wt_grams_015"],    
+        "completeness_cols": ["group_dg1mv45_015/Scan_Decomp_Bag_Barcode_001_015", "group_dg1mv45_015/PreWeight_grams_001_015"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_016/barcode_bag_016",
+                "kobo_name": "group_dg1mv45_016/Scan_Decomp_Bag_Barcode_001_016",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -426,7 +426,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_016/pre_bag_wt_grams_016",
+                "kobo_name": "group_dg1mv45_016/PreWeight_grams_001_016",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -438,13 +438,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_016/barcode_bag_016", "group_016/pre_bag_wt_grams_016"],    
+        "completeness_cols": ["group_dg1mv45_016/Scan_Decomp_Bag_Barcode_001_016", "group_dg1mv45_016/PreWeight_grams_001_016"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_017/barcode_bag_017",
+                "kobo_name": "group_dg1mv45_017/Scan_Decomp_Bag_Barcode_001_017",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -452,7 +452,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_017/pre_bag_wt_grams_017",
+                "kobo_name": "group_dg1mv45_017/PreWeight_grams_001_017",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -464,13 +464,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_017/barcode_bag_017", "group_017/pre_bag_wt_grams_017"],    
+        "completeness_cols": ["group_dg1mv45_017/Scan_Decomp_Bag_Barcode_001_017", "group_dg1mv45_017/PreWeight_grams_001_017"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_018/barcode_bag_018",
+                "kobo_name": "group_dg1mv45_018/Scan_Decomp_Bag_Barcode_001_018",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -478,7 +478,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_018/pre_bag_wt_grams_018",
+                "kobo_name": "group_dg1mv45_018/PreWeight_grams_001_018",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -490,13 +490,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_018/barcode_bag_018", "group_018/pre_bag_wt_grams_018"],    
+        "completeness_cols": ["group_dg1mv45_018/Scan_Decomp_Bag_Barcode_001_018", "group_dg1mv45_018/PreWeight_grams_001_018"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_019/barcode_bag_019",
+                "kobo_name": "group_dg1mv45_019/Scan_Decomp_Bag_Barcode_001_019",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -504,7 +504,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_019/pre_bag_wt_grams_019",
+                "kobo_name": "group_dg1mv45_019/PreWeight_grams_001_019",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -516,13 +516,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_019/barcode_bag_019", "group_019/pre_bag_wt_grams_019"],    
+        "completeness_cols": ["group_dg1mv45_019/Scan_Decomp_Bag_Barcode_001_019", "group_dg1mv45_019/PreWeight_grams_001_019"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_020/barcode_bag_020",
+                "kobo_name": "group_dg1mv45_020/Scan_Decomp_Bag_Barcode_001_020",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -530,7 +530,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_020/pre_bag_wt_grams_020",
+                "kobo_name": "group_dg1mv45_020/PreWeight_grams_001_020",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -542,13 +542,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_020/barcode_bag_020", "group_020/pre_bag_wt_grams_020"],    
+        "completeness_cols": ["group_dg1mv45_020/Scan_Decomp_Bag_Barcode_001_020", "group_dg1mv45_020/PreWeight_grams_001_020"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_021/barcode_bag_021",
+                "kobo_name": "group_dg1mv45_021/Scan_Decomp_Bag_Barcode_001_021",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -556,7 +556,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_021/pre_bag_wt_grams_021",
+                "kobo_name": "group_dg1mv45_021/PreWeight_grams_001_021",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -568,13 +568,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_021/barcode_bag_021", "group_021/pre_bag_wt_grams_021"],    
+        "completeness_cols": ["group_dg1mv45_021/Scan_Decomp_Bag_Barcode_001_021", "group_dg1mv45_021/PreWeight_grams_001_021"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_022/barcode_bag_022",
+                "kobo_name": "group_dg1mv45_022/Scan_Decomp_Bag_Barcode_001_022",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -582,7 +582,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_022/pre_bag_wt_grams_022",
+                "kobo_name": "group_dg1mv45_022/PreWeight_grams_001_022",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -594,13 +594,13 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_022/barcode_bag_022", "group_022/pre_bag_wt_grams_022"],    
+        "completeness_cols": ["group_dg1mv45_022/Scan_Decomp_Bag_Barcode_001_022", "group_dg1mv45_022/PreWeight_grams_022_023"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_023/barcode_bag_023",
+                "kobo_name": "group_dg1mv45_023/Scan_Decomp_Bag_Barcode_001_023",
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
@@ -608,7 +608,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_023/pre_bag_wt_grams_023",
+                "kobo_name": "group_dg1mv45_023/PreWeight_grams_001_023",
                 "db_names": ["empty_bag_wt"],
             },
             {
@@ -620,7 +620,7 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_023/barcode_bag_023", "group_023/pre_bag_wt_grams_023"],    
+        "completeness_cols": ["group_dg1mv45_023/Scan_Decomp_Bag_Barcode_001_023", "group_dg1mv45_023/PreWeight_grams_001_023"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]    
     },
 ]

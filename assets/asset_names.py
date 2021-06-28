@@ -4,13 +4,16 @@ import psa_water_sensor_install.version_vuiiHRr2MJSGzFwSncyLP9 as psa_water_sens
 import psa_water_sensor_install.version_vCK5tppVaNkkfWMhtddxEb as psa_water_sensor_install_v2
 
 import psa_decomp_bag_pre_wt.version_vQnB8sJFc8JEhYJqXiYQRy as psa_decomp_bag_pre_wt_v1
+import psa_decomp_bag_pre_wt.version_vZvVu9PdqRHLeeJGbGha3z as psa_decomp_bag_pre_wt_v2
+import psa_decomp_bag_pre_wt.version_vgaKFRKRg54E2Z7fvayCxf as psa_decomp_bag_pre_wt_v3
+import psa_decomp_bag_pre_wt.version_vzazAbS9satE4PXaGNKwBE as psa_decomp_bag_pre_wt_v4 
 
 asset_names = {
     "psa gps": [
         {   
             "table_name": "gps",
             "table_keys": {
-                "vFTrkLn3MMbs9wCLEBBh4s": psa_gps_v1.data
+                "vFTrkLn3MMbs9wCLEBBh4s": psa_gps_v1.data,
             }
         }
     ],
@@ -20,7 +23,7 @@ asset_names = {
             "table_name": "wsensor_install",
             "table_keys": {
                 "vuiiHRr2MJSGzFwSncyLP9": psa_water_sensor_install_v1.data,
-                "vCK5tppVaNkkfWMhtddxEb": psa_water_sensor_install_v2.data
+                "vCK5tppVaNkkfWMhtddxEb": psa_water_sensor_install_v2.data,
             }
         }
     ],
@@ -29,7 +32,10 @@ asset_names = {
         {   
             "table_name": "decomp_biomass_fresh__decomp_bag_pre_wt",
             "table_keys": {
-                "vQnB8sJFc8JEhYJqXiYQRy": psa_decomp_bag_pre_wt_v1.data
+                "vQnB8sJFc8JEhYJqXiYQRy": psa_decomp_bag_pre_wt_v1.data,
+                "vZvVu9PdqRHLeeJGbGha3z": psa_decomp_bag_pre_wt_v2.data,
+                "vgaKFRKRg54E2Z7fvayCxf": psa_decomp_bag_pre_wt_v3.data,
+                "vzazAbS9satE4PXaGNKwBE": psa_decomp_bag_pre_wt_v4.data,                
             }
         }
     ],

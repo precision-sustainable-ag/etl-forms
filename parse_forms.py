@@ -172,14 +172,13 @@ class FormParser:
         entry = json.loads(row_entry.get("data"))
         
         for kobo_row in form_version_key:
-            
+            # new_row = {
+            #     "rawuid": row_entry.get("uid"),
+            #     "parsed_at": time.time()
+            # }
+            new_row = {}
 
-            new_row = {
-                "rawuid": row_entry.get("uid"),
-                "parsed_at": time.time()
-            }
-
-            row_is_valid = True
+            row_passed_tests = True
 
             if kobo_row.get("extra_cols"):
                 self.add_cols(new_row, kobo_row.get("extra_cols"))
@@ -193,19 +192,50 @@ class FormParser:
                     else:
                         data = self.split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
                 else:
-                    row_is_valid = False
+                    row_passed_tests = False
 
                     if "uid" in self.temp_invalid_rows:
                         if not (self.temp_invalid_rows["uid"] == row_entry["uid"]).any():
                             # print(row_entry)
                             self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                     else:
-                        row_entry["error"] = str(data.get("db_names")) + "failed tests"
+                        row_entry["error"] = str(data.get("kobo_name")) + " failed tests"
                         self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                     
                     break
-            if row_is_valid:
-                self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
+
+            if row_passed_tests:
+                if kobo_row.get("completeness_cols"):
+                    # print(new_row.values())
+                    # if all(col in kobo_row.get("all_cols") for col in new_row):
+                    #     print(new_row)
+                    # if all(col in kobo_row.get("completeness_cols") for col in new_row) or not any(col in kobo_row.get("completeness_cols") for col in new_row) and not all(col in kobo_row.get("all_cols") for col in new_row):
+                        # print(len(new_row))
+                        # if len(new_row) > 2:
+                        # new_row = {
+                        #     "rawuid": row_entry.get("uid"),
+                        #     "parsed_at": time.time()
+                        # }
+                    row_is_not_null = False
+                    row_is_complete = False
+
+                    for col in kobo_row.get("all_cols"):
+                        if new_row.get(col) != None:
+                            row_is_not_null = True
+                            break
+
+                    if all(col in kobo_row.get("completeness_cols") for col in new_row) or not any(col in kobo_row.get("completeness_cols") for col in new_row):
+                        row_is_complete = True
+                    
+                    if row_is_complete and row_is_not_null:
+                        new_row["rawuid"] = row_entry.get("uid")
+                        new_row["parsed_at"] = time.time()
+                        self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
+                    else:
+                        row_entry["error"] = str(kobo_row.get("completeness_cols")) + " failed completeness cols"
+                        self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
+                else:
+                    self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
             else:
                 return False
 

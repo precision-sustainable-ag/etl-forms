@@ -6,14 +6,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -21,7 +17,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "C"},
             {"name": "subplot", "value": 1}
-        ]
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -30,14 +27,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -45,7 +38,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "C"},
             {"name": "subplot", "value": 1}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -54,14 +48,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -69,7 +59,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "C"},
             {"name": "subplot", "value": 1}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -78,14 +69,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -93,31 +80,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "C"},
             {"name": "subplot", "value": 1}
-        ] 
-    },
-    {
-        "cols_from_form": [
-            {
-                "kobo_name": "group_ct2kn52/gps_cc_rep1_center",
-                "db_names": ["latitude", "longitude"],
-                "separator": " ",
-                "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
-            },
-            {
-                "kobo_name": "code",
-                "db_names": ["code"],
-                "separator": None,
-                "indices": None,
-                "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
-                "conversions": ["strip_whitespace", "to_uppercase"],
-            },
-        ],
-        "extra_cols": [
-            {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 1}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -126,14 +90,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -141,7 +101,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "B"},
             {"name": "subplot", "value": 1}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -150,14 +111,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -165,7 +122,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "B"},
             {"name": "subplot", "value": 1}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -174,14 +132,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -189,7 +143,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "B"},
             {"name": "subplot", "value": 1}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -198,14 +153,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -213,31 +164,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "B"},
             {"name": "subplot", "value": 1}
-        ] 
-    },
-    {
-        "cols_from_form": [
-            {
-                "kobo_name": "group_abc4567/gps_bare_rep1_center",
-                "db_names": ["latitude", "longitude"],
-                "separator": " ",
-                "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
-            },
-            {
-                "kobo_name": "code",
-                "db_names": ["code"],
-                "separator": None,
-                "indices": None,
-                "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
-                "conversions": ["strip_whitespace", "to_uppercase"],
-            },
-        ],
-        "extra_cols": [
-            {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 1}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -246,14 +174,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -261,7 +185,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "C"},
             {"name": "subplot", "value": 2}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -270,14 +195,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -285,7 +206,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "C"},
             {"name": "subplot", "value": 2}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -294,14 +216,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -309,7 +227,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "C"},
             {"name": "subplot", "value": 2}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -318,14 +237,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -333,31 +248,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "C"},
             {"name": "subplot", "value": 2}
-        ] 
-    },
-    {
-        "cols_from_form": [
-            {
-                "kobo_name": "group_asdf567/gps_cc_rep2_center",
-                "db_names": ["latitude", "longitude"],
-                "separator": " ",
-                "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
-            },
-            {
-                "kobo_name": "code",
-                "db_names": ["code"],
-                "separator": None,
-                "indices": None,
-                "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
-                "conversions": ["strip_whitespace", "to_uppercase"],
-            },
-        ],
-        "extra_cols": [
-            {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 2}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -366,14 +258,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -381,7 +269,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "B"},
             {"name": "subplot", "value": 2}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -390,14 +279,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -405,7 +290,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "B"},
             {"name": "subplot", "value": 2}
-                ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -414,14 +300,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -429,7 +311,8 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "B"},
             {"name": "subplot", "value": 2}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
     {
         "cols_from_form": [
@@ -438,14 +321,10 @@ data = [
                 "db_names": ["latitude", "longitude"],
                 "separator": " ",
                 "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
             },
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "separator": None,
-                "indices": None,
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
@@ -453,30 +332,7 @@ data = [
         "extra_cols": [
             {"name": "treatment", "value": "B"},
             {"name": "subplot", "value": 2}
-        ] 
-    },
-    {
-        "cols_from_form": [
-            {
-                "kobo_name": "group_8901lkj/gps_bare_rep2_center",
-                "db_names": ["latitude", "longitude"],
-                "separator": " ",
-                "indices": [0,1],
-                "tests": ["not_null"],
-                "conversions": [],         
-            },
-            {
-                "kobo_name": "code",
-                "db_names": ["code"],
-                "separator": None,
-                "indices": None,
-                "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
-                "conversions": ["strip_whitespace", "to_uppercase"],
-            },
-        ],
-        "extra_cols": [
-            {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 2}
-        ] 
+        ],    
+        "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
 ]
