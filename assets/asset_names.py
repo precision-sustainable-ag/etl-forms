@@ -9,6 +9,7 @@ import psa_decomp_bag_pre_wt.version_vgaKFRKRg54E2Z7fvayCxf as psa_decomp_bag_pr
 import psa_decomp_bag_pre_wt.version_vzazAbS9satE4PXaGNKwBE as psa_decomp_bag_pre_wt_v4 
 
 import psa_bag_dry_wt.version_vDqdEsDav5K6hSRHrgYJmM as psa_bag_dry_wt_v1
+import psa_bag_dry_wt.verision_vusvAjv42DfdfjKkFWm6H3 as psa_bag_dry_wt_v2
 
 asset_names = {
     "psa gps": [
@@ -46,7 +47,8 @@ asset_names = {
         {   
             "table_name": "decomp_biomass_dry__decomp_bag_dry_wt",
             "table_keys": {
-                "vDqdEsDav5K6hSRHrgYJmM": psa_bag_dry_wt_v1.data
+                "vDqdEsDav5K6hSRHrgYJmM": psa_bag_dry_wt_v1.data,
+                "vusvAjv42DfdfjKkFWm6H3": psa_bag_dry_wt_v2.data
             }
         }
     ],
