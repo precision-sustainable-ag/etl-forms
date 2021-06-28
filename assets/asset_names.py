@@ -11,6 +11,9 @@ import psa_decomp_bag_pre_wt.version_vzazAbS9satE4PXaGNKwBE as psa_decomp_bag_pr
 import psa_bag_dry_wt.version_vDqdEsDav5K6hSRHrgYJmM as psa_bag_dry_wt_v1
 import psa_bag_dry_wt.verision_vusvAjv42DfdfjKkFWm6H3 as psa_bag_dry_wt_v2
 
+import psa_bag_collect.version_v94kLXWMrZ8fZRpCFzSn4e as psa_bag_collect_v1
+import psa_bag_collect.version_v5LVmcbGVhR3C3fkW9ZhHG as psa_bag_collect_v2
+
 asset_names = {
     "psa gps": [
         {   
@@ -53,14 +56,15 @@ asset_names = {
         }
     ],
 
-    # "psa decomp bag collect": [
-    #     {   
-    #         "table_name": "decomp_biomass_dry__decomp_bag_collect",
-    #         "table_keys": {
-    #             "vQnB8sJFc8JEhYJqXiYQRy": psa_water_sensor_install_v1.data
-    #         }
-    #     }
-    # ],
+    "psa decomp bag collect": [
+        {   
+            "table_name": "decomp_biomass_dry__decomp_bag_collect",
+            "table_keys": {
+                "v94kLXWMrZ8fZRpCFzSn4e": psa_bag_collect_v1.data,
+                "v5LVmcbGVhR3C3fkW9ZhHG": psa_bag_collect_v2.data
+            }
+        }
+    ],
 
     # "psa biomass decomp bag": [
     #     {   
