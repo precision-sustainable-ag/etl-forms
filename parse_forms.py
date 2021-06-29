@@ -148,8 +148,6 @@ class FormParser:
             "date": convert_date
         }
 
-        # print(data_types.get(datatype)(data))
-
         return data_types.get(datatype)(data)
 
     def test_and_format_data(self, data, entry, new_row):
@@ -172,10 +170,6 @@ class FormParser:
         entry = json.loads(row_entry.get("data"))
         
         for kobo_row in form_version_key:
-            # new_row = {
-            #     "rawuid": row_entry.get("uid"),
-            #     "parsed_at": time.time()
-            # }
             new_row = {}
 
             row_passed_tests = True
@@ -196,7 +190,6 @@ class FormParser:
 
                     if "uid" in self.temp_invalid_rows:
                         if not (self.temp_invalid_rows["uid"] == row_entry["uid"]).any():
-                            # print(row_entry)
                             self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                     else:
                         row_entry["error"] = str(data.get("kobo_name")) + " failed tests"
@@ -206,16 +199,7 @@ class FormParser:
 
             if row_passed_tests:
                 if kobo_row.get("completeness_cols"):
-                    # print(new_row)
-                    # if all(col in kobo_row.get("all_cols") for col in new_row):
-                    #     print(new_row)
-                    # if all(col in kobo_row.get("completeness_cols") for col in new_row) or not any(col in kobo_row.get("completeness_cols") for col in new_row) and not all(col in kobo_row.get("all_cols") for col in new_row):
-                        # print(len(new_row))
-                        # if len(new_row) > 2:
-                        # new_row = {
-                        #     "rawuid": row_entry.get("uid"),
-                        #     "parsed_at": time.time()
-                        # }
+
                     row_is_not_null = False
                     row_is_complete = False
 
@@ -232,16 +216,11 @@ class FormParser:
                     if existing_rows == 0 or existing_rows == len(kobo_row.get("completeness_cols")):
                         row_is_complete = True
 
-                    # if all(col in kobo_row.get("completeness_cols") for col in new_row) or not any(col in kobo_row.get("completeness_cols") for col in new_row):
-                    #     row_is_complete = True
-                    
                     if row_is_complete and row_is_not_null:
                         new_row["rawuid"] = row_entry.get("uid")
                         new_row["parsed_at"] = time.time()
                         self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
                     else:
-                        # print(col in kobo_row.get("completeness_cols") for col in new_row)
-                        # print(new_row)
                         row_entry["error"] = str(kobo_row.get("completeness_cols")) + " failed completeness cols"
                         self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                 else:
@@ -262,7 +241,6 @@ class FormParser:
             form_version = entry.get("__version__")
 
             table_list = self.asset_names.get(asset_name)
-
 
             valid_rows = None
             invalid_rows = None
