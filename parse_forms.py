@@ -23,6 +23,7 @@ class FormParser:
     asset_names = assets.asset_names.asset_names
     asset_dataframes = assets.asset_dataframes.asset_dataframes
     invalid_rows = pd.DataFrame()
+    valid_rows = pd.DataFrame()
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -128,9 +129,11 @@ class FormParser:
     def save_all_to_excel(self, asset_dataframes):
         for key, value in asset_dataframes.items():
             for key_2, value_2 in value.items():
-                print(value_2)
+                # print(value_2)
                 self.convert_to_excel(value_2, r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}.xlsx'.format(key_2))
-                self.convert_to_excel(self.invalid_rows, r'C:\Users\mikah\Documents\etl-forms\excel_dump\invalid_rows.xlsx')
+
+        self.convert_to_excel(self.invalid_rows, r'C:\Users\mikah\Documents\etl-forms\excel_dump\invalid_rows.xlsx')
+        self.convert_to_excel(self.valid_rows, r'C:\Users\mikah\Documents\etl-forms\excel_dump\valid_rows.xlsx')
     
     def cast_data(self, data, datatype):
         if not data:
@@ -169,17 +172,45 @@ class FormParser:
 
         return status, converted_data
 
+    def validate_row(self, kobo_row, new_row, row_entry):
+        row_is_not_null = False
+        row_is_complete = False
+
+        for col in kobo_row.get("all_cols"):
+            if new_row.get(col) != None:
+                row_is_not_null = True
+                break
+        
+        existing_rows = 0
+        for col in kobo_row.get("completeness_cols"):
+            if new_row.get(col) != None:
+                existing_rows += 1
+
+        if existing_rows == 0 or existing_rows == len(kobo_row.get("completeness_cols")):
+            row_is_complete = True
+
+        if row_is_complete and row_is_not_null:
+            # new_row["rawuid"] = row_entry.get("uid")
+            # new_row["parsed_at"] = time.time()
+            # self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
+            return True
+        else:
+            return False
+
     def parse_form(self, row_entry, form_version_key):
         entry = json.loads(row_entry.get("data"))
         
         for kobo_row in form_version_key:
-            new_row = {}
+            new_row = {
+                "rawuid": row_entry.get("uid"),
+                "parsed_at": time.time()
+            }
 
-            row_passed_tests = True
-
+            
             if kobo_row.get("extra_cols"):
                 self.add_cols(new_row, kobo_row.get("extra_cols"))
 
+            row_passed_tests = True
             for data in kobo_row.get("cols_from_form"):
                 status, converted_data = self.test_and_format_data(data, entry, new_row)
 
@@ -190,46 +221,29 @@ class FormParser:
                         data = self.split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
                 else:
                     row_passed_tests = False
-
-                    if "uid" in self.temp_invalid_rows:
-                        if not (self.temp_invalid_rows["uid"] == row_entry["uid"]).any():
-                            self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
-                    else:
-                        row_entry["error"] = str(data.get("kobo_name")) + " failed tests"
-                        self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
-                    
                     break
 
-            if row_passed_tests:
-                if kobo_row.get("completeness_cols"):
+            
+            row_is_valid = True
+            # if row_passed_tests:
+            if kobo_row.get("completeness_cols"):
+                row_is_valid = self.validate_row(kobo_row, new_row, row_entry)
 
-                    row_is_not_null = False
-                    row_is_complete = False
+                # else:
+                #     self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
 
-                    for col in kobo_row.get("all_cols"):
-                        if new_row.get(col) != None:
-                            row_is_not_null = True
-                            break
-                    
-                    existing_rows = 0
-                    for col in kobo_row.get("completeness_cols"):
-                        if new_row.get(col) != None:
-                            existing_rows += 1
 
-                    if existing_rows == 0 or existing_rows == len(kobo_row.get("completeness_cols")):
-                        row_is_complete = True
-
-                    if row_is_complete and row_is_not_null:
-                        new_row["rawuid"] = row_entry.get("uid")
-                        new_row["parsed_at"] = time.time()
-                        self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
-                    else:
-                        row_entry["error"] = str(kobo_row.get("completeness_cols")) + " failed completeness cols"
-                        self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
-                else:
-                    self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
-            else:
+            if not row_passed_tests or not row_is_valid:
+                self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                 return False
+                # if "uid" in self.temp_invalid_rows:
+                #     if not (self.temp_invalid_rows["uid"] == row_entry["uid"]).any():
+                #         self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
+                # else:
+                #     row_entry["error"] = str(data.get("kobo_name")) + " failed tests"
+                #     self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
+            else:
+                self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
 
         return True
 
@@ -265,6 +279,7 @@ class FormParser:
                         row_entry["error"] = "no dataframes added"
                         # print("no dataframes")
                         # invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+                        self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
                         continue
 
                     table_key = table.get("table_keys").get(form_version)
@@ -273,15 +288,16 @@ class FormParser:
                         valid_row = self.parse_form(row_entry, table_key)
 
                         if valid_row:
-                            self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows)
+                            self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows, ignore_index=True)
+                            self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
                         else:
-                            self.invalid_rows = invalid_rows.append(self.temp_invalid_rows)
+                            self.invalid_rows = invalid_rows.append(self.temp_invalid_rows, ignore_index=True)
                     else:
                         row_entry["error"] = "no key available"
                         self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
 
             else:
-                row_entry["error"] = "no key available"
+                row_entry["error"] = "no table list"
                 self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
 
         self.save_all_to_excel(self.asset_dataframes)
