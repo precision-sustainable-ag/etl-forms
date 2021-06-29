@@ -172,29 +172,43 @@ class FormParser:
 
         return status, converted_data
 
-    def validate_row(self, kobo_row, new_row, row_entry):
+    def validate_row(self, kobo_row, new_row):
+        row_is_complete_or_null = False
+        
+        existing_rows = 0
+        for col in kobo_row.get("completeness_cols"):
+            if new_row.get(col):
+                existing_rows += 1
+
+        if existing_rows == 0 or existing_rows == len(kobo_row.get("completeness_cols")):
+            row_is_complete_or_null = True
+
+        if row_is_complete_or_null:
+            return True
+        
+        else:
+            # print(json.dumps(kobo_row.get("completeness_cols")))
+            # print(json.dumps(new_row))
+            # print("incomplete " + str(existing_rows) + " " + str(len(kobo_row.get("completeness_cols"))))
+            # print("\n")
+            return False
+
+    def row_is_not_null(self, kobo_row, new_row):
         row_is_not_null = False
-        row_is_complete = False
 
         for col in kobo_row.get("all_cols"):
             if new_row.get(col) != None:
                 row_is_not_null = True
                 break
-        
-        existing_rows = 0
-        for col in kobo_row.get("completeness_cols"):
-            if new_row.get(col) != None:
-                existing_rows += 1
 
-        if existing_rows == 0 or existing_rows == len(kobo_row.get("completeness_cols")):
-            row_is_complete = True
-
-        if row_is_complete and row_is_not_null:
+        if row_is_not_null:
             return True
+        
         else:
+            # print("null")
             return False
 
-    def parse_form(self, row_entry, form_version_key):
+    def parse_form(self, row_entry, form_version_key, table_name):
         entry = json.loads(row_entry.get("data"))
         error_message = ""
         
@@ -218,21 +232,26 @@ class FormParser:
                         data = self.split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
                 else:
                     row_passed_tests = False
-                    error_message = str(data.get("kobo_name")) + " row failed tests"
+                    error_message = str(data.get("kobo_name")) + " row failed tests for table " + table_name
                     break
 
             
             row_is_valid = True
-            if kobo_row.get("completeness_cols"):
-                row_is_valid = self.validate_row(kobo_row, new_row, row_entry)
+            row_is_null = False
+            if kobo_row.get("completeness_cols") and row_passed_tests:
+                row_is_valid = self.validate_row(kobo_row, new_row)
+                
                 if not row_is_valid:
-                    error_message = str(kobo_row.get("completeness_cols")) + " failed completeness cols"
+                    # print("invalid 2")
+                    error_message = str(kobo_row.get("completeness_cols")) + " failed completeness cols for table " + table_name + " row data = " + json.dumps(new_row)
 
-            if not row_passed_tests or not row_is_valid:
+            if (not row_passed_tests or not row_is_valid):
+                # print("incomplete 2")
                 return False, error_message
 
             else:
-                self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
+                if self.row_is_not_null(kobo_row, new_row):
+                    self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
 
         return True, "success"
 
@@ -265,7 +284,7 @@ class FormParser:
                     table_key = table.get("table_keys").get(form_version)
 
                     if table_key:
-                        valid_row, message = self.parse_form(row_entry, table_key)
+                        valid_row, message = self.parse_form(row_entry, table_key, table.get("table_name"))
 
                         if valid_row:
                             self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows, ignore_index=True)
