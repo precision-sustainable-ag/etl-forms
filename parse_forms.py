@@ -18,7 +18,7 @@ class FormParser:
     data = pd.read_csv('all_data.csv') 
 
     temp_valid_rows = pd.DataFrame()
-    temp_invalid_rows = pd.DataFrame()
+    # temp_invalid_rows = pd.DataFrame()
 
     asset_names = assets.asset_names.asset_names
     asset_dataframes = assets.asset_dataframes.asset_dataframes
@@ -190,9 +190,6 @@ class FormParser:
             row_is_complete = True
 
         if row_is_complete and row_is_not_null:
-            # new_row["rawuid"] = row_entry.get("uid")
-            # new_row["parsed_at"] = time.time()
-            # self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
             return True
         else:
             return False
@@ -205,7 +202,6 @@ class FormParser:
                 "rawuid": row_entry.get("uid"),
                 "parsed_at": time.time()
             }
-
             
             if kobo_row.get("extra_cols"):
                 self.add_cols(new_row, kobo_row.get("extra_cols"))
@@ -225,32 +221,25 @@ class FormParser:
 
             
             row_is_valid = True
-            # if row_passed_tests:
             if kobo_row.get("completeness_cols"):
                 row_is_valid = self.validate_row(kobo_row, new_row, row_entry)
 
-                # else:
-                #     self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
-
-
             if not row_passed_tests or not row_is_valid:
-                self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
+                # print("temp invalid " + str(row_entry.get("uid")))
+                # self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                 return False
-                # if "uid" in self.temp_invalid_rows:
-                #     if not (self.temp_invalid_rows["uid"] == row_entry["uid"]).any():
-                #         self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
-                # else:
-                #     row_entry["error"] = str(data.get("kobo_name")) + " failed tests"
-                #     self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
+
             else:
+                # print("temp valid " + str(row_entry.get("uid")))
                 self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
 
         return True
 
     def parse_forms(self):
         for index, row_entry in self.data.iterrows():
+            # print(row_entry.get("uid"))
             self.temp_valid_rows = pd.DataFrame()
-            self.temp_invalid_rows = pd.DataFrame()
+            # self.temp_invalid_rows = pd.DataFrame()
             # global asset_names
 
             asset_name = row_entry.get("asset_name")
@@ -259,12 +248,15 @@ class FormParser:
 
             table_list = self.asset_names.get(asset_name)
 
+            error_message = ""
+            row_is_valid = False
+
             # if 
 
             if table_list:
                 for table in table_list:
                     valid_rows = None
-                    invalid_rows = self.invalid_rows
+                    # invalid_rows = self.invalid_rows
                     table_name = None
 
                     # print(self.asset_dataframes.get(asset_name))
@@ -279,7 +271,8 @@ class FormParser:
                         row_entry["error"] = "no dataframes added"
                         # print("no dataframes")
                         # invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
-                        self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+                        print(False, row_entry.get("uid"))
+                        self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
                         continue
 
                     table_key = table.get("table_keys").get(form_version)
@@ -288,17 +281,31 @@ class FormParser:
                         valid_row = self.parse_form(row_entry, table_key)
 
                         if valid_row:
+                            # print("valid " + str(row_entry.get("uid")))
                             self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows, ignore_index=True)
-                            self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
+                            # self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
+                            row_is_valid = True
                         else:
-                            self.invalid_rows = invalid_rows.append(self.temp_invalid_rows, ignore_index=True)
+                            # print("invalid " + str(row_entry.get("uid")))
+                            # self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+                            # row_is_valid = False
+                            error_message = "row is invalid"
                     else:
-                        row_entry["error"] = "no key available"
-                        self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+                        # print("invalid " + str(row_entry.get("uid")))
+                        error_message = "no key available"
+                        # self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
 
             else:
+                # print("invalid " + str(row_entry.get("uid")))
                 row_entry["error"] = "no table list"
-                self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+                # self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+
+            print(row_is_valid, row_entry.get("uid"))
+            if row_is_valid:
+                self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
+            else:
+                row_entry["error"] = error_message
+                self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
 
         self.save_all_to_excel(self.asset_dataframes)
     
