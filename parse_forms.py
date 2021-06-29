@@ -196,6 +196,7 @@ class FormParser:
 
     def parse_form(self, row_entry, form_version_key):
         entry = json.loads(row_entry.get("data"))
+        error_message = ""
         
         for kobo_row in form_version_key:
             new_row = {
@@ -217,20 +218,23 @@ class FormParser:
                         data = self.split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
                 else:
                     row_passed_tests = False
+                    error_message = str(data.get("kobo_name")) + " row failed tests"
                     break
 
             
             row_is_valid = True
             if kobo_row.get("completeness_cols"):
                 row_is_valid = self.validate_row(kobo_row, new_row, row_entry)
+                if not row_is_valid:
+                    error_message = str(kobo_row.get("completeness_cols")) + " failed completeness cols"
 
             if not row_passed_tests or not row_is_valid:
-                return False
+                return False, error_message
 
             else:
                 self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
 
-        return True
+        return True, "success"
 
     def parse_forms(self):
         for index, row_entry in self.data.iterrows():
@@ -261,13 +265,13 @@ class FormParser:
                     table_key = table.get("table_keys").get(form_version)
 
                     if table_key:
-                        valid_row = self.parse_form(row_entry, table_key)
+                        valid_row, message = self.parse_form(row_entry, table_key)
 
                         if valid_row:
                             self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows, ignore_index=True)
                             row_is_valid = True
                         else:
-                            error_message = "row is invalid"
+                            error_message = message
                     else:
                         error_message = "no key available"
             else:
