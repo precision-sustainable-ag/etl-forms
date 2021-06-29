@@ -225,22 +225,16 @@ class FormParser:
                 row_is_valid = self.validate_row(kobo_row, new_row, row_entry)
 
             if not row_passed_tests or not row_is_valid:
-                # print("temp invalid " + str(row_entry.get("uid")))
-                # self.temp_invalid_rows = self.temp_invalid_rows.append(row_entry, ignore_index=True)
                 return False
 
             else:
-                # print("temp valid " + str(row_entry.get("uid")))
                 self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
 
         return True
 
     def parse_forms(self):
         for index, row_entry in self.data.iterrows():
-            # print(row_entry.get("uid"))
             self.temp_valid_rows = pd.DataFrame()
-            # self.temp_invalid_rows = pd.DataFrame()
-            # global asset_names
 
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
@@ -248,30 +242,19 @@ class FormParser:
 
             table_list = self.asset_names.get(asset_name)
 
-            error_message = ""
+            error_message = "unknown"
             row_is_valid = False
-
-            # if 
 
             if table_list:
                 for table in table_list:
                     valid_rows = None
-                    # invalid_rows = self.invalid_rows
                     table_name = None
 
-                    # print(self.asset_dataframes.get(asset_name))
                     table_name = table.get("table_name")
-                    # print(table_name)
                     if table_name in self.asset_dataframes.get(asset_name):
-                        # print("got it")
-                        # print(self.asset_dataframes.get(asset_name))
                         valid_rows = self.asset_dataframes.get(asset_name).get(table_name)
-                        # invalid_rows = self.asset_dataframes.get(asset_name).get(table_name)
                     else:
                         row_entry["error"] = "no dataframes added"
-                        # print("no dataframes")
-                        # invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
-                        print(False, row_entry.get("uid"))
                         self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
                         continue
 
@@ -281,26 +264,15 @@ class FormParser:
                         valid_row = self.parse_form(row_entry, table_key)
 
                         if valid_row:
-                            # print("valid " + str(row_entry.get("uid")))
                             self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows, ignore_index=True)
-                            # self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
                             row_is_valid = True
                         else:
-                            # print("invalid " + str(row_entry.get("uid")))
-                            # self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
-                            # row_is_valid = False
                             error_message = "row is invalid"
                     else:
-                        # print("invalid " + str(row_entry.get("uid")))
                         error_message = "no key available"
-                        # self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
-
             else:
-                # print("invalid " + str(row_entry.get("uid")))
-                row_entry["error"] = "no table list"
-                # self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+                error_message = "no table list"
 
-            print(row_is_valid, row_entry.get("uid"))
             if row_is_valid:
                 self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
             else:
