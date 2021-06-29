@@ -38,13 +38,13 @@ data = [
             },
             {
                 "kobo_name": "group_uv9yg82/gps_bare_node_rep1",
-                "db_names": ["bare_lon_REAL", "bare_lat_REAL"],
+                "db_names": ["bare_lon", "bare_lat"],
                 "separator": " ",
                 "indices": [0,1],       
             },
             {
                 "kobo_name": "group_uv9yg82/gps_cover_crop_node_rep1",
-                "db_names": ["cover_lon_REAL", "cover_lat_REAL"],
+                "db_names": ["cover_lon", "cover_lat"],
                 "separator": " ",
                 "indices": [0,1],       
             },
@@ -102,13 +102,13 @@ data = [
             },
             {
                 "kobo_name": "group_uv9yg82/gps_bare_node_rep2",
-                "db_names": ["bare_lon_REAL", "bare_lat_REAL"],
+                "db_names": ["bare_lon", "bare_lat"],
                 "separator": " ",
                 "indices": [0,1],        
             },
             {
                 "kobo_name": "group_uv9yg82/gps_cover_crop_node_rep2",
-                "db_names": ["cover_lon_REAL", "cover_lat_REAL"],
+                "db_names": ["cover_lon", "cover_lat"],
                 "separator": " ",
                 "indices": [0,1],        
             },

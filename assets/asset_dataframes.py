@@ -3,24 +3,19 @@ import pandas as pd
 empty_dataframe = pd.DataFrame()
 
 asset_dataframes = {
-    "psa gps": {
-        "valid": empty_dataframe,
-        "invalid": empty_dataframe
+    "psa gps": {    
+        "gps": empty_dataframe
     },
     "psa water sensor install": {
-        "valid": empty_dataframe,
-        "invalid": empty_dataframe
+        "wsensor_install": empty_dataframe
     },
     "psa decomp bag pre wt": {
-        "valid": empty_dataframe,
-        "invalid": empty_dataframe
+        "decomp_biomass_fresh__decomp_bag_pre_wt": empty_dataframe
     },
     "psa decomp bag dry wt": {
-        "valid": empty_dataframe,
-        "invalid": empty_dataframe
+        "decomp_biomass_dry__decomp_bag_dry_wt": empty_dataframe
     },
     "psa decomp bag collect": {
-        "valid": empty_dataframe,
-        "invalid": empty_dataframe
+        "decomp_biomass_dry__decomp_bag_collect": empty_dataframe
     }
 }

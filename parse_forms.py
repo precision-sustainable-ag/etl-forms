@@ -22,6 +22,7 @@ class FormParser:
 
     asset_names = assets.asset_names.asset_names
     asset_dataframes = assets.asset_dataframes.asset_dataframes
+    invalid_rows = pd.DataFrame()
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -126,8 +127,10 @@ class FormParser:
 
     def save_all_to_excel(self, asset_dataframes):
         for key, value in asset_dataframes.items():
-            self.convert_to_excel(value.get("valid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-valid.xlsx'.format(key))
-            self.convert_to_excel(value.get("invalid"), r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}-invalid.xlsx'.format(key))
+            for key_2, value_2 in value.items():
+                print(value_2)
+                self.convert_to_excel(value_2, r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}.xlsx'.format(key_2))
+                self.convert_to_excel(self.invalid_rows, r'C:\Users\mikah\Documents\etl-forms\excel_dump\invalid_rows.xlsx')
     
     def cast_data(self, data, datatype):
         if not data:
@@ -242,37 +245,44 @@ class FormParser:
 
             table_list = self.asset_names.get(asset_name)
 
-            valid_rows = None
-            invalid_rows = None
-
-            # print(self.asset_dataframes.get(asset_name))
-            if self.asset_dataframes.get(asset_name):
-                # print(self.asset_dataframes.get(asset_name))
-                valid_rows = self.asset_dataframes.get(asset_name).get("valid")
-                invalid_rows = self.asset_dataframes.get(asset_name).get("invalid")
-            else:
-                row_entry["error"] = "no dataframes added"
-                # invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
-                continue
+            # if 
 
             if table_list:
                 for table in table_list:
+                    valid_rows = None
+                    invalid_rows = self.invalid_rows
+                    table_name = None
+
+                    # print(self.asset_dataframes.get(asset_name))
+                    table_name = table.get("table_name")
+                    # print(table_name)
+                    if table_name in self.asset_dataframes.get(asset_name):
+                        # print("got it")
+                        # print(self.asset_dataframes.get(asset_name))
+                        valid_rows = self.asset_dataframes.get(asset_name).get(table_name)
+                        # invalid_rows = self.asset_dataframes.get(asset_name).get(table_name)
+                    else:
+                        row_entry["error"] = "no dataframes added"
+                        # print("no dataframes")
+                        # invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
+                        continue
+
                     table_key = table.get("table_keys").get(form_version)
 
                     if table_key:
                         valid_row = self.parse_form(row_entry, table_key)
 
                         if valid_row:
-                            self.asset_dataframes.get(asset_name)["valid"] = valid_rows.append(self.temp_valid_rows)
+                            self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows)
                         else:
-                            self.asset_dataframes.get(asset_name)["invalid"] = invalid_rows.append(self.temp_invalid_rows)
+                            self.invalid_rows = invalid_rows.append(self.temp_invalid_rows)
                     else:
                         row_entry["error"] = "no key available"
-                        self.asset_dataframes.get(asset_name)["invalid"] = invalid_rows.append(row_entry, ignore_index=True)
+                        self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
 
             else:
                 row_entry["error"] = "no key available"
-                self.asset_dataframes.get(asset_name)["invalid"] = invalid_rows.append(row_entry, ignore_index=True)
+                self.invalid_rows = invalid_rows.append(row_entry, ignore_index=True)
 
         self.save_all_to_excel(self.asset_dataframes)
     
