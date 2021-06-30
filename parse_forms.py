@@ -254,7 +254,7 @@ class FormParser:
 
     def parse_forms(self):
         for index, row_entry in self.data.iterrows():
-            self.temp_valid_rows = pd.DataFrame()
+            
 
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
@@ -267,6 +267,7 @@ class FormParser:
 
             if table_list:
                 for table in table_list:
+                    self.temp_valid_rows = pd.DataFrame()
                     valid_rows = None
                     table_name = None
 
@@ -274,8 +275,9 @@ class FormParser:
                     if table_name in self.asset_dataframes.get(asset_name):
                         valid_rows = self.asset_dataframes.get(asset_name).get(table_name)
                     else:
-                        print(asset_name)
+                        # print(self.asset_dataframes.get(asset_name)[table_name])
                         row_entry["error"] = "no dataframes added"
+                        row_entry["table_name"] = table_name
                         self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
                         continue
 
