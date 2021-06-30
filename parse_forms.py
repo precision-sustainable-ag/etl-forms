@@ -187,13 +187,12 @@ class FormParser:
             return True
         
         else:
-            # print(json.dumps(kobo_row.get("completeness_cols")))
-            # print(json.dumps(new_row))
-            # print("incomplete " + str(existing_rows) + " " + str(len(kobo_row.get("completeness_cols"))))
-            # print("\n")
             return False
 
     def row_is_not_null(self, kobo_row, new_row):
+        if not kobo_row.get("all_cols"):
+            return True
+
         row_is_not_null = False
 
         for col in kobo_row.get("all_cols"):
@@ -205,7 +204,6 @@ class FormParser:
             return True
         
         else:
-            # print("null")
             return False
 
     def parse_form(self, row_entry, form_version_key, table_name):
@@ -237,7 +235,6 @@ class FormParser:
 
             
             row_is_valid = True
-            row_is_null = False
             if kobo_row.get("completeness_cols") and row_passed_tests:
                 row_is_valid = self.validate_row(kobo_row, new_row)
                 
@@ -265,7 +262,7 @@ class FormParser:
 
             table_list = self.asset_names.get(asset_name)
 
-            error_message = "unknown"
+            error_message = "asset name is missing a table dataframe"
             row_is_valid = False
 
             if table_list:
@@ -277,6 +274,7 @@ class FormParser:
                     if table_name in self.asset_dataframes.get(asset_name):
                         valid_rows = self.asset_dataframes.get(asset_name).get(table_name)
                     else:
+                        print(asset_name)
                         row_entry["error"] = "no dataframes added"
                         self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
                         continue

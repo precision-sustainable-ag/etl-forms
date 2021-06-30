@@ -17,5 +17,9 @@ asset_dataframes = {
     },
     "psa decomp bag collect": {
         "decomp_biomass_dry__decomp_bag_collect": empty_dataframe
+    },
+    "psa biomass decomp bag": {
+        "biomass_in_field__biomass_decomp_bag": empty_dataframe,
+        "decomp_biomass_fresh__biomass_decomp_bag": empty_dataframe
     }
 }

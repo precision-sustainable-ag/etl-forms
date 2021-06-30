@@ -10,8 +10,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_000/pre_bag_wt_grams_000",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_000/fresh_bag_wt_grams_000",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -22,8 +22,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -36,8 +36,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_001/pre_bag_wt_grams_001",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_001/fresh_bag_wt_grams_001",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -48,8 +48,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -62,8 +62,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_002/pre_bag_wt_grams_002",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_002/fresh_bag_wt_grams_002",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -74,8 +74,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -88,8 +88,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_003/pre_bag_wt_grams_003",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_003/fresh_bag_wt_grams_003",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -100,8 +100,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -114,8 +114,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_004/pre_bag_wt_grams_004",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_004/fresh_bag_wt_grams_004",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -126,8 +126,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -140,8 +140,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_005/pre_bag_wt_grams_005",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_005/fresh_bag_wt_grams_005",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -152,8 +152,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -166,8 +166,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_006/pre_bag_wt_grams_006",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_006/fresh_bag_wt_grams_006",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -178,8 +178,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -192,8 +192,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_007/pre_bag_wt_grams_007",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_007/fresh_bag_wt_grams_007",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -204,8 +204,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -218,8 +218,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_008/pre_bag_wt_grams_008",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_008/fresh_bag_wt_grams_008",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -230,8 +230,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -244,8 +244,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_009/pre_bag_wt_grams_009",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_009/fresh_bag_wt_grams_009",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -256,8 +256,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -270,8 +270,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_010/pre_bag_wt_grams_010",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_010/fresh_bag_wt_grams_010",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -282,8 +282,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -296,8 +296,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_011/pre_bag_wt_grams_011",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_011/fresh_bag_wt_grams_011",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -308,8 +308,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -322,8 +322,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_012/pre_bag_wt_grams_012",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_012/fresh_bag_wt_grams_012",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -334,8 +334,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -348,8 +348,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_013/pre_bag_wt_grams_013",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_013/fresh_bag_wt_grams_013",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -360,8 +360,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -374,8 +374,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_014/pre_bag_wt_grams_014",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_014/fresh_bag_wt_grams_014",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -386,8 +386,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -400,8 +400,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_015/pre_bag_wt_grams_015",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_015/fresh_bag_wt_grams_015",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -412,8 +412,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -426,8 +426,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_016/pre_bag_wt_grams_016",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_016/fresh_bag_wt_grams_016",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -438,8 +438,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -452,8 +452,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_017/pre_bag_wt_grams_017",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_017/fresh_bag_wt_grams_017",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -464,8 +464,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -478,8 +478,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_018/pre_bag_wt_grams_018",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_018/fresh_bag_wt_grams_018",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -490,8 +490,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -504,8 +504,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_019/pre_bag_wt_grams_019",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_019/fresh_bag_wt_grams_019",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -516,8 +516,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -530,8 +530,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_020/pre_bag_wt_grams_020",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_020/fresh_bag_wt_grams_020",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -542,8 +542,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -556,8 +556,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_021/pre_bag_wt_grams_021",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_021/fresh_bag_wt_grams_021",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -568,8 +568,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -582,8 +582,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_022/pre_bag_wt_grams_022",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_022/fresh_bag_wt_grams_022",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -594,8 +594,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
     {
         "cols_from_form": [
@@ -608,8 +608,8 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_023/pre_bag_wt_grams_023",
-                "db_names": ["empty_bag_wt"],
+                "kobo_name": "group_023/fresh_bag_wt_grams_023",
+                "db_names": ["fresh_biomass_wt"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -620,7 +620,7 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]    
+        "completeness_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"],    
+        "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]    
     },
 ]
