@@ -17,10 +17,14 @@ import psa_bag_collect.decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG as decomp_bioma
 import psa_biomass_decomp_bag.biomass_in_field_vEchkcAone8S7y4eYhgru4 as biomass_in_field_vEchkcAone8S7y4eYhgru4_v1
 import psa_biomass_decomp_bag.biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh as biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh_v2
 import psa_biomass_decomp_bag.biomass_in_field_vcrycicDgojagKK5b7hTAP as biomass_in_field_vcrycicDgojagKK5b7hTAP_v3
+import psa_biomass_decomp_bag.biomass_in_field_va4wrosaFh5fN8rUZnKZHz as biomass_in_field_va4wrosaFh5fN8rUZnKZHz_v4
+import psa_biomass_decomp_bag.biomass_in_field_vLamBBuk4isVXD6ZxyNzjs as biomass_in_field_vLamBBuk4isVXD6ZxyNzjs_v5
 
 import psa_biomass_decomp_bag.decomp_biomass_fresh_vEchkcAone8S7y4eYhgru4 as decomp_biomass_fresh_vEchkcAone8S7y4eYhgru4_v1
 import psa_biomass_decomp_bag.decomp_biomass_fresh_vyYD9Bt3WSjzKorvPhLvLh as decomp_biomass_fresh_vyYD9Bt3WSjzKorvPhLvLh_v2
 import psa_biomass_decomp_bag.decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP as decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP_v3
+import psa_biomass_decomp_bag.decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz as decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz_v4
+import psa_biomass_decomp_bag.decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs as decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs_v5
 
 asset_names = {
     "psa gps": [
@@ -81,6 +85,8 @@ asset_names = {
                 "vEchkcAone8S7y4eYhgru4": biomass_in_field_vEchkcAone8S7y4eYhgru4_v1.data,
                 "vyYD9Bt3WSjzKorvPhLvLh": biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh_v2.data,
                 "vcrycicDgojagKK5b7hTAP": biomass_in_field_vcrycicDgojagKK5b7hTAP_v3.data,
+                "va4wrosaFh5fN8rUZnKZHz": biomass_in_field_va4wrosaFh5fN8rUZnKZHz_v4.data,
+                "vLamBBuk4isVXD6ZxyNzjs": biomass_in_field_vLamBBuk4isVXD6ZxyNzjs_v5.data,
             },
         },
         {   
@@ -89,6 +95,8 @@ asset_names = {
                 "vEchkcAone8S7y4eYhgru4": decomp_biomass_fresh_vEchkcAone8S7y4eYhgru4_v1.data,
                 "vyYD9Bt3WSjzKorvPhLvLh": decomp_biomass_fresh_vyYD9Bt3WSjzKorvPhLvLh_v2.data,
                 "vcrycicDgojagKK5b7hTAP": decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP_v3.data,
+                "va4wrosaFh5fN8rUZnKZHz": decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz_v4.data,
+                "vLamBBuk4isVXD6ZxyNzjs": decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs_v5.data,
             },
         },
     ],
