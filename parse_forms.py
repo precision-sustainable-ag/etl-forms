@@ -288,58 +288,88 @@ class FormParser:
 
         return True, "success"
 
+    def iterate_tables(self, table_list, asset_name, row_entry, form_version):
+        # all_rows_are_valid = True
+        error_message = ""
+        all_rows_are_valid = True
+        for table in table_list:
+            self.temp_valid_rows = pd.DataFrame()
+            valid_rows = None
+            table_name = None
+
+            table_name = table.get("table_name")
+            if table_name in self.asset_dataframes.get(asset_name):
+                valid_rows = self.asset_dataframes.get(asset_name).get(table_name)
+            else:
+                print(self.asset_dataframes.get(asset_name)[table_name])
+                row_entry["error"] = "no dataframes added"
+                row_entry["table_name"] = table_name
+                self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
+                continue
+
+            table_key = table.get("table_keys").get(form_version)
+
+            if table_key:
+                valid_row, message = self.parse_form(row_entry, table_key, table.get("table_name"))
+
+                if valid_row:
+                    self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows, ignore_index=True)
+                    row_entry["table_name"] = table_name
+                    self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
+                else:
+                    error_message = message
+                    row_entry["table_name"] = table_name
+                    row_entry["error"] = error_message
+                    self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
+                    all_rows_are_valid = False
+            else:
+                error_message = "no key available"
+                row_entry["table_name"] = table_name
+                row_entry["error"] = error_message
+                self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
+                all_rows_are_valid = False
+
+        if all_rows_are_valid:
+            return True, "all rows are valid"
+        else:
+            return False, error_message
+
     def parse_forms(self):
         for index, row_entry in self.data.iterrows():
-            
-
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
 
             table_list = self.asset_names.get(asset_name)
 
-            error_message = "asset name is missing a table dataframe"
-            row_is_valid = False
+            # error_message = "asset name is missing a table dataframe"
+            all_rows_are_valid = False
 
             if table_list:
-                for table in table_list:
-                    self.temp_valid_rows = pd.DataFrame()
-                    valid_rows = None
-                    table_name = None
-
-                    table_name = table.get("table_name")
-                    if table_name in self.asset_dataframes.get(asset_name):
-                        valid_rows = self.asset_dataframes.get(asset_name).get(table_name)
-                    else:
-                        # print(self.asset_dataframes.get(asset_name)[table_name])
-                        row_entry["error"] = "no dataframes added"
-                        row_entry["table_name"] = table_name
-                        self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
-                        continue
-
-                    table_key = table.get("table_keys").get(form_version)
-
-                    if table_key:
-                        valid_row, message = self.parse_form(row_entry, table_key, table.get("table_name"))
-
-                        if valid_row:
-                            self.asset_dataframes.get(asset_name)[table_name] = valid_rows.append(self.temp_valid_rows, ignore_index=True)
-                            row_is_valid = True
-                        else:
-                            error_message = message
-                    else:
-                        error_message = "no key available"
+                all_rows_are_valid, error_message = self.iterate_tables(table_list, asset_name, row_entry, form_version)
             else:
                 error_message = "no table list"
-
-            if row_is_valid:
-                self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
-            else:
                 row_entry["error"] = error_message
                 self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
+
+            # if all_rows_are_valid:
+            #     self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
+            # else:
+            #     row_entry["error"] = error_message
+            #     self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
 
         self.save_all_to_excel(self.asset_dataframes)
     
 fp = FormParser()
 fp.parse_forms()
 fp.close_con()
+
+
+# flag = False
+# my_list = ["red", "orange"]
+
+# for item in my_list:
+#     if item == "red": 
+#         flag = True
+
+# print(flag)
