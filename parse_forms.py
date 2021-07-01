@@ -8,6 +8,7 @@ import datetime
 
 import assets.asset_dataframes
 import assets.asset_names
+import api_calls.get_active_farm_codes
 
 class FormParser:
     # Create a SQL connection to our SQLite database
@@ -24,6 +25,9 @@ class FormParser:
     asset_dataframes = assets.asset_dataframes.asset_dataframes
     invalid_rows = pd.DataFrame()
     valid_rows = pd.DataFrame()
+
+    active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
+    # print(active_farm_codes)
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -206,6 +210,31 @@ class FormParser:
         else:
             return False
 
+    def assert_active(self, new_row, entry):
+        message = "Valid farm code"
+
+        farm_code = new_row.get("code")
+        end = entry.get("end")
+        year = ""
+        if end:
+            year = end.split("-")[0]
+        
+        if not farm_code:
+            return True, message
+
+        active_farms_for_year = self.active_farm_codes.get(year)
+
+        if active_farms_for_year:
+            if active_farms_for_year.get(farm_code):
+                return True, message
+            else:
+                message = "No farm code " + str(farm_code) + " for " + str(year)
+                return False, message
+        else:
+            message = "No data " + " for " + str(year)
+            return False, message
+
+
     def parse_form(self, row_entry, form_version_key, table_name):
         entry = json.loads(row_entry.get("data"))
         error_message = ""
@@ -242,7 +271,14 @@ class FormParser:
                     # print("invalid 2")
                     error_message = str(kobo_row.get("completeness_cols")) + " failed completeness cols for table " + table_name + " row data = " + json.dumps(new_row)
 
-            if (not row_passed_tests or not row_is_valid):
+            
+
+            active_farm, farm_message = self.assert_active(new_row, entry)
+
+            if not active_farm:
+                error_message = farm_message
+
+            if (not row_passed_tests or not row_is_valid or not active_farm):
                 # print("incomplete 2")
                 return False, error_message
 
