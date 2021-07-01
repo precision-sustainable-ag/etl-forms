@@ -7,7 +7,7 @@ asset_dataframes = {
         "gps__gps": empty_dataframe
     },
     "psa water sensor install": {
-        "water_sensor_install__wsensor_install": empty_dataframe
+        "wsensor_install__water_sensor_install": empty_dataframe
     },
     "psa decomp bag pre wt": {
         "decomp_biomass_fresh__decomp_bag_pre_wt": empty_dataframe

@@ -38,7 +38,7 @@ asset_names = {
 
     "psa water sensor install": [
         {   
-            "table_name": "water_sensor_install__wsensor_install",
+            "table_name": "wsensor_install__water_sensor_install",
             "table_keys": {
                 "vuiiHRr2MJSGzFwSncyLP9": wsensor_install_vuiiHRr2MJSGzFwSncyLP9.data,
                 "vCK5tppVaNkkfWMhtddxEb": wsensor_install_vCK5tppVaNkkfWMhtddxEb.data,
