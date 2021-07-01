@@ -4,10 +4,10 @@ empty_dataframe = pd.DataFrame()
 
 asset_dataframes = {
     "psa gps": {    
-        "gps": empty_dataframe
+        "gps__gps": empty_dataframe
     },
     "psa water sensor install": {
-        "wsensor_install": empty_dataframe
+        "water_sensor_install__wsensor_install": empty_dataframe
     },
     "psa decomp bag pre wt": {
         "decomp_biomass_fresh__decomp_bag_pre_wt": empty_dataframe
