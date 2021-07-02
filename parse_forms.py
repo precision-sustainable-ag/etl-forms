@@ -19,7 +19,6 @@ class FormParser:
     data = pd.read_csv('all_data.csv') 
 
     temp_valid_rows = pd.DataFrame()
-    # temp_invalid_rows = pd.DataFrame()
 
     asset_names = assets.asset_names.asset_names
     asset_dataframes = assets.asset_dataframes.asset_dataframes
@@ -27,7 +26,6 @@ class FormParser:
     valid_rows = pd.DataFrame()
 
     active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
-    # print(active_farm_codes)
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -261,17 +259,13 @@ class FormParser:
                     row_passed_tests = False
                     error_message = str(data.get("kobo_name")) + " row failed tests for table " + table_name
                     break
-
             
             row_is_valid = True
             if kobo_row.get("completeness_cols") and row_passed_tests:
                 row_is_valid = self.validate_row(kobo_row, new_row)
                 
                 if not row_is_valid:
-                    # print("invalid 2")
                     error_message = str(kobo_row.get("completeness_cols")) + " failed completeness cols for table " + table_name + " row data = " + json.dumps(new_row)
-
-            
 
             active_farm, farm_message = self.assert_active(new_row, entry)
 
@@ -279,7 +273,6 @@ class FormParser:
                 error_message = farm_message
 
             if (not row_passed_tests or not row_is_valid or not active_farm):
-                # print("incomplete 2")
                 return False, error_message
 
             else:
@@ -289,7 +282,6 @@ class FormParser:
         return True, "success"
 
     def iterate_tables(self, table_list, asset_name, row_entry, form_version):
-        # all_rows_are_valid = True
         error_message = ""
         all_rows_are_valid = True
         for table in table_list:
@@ -301,7 +293,6 @@ class FormParser:
             if table_name in self.asset_dataframes.get(asset_name):
                 valid_rows = self.asset_dataframes.get(asset_name).get(table_name)
             else:
-                print(self.asset_dataframes.get(asset_name)[table_name])
                 row_entry["error"] = "no dataframes added"
                 row_entry["table_name"] = table_name
                 self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
@@ -317,16 +308,14 @@ class FormParser:
                     row_entry["table_name"] = table_name
                     self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
                 else:
-                    error_message = message
                     row_entry["table_name"] = table_name
-                    row_entry["error"] = error_message
+                    row_entry["error"] = message
                     self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
                     all_rows_are_valid = False
                     row_entry.pop("error")
             else:
-                error_message = "no key available"
                 row_entry["table_name"] = table_name
-                row_entry["error"] = error_message
+                row_entry["error"] = "no key available"
                 self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
                 all_rows_are_valid = False
                 row_entry.pop("error")
@@ -344,34 +333,15 @@ class FormParser:
 
             table_list = self.asset_names.get(asset_name)
 
-            # error_message = "asset name is missing a table dataframe"
-            all_rows_are_valid = False
-
             if table_list:
-                all_rows_are_valid, error_message = self.iterate_tables(table_list, asset_name, row_entry, form_version)
+                self.iterate_tables(table_list, asset_name, row_entry, form_version)
             else:
                 error_message = "no table list"
                 row_entry["error"] = error_message
                 self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
-
-            # if all_rows_are_valid:
-            #     self.valid_rows = self.valid_rows.append(row_entry, ignore_index=True)
-            # else:
-            #     row_entry["error"] = error_message
-            #     self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
 
         self.save_all_to_excel(self.asset_dataframes)
     
 fp = FormParser()
 fp.parse_forms()
 fp.close_con()
-
-
-# flag = False
-# my_list = ["red", "orange"]
-
-# for item in my_list:
-#     if item == "red": 
-#         flag = True
-
-# print(flag)
