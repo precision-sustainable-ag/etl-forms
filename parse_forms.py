@@ -281,8 +281,7 @@ class FormParser:
             if (not row_passed_tests or not row_is_valid or not active_farm):
                 return False, error_message
 
-            else:
-                if self.row_is_not_null(kobo_row, new_row):
+            elif self.row_is_not_null(kobo_row, new_row):
                     new_row["pushed_to_prod"] = 0
                     self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
 
