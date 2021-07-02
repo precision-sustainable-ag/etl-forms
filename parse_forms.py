@@ -232,10 +232,28 @@ class FormParser:
             message = "No data " + " for " + str(year)
             return False, message
 
+    def get_cols_from_form(self, kobo_row, entry, new_row, table_name):
+        row_passed_tests = True
+        error_message = ""
+
+        for data in kobo_row.get("cols_from_form"):
+            status, converted_data = self.test_and_format_data(data, entry, new_row)
+
+            if status:
+                if not data.get("separator"):
+                    new_row[data.get("db_names")[0]] = converted_data
+                else:
+                    data = self.split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
+            else:
+                row_passed_tests = False
+                error_message = str(data.get("kobo_name")) + " row failed tests for table " + table_name
+                break
+
+        return row_passed_tests, error_message
+
 
     def parse_form(self, row_entry, form_version_key, table_name):
         entry = json.loads(row_entry.get("data"))
-        error_message = ""
         
         for kobo_row in form_version_key:
             new_row = {
@@ -246,19 +264,7 @@ class FormParser:
             if kobo_row.get("extra_cols"):
                 self.add_cols(new_row, kobo_row.get("extra_cols"))
 
-            row_passed_tests = True
-            for data in kobo_row.get("cols_from_form"):
-                status, converted_data = self.test_and_format_data(data, entry, new_row)
-
-                if status:
-                    if not data.get("separator"):
-                        new_row[data.get("db_names")[0]] = converted_data
-                    else:
-                        data = self.split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
-                else:
-                    row_passed_tests = False
-                    error_message = str(data.get("kobo_name")) + " row failed tests for table " + table_name
-                    break
+            row_passed_tests, error_message = self.get_cols_from_form(kobo_row, entry, new_row, table_name)
             
             row_is_valid = True
             if kobo_row.get("completeness_cols") and row_passed_tests:
