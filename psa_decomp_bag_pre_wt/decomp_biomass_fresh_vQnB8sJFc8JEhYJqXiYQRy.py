@@ -75,7 +75,7 @@ data = [
             },
         ],
         "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt", "notes", "submitted_by"]
+        "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt", "notes"]
     },
     {
         "cols_from_form": [

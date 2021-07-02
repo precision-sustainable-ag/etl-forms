@@ -196,11 +196,11 @@ class FormParser:
     def row_is_not_null(self, kobo_row, new_row):
         if not kobo_row.get("all_cols"):
             return True
-
+            
         row_is_not_null = False
 
         for col in kobo_row.get("all_cols"):
-            if new_row.get(col) != None:
+            if new_row.get(col):
                 row_is_not_null = True
                 break
 
@@ -322,12 +322,14 @@ class FormParser:
                     row_entry["error"] = error_message
                     self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
                     all_rows_are_valid = False
+                    row_entry.pop("error")
             else:
                 error_message = "no key available"
                 row_entry["table_name"] = table_name
                 row_entry["error"] = error_message
                 self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
                 all_rows_are_valid = False
+                row_entry.pop("error")
 
         if all_rows_are_valid:
             return True, "all rows are valid"

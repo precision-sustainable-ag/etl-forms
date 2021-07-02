@@ -16,7 +16,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 1}
+            {"name": "subplot", "value": 1},
+            {"name": "corner_index", "value": 1},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -37,7 +38,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 1}
+            {"name": "subplot", "value": 1},
+            {"name": "corner_index", "value": 2},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -58,7 +60,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 1}
+            {"name": "subplot", "value": 1},
+            {"name": "corner_index", "value": 3},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -79,7 +82,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 1}
+            {"name": "subplot", "value": 1},
+            {"name": "corner_index", "value": 4},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -100,7 +104,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 1}
+            {"name": "subplot", "value": 1},
+            {"name": "corner_index", "value": 1},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -121,7 +126,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 1}
+            {"name": "subplot", "value": 1},
+            {"name": "corner_index", "value": 2},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -142,7 +148,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 1}
+            {"name": "subplot", "value": 1},
+            {"name": "corner_index", "value": 3},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -163,7 +170,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 1}
+            {"name": "subplot", "value": 1},
+            {"name": "corner_index", "value": 4},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -184,7 +192,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 2}
+            {"name": "subplot", "value": 2},
+            {"name": "corner_index", "value": 1},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -205,7 +214,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 2}
+            {"name": "subplot", "value": 2},
+            {"name": "corner_index", "value": 2},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -226,7 +236,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 2}
+            {"name": "subplot", "value": 2},
+            {"name": "corner_index", "value": 3},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -247,7 +258,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
-            {"name": "subplot", "value": 2}
+            {"name": "subplot", "value": 2},
+            {"name": "corner_index", "value": 4},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -268,7 +280,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 2}
+            {"name": "subplot", "value": 2},
+            {"name": "corner_index", "value": 1},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -289,7 +302,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 2}
+            {"name": "subplot", "value": 2},
+            {"name": "corner_index", "value": 2},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -310,7 +324,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 2}
+            {"name": "subplot", "value": 2},
+            {"name": "corner_index", "value": 3},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },
@@ -331,7 +346,8 @@ data = [
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
-            {"name": "subplot", "value": 2}
+            {"name": "subplot", "value": 2},
+            {"name": "corner_index", "value": 4},
         ],    
         "all_cols": ["latitude", "longitude", "code", "treatment", "subplot"]
     },

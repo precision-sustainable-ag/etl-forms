@@ -516,7 +516,7 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["group_019/barcode_bag_019", "group_019/pre_bag_wt_grams_019"],    
+        "completeness_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"],    
         "all_cols": ["code", "subplot", "subsample", "time", "empty_bag_wt"]   
     },
     {
