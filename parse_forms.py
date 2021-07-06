@@ -11,9 +11,7 @@ import assets.asset_names
 import api_calls.get_active_farm_codes
 
 class FormParser:
-    # Create a SQL connection to our SQLite database
-    con = sqlite3.connect('sqlite_dbs/python.db')
-
+    con = sqlite3.connect('sqlite_dbs/shadow_tables.db')
     cur = con.cursor()
 
     data = pd.read_csv('all_data.csv') 
@@ -25,7 +23,7 @@ class FormParser:
     invalid_rows = pd.DataFrame()
     valid_rows = pd.DataFrame()
 
-    active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
+    # active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -102,18 +100,28 @@ class FormParser:
         
         return new_row
 
-    def convert_to_sql(self, data, table):
-        # valid_rows.to_sql("valid_gps", con, if_exists="replace")
-        # invalid_rows.to_sql("invalid_gps", con, if_exists="replace")
-        
-        data.to_sql(table, con, if_exists="replace")
-
     def convert_to_excel(self, data, file_path):
         # valid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
         # invalid_rows.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
         data.to_excel (file_path, index = False, header=True)
 
-    def query_table(self, query):
+    # def test_data(self, data):
+
+    def close_con(self):
+        self.con.close()
+
+    def save_all_to_excel(self):
+        for key, value in self.asset_dataframes.items():
+            for key_2, value_2 in value.items():
+                # print(value_2)
+                self.convert_to_excel(value_2, r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}.xlsx'.format(key_2))
+
+        self.convert_to_excel(self.invalid_rows, r'C:\Users\mikah\Documents\etl-forms\excel_dump\invalid_rows.xlsx')
+        self.convert_to_excel(self.valid_rows, r'C:\Users\mikah\Documents\etl-forms\excel_dump\valid_rows.xlsx')
+
+    def query_table(self, table_name, query):
+        con = sqlite3.connect('sqlite_dbs/{}.db'.format(table_name))
+        cur = con.cursor()
         cur.execute(query)
         
         # for row in cur.execute('SELECT * FROM valid_gps;'):
@@ -123,19 +131,48 @@ class FormParser:
         #     print(row)
         #     print('\n')
 
-    # def test_data(self, data):
+    def insert_new_rows(self, dataframe, table_name):
+        # print(table_name + "\n")
+        # print(dataframe)
+        dataframe.to_sql("temp_table", self.con, if_exists="replace")
 
-    def close_con(self):
-        self.con.close()
+        # query = """\
+        #     DELETE FROM {}
+        # """.format(table_name)
 
-    def save_all_to_excel(self, asset_dataframes):
-        for key, value in asset_dataframes.items():
+        query = """\
+            INSERT INTO {}
+            SELECT *
+            FROM temp_table
+            WHERE rawuid NOT IN
+                (SELECT rawuid 
+                FROM {})
+        """.format(table_name, table_name)
+
+        print(query)
+
+        self.cur.execute(query)
+        self.con.commit()
+
+    def convert_to_sql(self, dataframe, table_name):
+        # valid_rows.to_sql("valid_gps", con, if_exists="replace")
+        # invalid_rows.to_sql("invalid_gps", con, if_exists="replace")
+        
+        dataframe.to_sql(table_name, self.con, if_exists="append")
+
+    # def save_to_sqlite(self, dataframe, table_name):
+    #     # con = sqlite3.connect('sqlite_dbs/{}.db'.format(db_name))
+    #     # cur = con.cursor()
+    #     self.convert_to_sql(dataframe, table_name)
+
+    def save_all_to_sqlite(self):
+        for key, value in self.asset_dataframes.items():
             for key_2, value_2 in value.items():
                 # print(value_2)
-                self.convert_to_excel(value_2, r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}.xlsx'.format(key_2))
+                self.insert_new_rows(value_2, key_2)
 
-        self.convert_to_excel(self.invalid_rows, r'C:\Users\mikah\Documents\etl-forms\excel_dump\invalid_rows.xlsx')
-        self.convert_to_excel(self.valid_rows, r'C:\Users\mikah\Documents\etl-forms\excel_dump\valid_rows.xlsx')
+        # self.convert_to_sql(self.invalid_rows, "invalid_rows")
+        # self.convert_to_sql(self.valid_rows, "valid_rows")
     
     def cast_data(self, data, datatype):
         if not data:
@@ -210,6 +247,7 @@ class FormParser:
 
     def assert_active(self, new_row, entry):
         message = "Valid farm code"
+        return True, message
 
         farm_code = new_row.get("code")
         end = entry.get("end")
@@ -346,7 +384,8 @@ class FormParser:
                 row_entry["error"] = error_message
                 self.invalid_rows = self.invalid_rows.append(row_entry, ignore_index=True)
 
-        self.save_all_to_excel(self.asset_dataframes)
+        self.save_all_to_excel()
+        self.save_all_to_sqlite()
     
 fp = FormParser()
 fp.parse_forms()
