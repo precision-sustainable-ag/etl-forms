@@ -13,6 +13,10 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
@@ -34,6 +38,10 @@ data = [
                 "db_names": ["code"],
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
             },
         ],
         "extra_cols": [
@@ -57,6 +65,10 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
@@ -78,6 +90,10 @@ data = [
                 "db_names": ["code"],
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
             },
         ],
         "extra_cols": [
@@ -101,6 +117,10 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
@@ -122,6 +142,10 @@ data = [
                 "db_names": ["code"],
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
             },
         ],
         "extra_cols": [
@@ -145,6 +169,10 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
@@ -166,6 +194,10 @@ data = [
                 "db_names": ["code"],
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
             },
         ],
         "extra_cols": [
@@ -189,6 +221,10 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
@@ -210,6 +246,10 @@ data = [
                 "db_names": ["code"],
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
             },
         ],
         "extra_cols": [
@@ -233,6 +273,10 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
         ],
         "extra_cols": [
             {"name": "treatment", "value": "C"},
@@ -254,6 +298,10 @@ data = [
                 "db_names": ["code"],
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
             },
         ],
         "extra_cols": [
@@ -277,6 +325,10 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
@@ -298,6 +350,10 @@ data = [
                 "db_names": ["code"],
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
             },
         ],
         "extra_cols": [
@@ -321,6 +377,10 @@ data = [
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
         ],
         "extra_cols": [
             {"name": "treatment", "value": "B"},
@@ -342,6 +402,10 @@ data = [
                 "db_names": ["code"],
                 "tests": ["not_null", "check_reqex ^[A-Z0-9]{3}$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
+            },
+            {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
             },
         ],
         "extra_cols": [

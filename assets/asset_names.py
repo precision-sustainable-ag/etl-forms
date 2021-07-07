@@ -29,7 +29,7 @@ import psa_biomass_decomp_bag.decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs as dec
 asset_names = {
     "psa gps": [
         {   
-            "table_name": "gps__gps",
+            "table_name": "gps_corners__gps",
             "table_keys": {
                 "vFTrkLn3MMbs9wCLEBBh4s": psa_gps.data,
             },

@@ -4,7 +4,7 @@ empty_dataframe = pd.DataFrame()
 
 asset_dataframes = {
     "psa gps": {    
-        "gps__gps": empty_dataframe
+        "gps_corners__gps": empty_dataframe
     },
     "psa water sensor install": {
         "wsensor_install__water_sensor_install": empty_dataframe

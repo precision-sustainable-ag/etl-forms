@@ -12,6 +12,7 @@ data = [
             {
                 "kobo_name": "decomp_bag_collect_date",
                 "db_names": ["recovery_date"],
+                "datatype": "date",
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -39,6 +40,7 @@ data = [
             {
                 "kobo_name": "decomp_bag_collect_date",
                 "db_names": ["recovery_date"],
+                "datatype": "date",
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -65,6 +67,7 @@ data = [
             {
                 "kobo_name": "decomp_bag_collect_date",
                 "db_names": ["recovery_date"],
+                "datatype": "date",
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -91,6 +94,7 @@ data = [
             {
                 "kobo_name": "decomp_bag_collect_date",
                 "db_names": ["recovery_date"],
+                "datatype": "date",
             },
             {
                 "kobo_name": "WON'T BE FOUND",
