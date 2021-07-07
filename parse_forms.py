@@ -9,16 +9,13 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 import sqlalchemy
+import mysql.connector
 
 import assets.asset_dataframes
 import assets.asset_names
 import api_calls.get_active_farm_codes
 
 class FormParser:
-    # postgres_con = sqlite3.connect('sqlite_dbs/shadow_tables.db')
-    # postgres_cur = postgres_con.cursor()
-
-    # Update connection string information
     load_dotenv()
 
     postgres_host = os.environ.get('POSTGRES_HOST')
@@ -27,17 +24,20 @@ class FormParser:
     postgres_password = os.environ.get('POSTGRES_PASSWORD')
     postgres_sslmode = os.environ.get('POSTGRES_SSLMODE')
 
-    # Construct connection string
+    # Make postgres connections
     postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
     postgres_con = psycopg2.connect(postgres_con_string)
     postgres_cur = postgres_con.cursor()
 
     postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
     postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
-    
-    print("Connection established")
 
-    data = pd.read_csv('all_data.csv') 
+    
+    
+    print("Connections established")
+
+    # data = pd.read_csv('all_data.csv') 
+    data = None
 
     temp_valid_rows = pd.DataFrame()
 
@@ -211,6 +211,20 @@ class FormParser:
 
         self.convert_to_sql(self.invalid_row_table_pairs, "invalid_row_table_pairs")
         self.convert_to_sql(self.valid_row_table_pairs, "valid_row_table_pairs")
+
+    def get_all_responses(self):
+        mysql_host = os.environ.get('MYSQL_HOST')
+        mysql_dbname = os.environ.get('MYSQL_DBNAME')
+        mysql_user = os.environ.get('MYSQL_USER')
+        mysql_password = os.environ.get('MYSQL_PASSWORD')
+        
+        # Make mysql connections
+        mysql_engine_string = "mysql://{0}:{1}@{2}/{3}".format(mysql_user, mysql_password, mysql_host, mysql_dbname)
+        mysql_engine = sqlalchemy.create_engine(mysql_engine_string)
+
+        self.data = pd.read_sql("SELECT * FROM kobo", mysql_engine)
+
+        # print(self.data)
     
     def cast_data(self, data, datatype):
         if not data:
@@ -375,7 +389,7 @@ class FormParser:
             if table_name in self.asset_dataframes.get(asset_name):
                 valid_row_table_pairs = self.asset_dataframes.get(asset_name).get(table_name)
             else:
-                row_entry["error"] = "no dataframes added"
+                row_entry["err"] = "no dataframes added"
                 row_entry["table_name"] = table_name
                 self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                 continue
@@ -391,16 +405,16 @@ class FormParser:
                     self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
                 else:
                     row_entry["table_name"] = table_name
-                    row_entry["error"] = message
+                    row_entry["err"] = message
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     all_rows_are_valid = False
-                    row_entry.pop("error")
+                    row_entry.pop("err")
             else:
                 row_entry["table_name"] = table_name
-                row_entry["error"] = "no key available"
+                row_entry["err"] = "no key available"
                 self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                 all_rows_are_valid = False
-                row_entry.pop("error")
+                row_entry.pop("err")
 
         if all_rows_are_valid:
             return True, "all rows are valid"
@@ -409,11 +423,13 @@ class FormParser:
 
     def parse_forms(self):
         self.get_parsed_forms()
+        self.get_all_responses()
 
         for index, row_entry in self.data.iterrows():
             if self.parsed_form_uids.get(row_entry.get("uid")):
                 continue
 
+            print(row_entry.get("uid"))
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
@@ -427,7 +443,7 @@ class FormParser:
                 all_rows_are_valid, response = self.iterate_tables(table_list, asset_name, row_entry, form_version)
             else:
                 error_message = "no table list"
-                row_entry["error"] = error_message
+                row_entry["err"] = error_message
                 self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
 
             # if all_rows_are_valid:
@@ -441,5 +457,5 @@ class FormParser:
     
 fp = FormParser()
 fp.parse_forms()
-# fp.get_parsed_forms()
+# fp.get_all_responses()
 fp.close_con()
