@@ -424,28 +424,22 @@ class FormParser:
             if self.parsed_form_uids.get(row_entry.get("uid")):
                 continue
 
-            print(row_entry.get("uid"))
+            # print(row_entry.get("uid"))
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
 
             table_list = self.asset_names.get(asset_name)
 
-            all_rows_are_valid = False
-            response = ''
+            # all_rows_are_valid = False
+            # response = ''
 
             if table_list:
-                all_rows_are_valid, response = self.iterate_tables(table_list, asset_name, row_entry, form_version)
+                self.iterate_tables(table_list, asset_name, row_entry, form_version)
             else:
                 error_message = "no table list"
                 row_entry["err"] = error_message
                 self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
-
-            # if all_rows_are_valid:
-            #     new_row = {
-            #         "rawuid": row_entry.get("uid")
-            #     }
-            #     self.completely_parsed_rows = self.completely_parsed_rows.append(new_row, ignore_index=True)
 
         self.save_all_to_excel()
         self.save_all_to_sqlite()
