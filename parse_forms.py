@@ -187,17 +187,6 @@ class FormParser:
     #     # postgres_cur = postgres_con.cursor()
     #     self.convert_to_sql(dataframe, table_name)
 
-    def get_parsed_forms(self):
-        queries = ["SELECT DISTINCT uid from valid_row_table_pairs", "SELECT DISTINCT uid from invalid_row_table_pairs"]
-
-        for query in queries:
-            self.postgres_cur.execute(query)
-            for uid in self.postgres_cur.fetchall():
-                if uid[0] not in self.parsed_form_uids:
-                    self.parsed_form_uids[uid[0]] = True
-
-        # print(self.parsed_form_uids)
-
     def save_all_to_sqlite(self):
         for key, value in self.asset_dataframes.items():
             for key_2, value_2 in value.items():
@@ -206,6 +195,28 @@ class FormParser:
 
         self.convert_to_sql(self.invalid_row_table_pairs, "invalid_row_table_pairs")
         self.convert_to_sql(self.valid_row_table_pairs, "valid_row_table_pairs")
+
+    def get_parsed_forms(self):
+        # queries = ["SELECT DISTINCT uid from valid_row_table_pairs", "SELECT DISTINCT uid from invalid_row_table_pairs"]
+
+        # for query in queries:
+        #     self.postgres_cur.execute(query)
+        #     for uid in self.postgres_cur.fetchall():
+        #         if uid[0] not in self.parsed_form_uids:
+        #             self.parsed_form_uids[uid[0]] = True
+
+        for key, value in self.asset_dataframes.items():
+            for key_2, value_2 in value.items():
+                query = "SELECT DISTINCT rawuid FROM {}".format(key_2)
+
+                self.postgres_cur.execute(query)
+                for uid in self.postgres_cur.fetchall():
+                    if key_2 not in self.parsed_form_uids:
+                        self.parsed_form_uids[key_2] = {}
+                    if uid[0] not in self.parsed_form_uids[key_2]:
+                        self.parsed_form_uids[key_2][uid[0]] = True
+
+        print(self.parsed_form_uids)
 
     def get_all_responses(self):
         mysql_host = os.environ.get('MYSQL_HOST')
@@ -276,6 +287,10 @@ class FormParser:
             return False
 
     def row_is_not_null(self, kobo_row, new_row):
+        problem_rows = [8, 564, 589, 623, 896, 927]
+        if new_row.get("rawuid") in problem_rows:
+            print(new_row)
+
         if not kobo_row.get("all_cols"):
             return True
             
@@ -283,6 +298,9 @@ class FormParser:
 
         for col in kobo_row.get("all_cols"):
             if new_row.get(col):
+                if new_row.get("rawuid") in problem_rows:
+                    print(new_row.get(col))
+                    print("\n")
                 row_is_not_null = True
                 break
 
@@ -381,6 +399,12 @@ class FormParser:
             table_name = None
 
             table_name = table.get("table_name")
+            row_uid = row_entry.get("uid")
+            if self.parsed_form_uids.get(table_name).get(row_uid):
+                continue
+
+            # print(row_uid)
+
             if table_name in self.asset_dataframes.get(asset_name):
                 valid_row_table_pairs = self.asset_dataframes.get(asset_name).get(table_name)
             else:
@@ -421,8 +445,8 @@ class FormParser:
         self.get_all_responses()
 
         for index, row_entry in self.data.iterrows():
-            if self.parsed_form_uids.get(row_entry.get("uid")):
-                continue
+            # if self.parsed_form_uids.get(row_entry.get("uid")):
+            #     continue
 
             # print(row_entry.get("uid"))
             asset_name = row_entry.get("asset_name")
@@ -446,5 +470,5 @@ class FormParser:
     
 fp = FormParser()
 fp.parse_forms()
-# fp.get_all_responses()
+# fp.get_parsed_forms()
 fp.close_con()
