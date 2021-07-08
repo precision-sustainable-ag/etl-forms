@@ -2,7 +2,7 @@ import json
 import pandas as pd
 import re
 import sqlite3
-import sys
+# import sys
 import time
 import datetime
 import psycopg2
@@ -32,12 +32,7 @@ class FormParser:
     postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
     postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-    
-    
     print("Connections established")
-
-    # data = pd.read_csv('all_data.csv') 
-    data = None
 
     temp_valid_rows = pd.DataFrame()
 
@@ -46,7 +41,7 @@ class FormParser:
     
     invalid_row_table_pairs = pd.DataFrame()
     valid_row_table_pairs = pd.DataFrame()
-    completely_parsed_rows = pd.DataFrame()
+    # unparsed_rows = pd.DataFrame()
 
     active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
 
