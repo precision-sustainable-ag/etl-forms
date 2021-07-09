@@ -2,7 +2,7 @@ import json
 import pandas as pd
 import re
 import sqlite3
-# import sys
+import sys
 import time
 import datetime
 import psycopg2
@@ -16,35 +16,45 @@ import assets.asset_names
 import api_calls.get_active_farm_codes
 
 class FormParser:
-    load_dotenv()
+    def __init__(self, mode):
+        load_dotenv()
+        self.connect_to_postgres()
 
-    postgres_host = os.environ.get('POSTGRES_HOST')
-    postgres_dbname = os.environ.get('POSTGRES_DBNAME')
-    postgres_user = os.environ.get('POSTGRES_USER')
-    postgres_password = os.environ.get('POSTGRES_PASSWORD')
-    postgres_sslmode = os.environ.get('POSTGRES_SSLMODE')
+        if mode:
+            self.mode = mode
+        else:
+            self.mode = "live"
 
-    # Make postgres connections
-    postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
-    postgres_con = psycopg2.connect(postgres_con_string)
-    postgres_cur = postgres_con.cursor()
+        self.temp_valid_rows = pd.DataFrame()
 
-    postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
-    postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
+        self.asset_names = assets.asset_names.asset_names
+        self.asset_dataframes = assets.asset_dataframes.asset_dataframes
+        
+        self.invalid_row_table_pairs = pd.DataFrame()
+        self.valid_row_table_pairs = pd.DataFrame()
 
-    print("Connections established")
+        self.active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
 
-    temp_valid_rows = pd.DataFrame()
+        self.parsed_form_uids = {}
+        print(self.mode)
 
-    asset_names = assets.asset_names.asset_names
-    asset_dataframes = assets.asset_dataframes.asset_dataframes
-    
-    invalid_row_table_pairs = pd.DataFrame()
-    valid_row_table_pairs = pd.DataFrame()
 
-    active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
+    def connect_to_postgres(self):
+        postgres_host = os.environ.get('POSTGRES_HOST')
+        postgres_dbname = os.environ.get('POSTGRES_DBNAME')
+        postgres_user = os.environ.get('POSTGRES_USER')
+        postgres_password = os.environ.get('POSTGRES_PASSWORD')
+        postgres_sslmode = os.environ.get('POSTGRES_SSLMODE')
 
-    parsed_form_uids = {}
+        # Make postgres connections
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
+        self.postgres_con = psycopg2.connect(postgres_con_string)
+        self.postgres_cur = self.postgres_con.cursor()
+
+        postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
+        self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
+
+        print("Connections established")
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -412,9 +422,20 @@ class FormParser:
                 row_entry["err"] = error_message
                 self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
 
-        self.save_all_to_excel()
-        self.save_to_postgres()
-    
-fp = FormParser()
+        if self.mode == "test":
+            print("saving to excel")
+            self.save_all_to_excel()
+        elif self.mode == "live":
+            print("saving to sql")
+            self.save_to_postgres()
+
+
+mode = None
+if len(sys.argv) > 1:
+    mode = sys.argv[1]  
+
+print(mode)
+
+fp = FormParser(mode)
 fp.parse_forms()
 fp.close_con()
