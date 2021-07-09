@@ -211,7 +211,11 @@ class FormParser:
             return int(data)
 
         def convert_date(data):
-            return time.mktime(datetime.datetime.strptime(data, "%Y-%m-%d").timetuple())
+            try:
+                return time.mktime(datetime.datetime.strptime(data, "%Y-%m-%d").timetuple())
+            except Exception:
+                print("not a valid date")
+                return data
         
         data_types = {
             "string": convert_string,
