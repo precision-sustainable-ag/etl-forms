@@ -41,7 +41,6 @@ class FormParser:
     
     invalid_row_table_pairs = pd.DataFrame()
     valid_row_table_pairs = pd.DataFrame()
-    # unparsed_rows = pd.DataFrame()
 
     active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
 
@@ -123,11 +122,7 @@ class FormParser:
         return new_row
 
     def convert_to_excel(self, data, file_path):
-        # valid_row_table_pairs.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\valid-gps.xlsx', index = False, header=True)
-        # invalid_row_table_pairs.to_excel (r'C:\Users\mikah\OneDrive - North Carolina State University\docs\school\492\test\parse\invalid-gps.xlsx', index = False, header=True)
         data.to_excel (file_path, index = False, header=True)
-
-    # def test_data(self, data):
 
     def close_con(self):
         self.postgres_con.close()
@@ -145,17 +140,8 @@ class FormParser:
         postgres_con = sqlite3.connect('sqlite_dbs/{}.db'.format(table_name))
         postgres_cur = postgres_con.cursor()
         postgres_cur.execute(query)
-        
-        # for row in postgres_cur.execute('SELECT * FROM valid_gps;'):
-        #     print(row)
-        #     print('\n')
-        # for row in postgres_cur.execute('SELECT * FROM invalid_gps;'):
-        #     print(row)
-        #     print('\n')
 
     def insert_new_rows(self, dataframe, table_name):
-        # print(table_name + "\n")
-        # print(dataframe)
         dataframe.to_sql("temp_table", self.postgres_engine, if_exists="replace")
 
         # query = """\
@@ -171,15 +157,10 @@ class FormParser:
                 FROM {})
         """.format(table_name, table_name)
 
-        print(query)
-
         self.postgres_cur.execute(query)
         self.postgres_con.commit()
 
     def convert_to_sql(self, dataframe, table_name):
-        # valid_row_table_pairs.to_sql("valid_gps", postgres_con, if_exists="replace")
-        # invalid_row_table_pairs.to_sql("invalid_gps", postgres_con, if_exists="replace")
-        
         dataframe.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
 
     # def save_to_sqlite(self, dataframe, table_name):
@@ -187,24 +168,15 @@ class FormParser:
     #     # postgres_cur = postgres_con.cursor()
     #     self.convert_to_sql(dataframe, table_name)
 
-    def save_all_to_sqlite(self):
+    def save_to_postgres(self):
         for key, value in self.asset_dataframes.items():
             for key_2, value_2 in value.items():
-                # print(value_2)
                 self.convert_to_sql(value_2, key_2)
 
         self.convert_to_sql(self.invalid_row_table_pairs, "invalid_row_table_pairs")
         self.convert_to_sql(self.valid_row_table_pairs, "valid_row_table_pairs")
 
     def get_parsed_forms(self):
-        # queries = ["SELECT DISTINCT uid from valid_row_table_pairs", "SELECT DISTINCT uid from invalid_row_table_pairs"]
-
-        # for query in queries:
-        #     self.postgres_cur.execute(query)
-        #     for uid in self.postgres_cur.fetchall():
-        #         if uid[0] not in self.parsed_form_uids:
-        #             self.parsed_form_uids[uid[0]] = True
-
         for key, value in self.asset_dataframes.items():
             for key_2, value_2 in value.items():
                 query = "SELECT DISTINCT rawuid FROM {}".format(key_2)
@@ -215,8 +187,6 @@ class FormParser:
                         self.parsed_form_uids[key_2] = {}
                     if uid[0] not in self.parsed_form_uids[key_2]:
                         self.parsed_form_uids[key_2][uid[0]] = True
-
-        print(self.parsed_form_uids)
 
     def get_all_responses(self):
         mysql_host = os.environ.get('MYSQL_HOST')
@@ -229,8 +199,6 @@ class FormParser:
         mysql_engine = sqlalchemy.create_engine(mysql_engine_string)
 
         self.data = pd.read_sql("SELECT * FROM kobo", mysql_engine)
-
-        # print(self.data)
     
     def cast_data(self, data, datatype):
         if not data:
@@ -287,10 +255,6 @@ class FormParser:
             return False
 
     def row_is_not_null(self, kobo_row, new_row):
-        problem_rows = [8, 564, 589, 623, 896, 927]
-        if new_row.get("rawuid") in problem_rows:
-            print(new_row)
-
         if not kobo_row.get("all_cols"):
             return True
             
@@ -298,9 +262,6 @@ class FormParser:
 
         for col in kobo_row.get("all_cols"):
             if new_row.get(col):
-                if new_row.get("rawuid") in problem_rows:
-                    print(new_row.get(col))
-                    print("\n")
                 row_is_not_null = True
                 break
 
@@ -312,7 +273,6 @@ class FormParser:
 
     def assert_active(self, new_row, entry):
         message = "Valid farm code"
-        # return True, message
 
         farm_code = new_row.get("code")
         end = entry.get("end")
@@ -391,19 +351,16 @@ class FormParser:
         return True, "success"
 
     def iterate_tables(self, table_list, asset_name, row_entry, form_version):
-        error_message = ""
-        all_rows_are_valid = True
         for table in table_list:
             self.temp_valid_rows = pd.DataFrame()
             valid_row_table_pairs = None
             table_name = None
-
             table_name = table.get("table_name")
             row_uid = row_entry.get("uid")
+            print(row_uid)
+
             if self.parsed_form_uids.get(table_name).get(row_uid):
                 continue
-
-            # print(row_uid)
 
             if table_name in self.asset_dataframes.get(asset_name):
                 valid_row_table_pairs = self.asset_dataframes.get(asset_name).get(table_name)
@@ -426,37 +383,23 @@ class FormParser:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = message
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
-                    all_rows_are_valid = False
                     row_entry.pop("err")
             else:
                 row_entry["table_name"] = table_name
                 row_entry["err"] = "no key available"
                 self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
-                all_rows_are_valid = False
                 row_entry.pop("err")
-
-        if all_rows_are_valid:
-            return True, "all rows are valid"
-        else:
-            return False, error_message
 
     def parse_forms(self):
         self.get_parsed_forms()
         self.get_all_responses()
 
         for index, row_entry in self.data.iterrows():
-            # if self.parsed_form_uids.get(row_entry.get("uid")):
-            #     continue
-
-            # print(row_entry.get("uid"))
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
 
             table_list = self.asset_names.get(asset_name)
-
-            # all_rows_are_valid = False
-            # response = ''
 
             if table_list:
                 self.iterate_tables(table_list, asset_name, row_entry, form_version)
@@ -466,9 +409,8 @@ class FormParser:
                 self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
 
         self.save_all_to_excel()
-        self.save_all_to_sqlite()
+        self.save_to_postgres()
     
 fp = FormParser()
 fp.parse_forms()
-# fp.get_parsed_forms()
 fp.close_con()
