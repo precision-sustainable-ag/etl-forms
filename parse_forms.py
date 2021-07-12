@@ -170,6 +170,21 @@ class FormParser:
         self.postgres_cur.execute(query)
         self.postgres_con.commit()
 
+    def save_unique_rows(self, dataframe, table_name):
+        dataframe.to_sql("temp_table", self.postgres_engine, if_exists="replace")
+
+        query = """\
+            SELECT *
+            FROM temp_table
+            WHERE uid NOT IN
+                (SELECT uid 
+                FROM {})
+        """.format(table_name)
+
+        unique_rows = pd.read_sql(query, self.postgres_engine)
+
+        unique_rows.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
+
     def convert_to_sql(self, dataframe, table_name):
         dataframe.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
 
@@ -183,8 +198,8 @@ class FormParser:
             for key_2, value_2 in value.items():
                 self.convert_to_sql(value_2, key_2)
 
-        self.convert_to_sql(self.invalid_row_table_pairs, "invalid_row_table_pairs")
-        self.convert_to_sql(self.valid_row_table_pairs, "valid_row_table_pairs")
+        self.save_unique_rows(self.invalid_row_table_pairs, "invalid_row_table_pairs")
+        self.save_unique_rows(self.valid_row_table_pairs, "valid_row_table_pairs")
 
     def get_parsed_forms(self):
         for key, value in self.asset_dataframes.items():
@@ -192,9 +207,9 @@ class FormParser:
                 query = "SELECT DISTINCT rawuid FROM {}".format(key_2)
 
                 self.postgres_cur.execute(query)
-                for uid in self.postgres_cur.fetchall():
-                    if key_2 not in self.parsed_form_uids:
+                if key_2 not in self.parsed_form_uids:
                         self.parsed_form_uids[key_2] = {}
+                for uid in self.postgres_cur.fetchall():
                     if uid[0] not in self.parsed_form_uids[key_2]:
                         self.parsed_form_uids[key_2][uid[0]] = True
 
@@ -428,6 +443,8 @@ class FormParser:
         elif self.mode == "live":
             print("saving to sql")
             self.save_to_postgres()
+            print("saving to excel")
+            self.save_all_to_excel()
 
 
 mode = None
