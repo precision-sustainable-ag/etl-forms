@@ -20,6 +20,8 @@ class FormParser:
         load_dotenv()
         self.connect_to_postgres()
 
+        print(datetime.datetime.now())
+
         if mode:
             self.mode = mode
         else:
@@ -36,8 +38,6 @@ class FormParser:
         self.active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
 
         self.parsed_form_uids = {}
-        print(self.mode)
-
 
     def connect_to_postgres(self):
         postgres_host = os.environ.get('POSTGRES_HOST')
@@ -386,7 +386,7 @@ class FormParser:
             table_name = None
             table_name = table.get("table_name")
             row_uid = row_entry.get("uid")
-            print(row_uid)
+            # print(row_uid)
 
             if self.parsed_form_uids.get(table_name).get(row_uid):
                 continue
@@ -447,16 +447,19 @@ class FormParser:
         elif self.mode == "live":
             print("saving to sql")
             self.save_to_postgres()
-            print("saving to excel")
-            self.save_all_to_excel()
+            # print("saving to excel")
+            # self.save_all_to_excel()
 
 
-mode = None
-if len(sys.argv) > 1:
-    mode = sys.argv[1]  
+try:
+    mode = None
+    if len(sys.argv) > 1:
+        mode = sys.argv[1]  
 
-print(mode)
+    fp = FormParser(mode)
+    fp.parse_forms()
+    fp.close_con()
 
-fp = FormParser(mode)
-fp.parse_forms()
-fp.close_con()
+except Exception:
+    print("an error occured")
+    print(Exception)
