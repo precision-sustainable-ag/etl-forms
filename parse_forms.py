@@ -394,9 +394,10 @@ class FormParser:
             if table_name in self.asset_dataframes.get(asset_name):
                 valid_row_table_pairs = self.asset_dataframes.get(asset_name).get(table_name)
             else:
-                row_entry["err"] = "no dataframes added"
+                row_entry["status"] = "no dataframes added"
                 row_entry["table_name"] = table_name
-                self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
+                self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
+                row_entry.pop("status")
                 continue
 
             table_key = table.get("table_keys").get(form_version)
@@ -406,8 +407,10 @@ class FormParser:
 
                 if valid_row:
                     self.asset_dataframes.get(asset_name)[table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
+                    row_entry["status"] = "parsed successfully"
                     row_entry["table_name"] = table_name
                     self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
+                    row_entry.pop("status")
                 else:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = message
@@ -415,9 +418,9 @@ class FormParser:
                     row_entry.pop("err")
             else:
                 row_entry["table_name"] = table_name
-                row_entry["err"] = "no key available"
-                self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
-                row_entry.pop("err")
+                row_entry["status"] = "no key available"
+                self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
+                row_entry.pop("status")
 
     def parse_forms(self):
         self.get_parsed_forms()
@@ -434,8 +437,9 @@ class FormParser:
                 self.iterate_tables(table_list, asset_name, row_entry, form_version)
             else:
                 error_message = "no table list"
-                row_entry["err"] = error_message
-                self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
+                row_entry["status"] = error_message
+                self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
+                row_entry.pop("status")
 
         if self.mode == "test":
             print("saving to excel")
