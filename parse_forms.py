@@ -21,8 +21,6 @@ class FormParser:
         load_dotenv()
         self.connect_to_postgres()
 
-        # print(datetime.date())
-        eastern = timezone('US/Eastern')
         date_utc = datetime.datetime.now()
         loc_dt = date_utc.astimezone(eastern)
         print(loc_dt)
