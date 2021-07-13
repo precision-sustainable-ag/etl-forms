@@ -10,6 +10,7 @@ import os
 from dotenv import load_dotenv
 import sqlalchemy
 import mysql.connector
+from pytz import timezone
 
 import assets.asset_dataframes
 import assets.asset_names
@@ -20,7 +21,11 @@ class FormParser:
         load_dotenv()
         self.connect_to_postgres()
 
-        print(datetime.datetime.now())
+        # print(datetime.date())
+        eastern = timezone('US/Eastern')
+        date_utc = datetime.datetime.now()
+        loc_dt = date_utc.astimezone(eastern)
+        print(loc_dt)
 
         if mode:
             self.mode = mode
