@@ -2,9 +2,5 @@ pandas
 psycopg2
 python-dotenv
 sqlalchemy
-python-mysqldb
-
-mysql-connector-python
-mysql-python
-
 mysql-connector
+mysqlclient

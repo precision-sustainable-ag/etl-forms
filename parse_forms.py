@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 import sqlalchemy
 import mysql.connector
 from pytz import timezone
+import traceback
 
 import assets.asset_dataframes
 import assets.asset_names
@@ -22,6 +23,7 @@ class FormParser:
         self.connect_to_postgres()
 
         date_utc = datetime.datetime.now()
+        eastern = timezone('US/Eastern')
         loc_dt = date_utc.astimezone(eastern)
         print(loc_dt)
 
@@ -464,5 +466,5 @@ try:
     fp.close_con()
 
 except Exception:
-    print("an error occured")
-    print(Exception)
+    print("an error occured \n")
+    print(traceback.print_exc(file=sys.stdout))
