@@ -142,6 +142,7 @@ class FormParser:
 
     def close_con(self):
         self.postgres_con.close()
+        print("Closing connections")
 
     def save_all_to_excel(self):
         for key, value in self.asset_dataframes.items():
@@ -377,12 +378,14 @@ class FormParser:
                 valid_row, message = self.parse_form(row_entry, table_key, table.get("table_name"))
 
                 if valid_row:
+                    print("successfully parsed form uid {} for table {}".format(row_uid, table_name))
                     self.asset_dataframes.get(asset_name)[table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
                 else:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = message
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     row_entry.pop("err")
+                    print("could not parse form uid {} for table {}".format(row_uid, table_name))
 
     def parse_forms(self):
         self.get_valid_parsed_forms()
