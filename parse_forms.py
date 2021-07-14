@@ -206,18 +206,12 @@ class FormParser:
     def convert_to_sql(self, dataframe, table_name):
         dataframe.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
 
-    # def save_to_sqlite(self, dataframe, table_name):
-    #     # postgres_con = sqlite3.connect('sqlite_dbs/{}.db'.format(db_name))
-    #     # postgres_cur = postgres_con.cursor()
-    #     self.convert_to_sql(dataframe, table_name)
-
     def save_to_postgres(self):
         for key, value in self.asset_dataframes.items():
             for key_2, value_2 in value.items():
                 self.convert_to_sql(value_2, key_2)
 
         self.convert_to_sql(self.invalid_row_table_pairs, "invalid_row_table_pairs")
-        # self.save_unique_rows(self.valid_row_table_pairs, "valid_row_table_pairs")
 
     def get_valid_parsed_forms(self):
         for key, value in self.asset_dataframes.items():
@@ -421,20 +415,13 @@ class FormParser:
             table_name = None
             table_name = table.get("table_name")
             row_uid = row_entry.get("uid")
-            # print(row_uid)
 
             if self.valid_parsed_form_tables.get(table_name).get(row_uid) or self.invalid_parsed_form_tables.get(table_name).get(row_uid):
                 continue
 
-            print(row_uid)
-
             if table_name in self.asset_dataframes.get(asset_name):
                 valid_row_table_pairs = self.asset_dataframes.get(asset_name).get(table_name)
             else:
-                # row_entry["status"] = "no dataframes added"
-                # row_entry["table_name"] = table_name
-                # self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
-                # row_entry.pop("status")
                 continue
 
             table_key = table.get("table_keys").get(form_version)
@@ -444,20 +431,11 @@ class FormParser:
 
                 if valid_row:
                     self.asset_dataframes.get(asset_name)[table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
-                    # row_entry["status"] = "parsed successfully"
-                    # row_entry["table_name"] = table_name
-                    # self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
-                    # row_entry.pop("status")
                 else:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = message
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     row_entry.pop("err")
-            # else:
-            #     row_entry["table_name"] = table_name
-            #     row_entry["status"] = "no key available"
-            #     self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
-            #     row_entry.pop("status")
 
     def parse_forms(self):
         self.get_valid_parsed_forms()
@@ -473,11 +451,6 @@ class FormParser:
 
             if table_list:
                 self.iterate_tables(table_list, asset_name, row_entry, form_version)
-            # else:
-            #     error_message = "no table list"
-            #     row_entry["status"] = error_message
-            #     self.valid_row_table_pairs = self.valid_row_table_pairs.append(row_entry, ignore_index=True)
-            #     row_entry.pop("status")
 
         print(self.invalid_row_table_pairs)
 
@@ -498,7 +471,6 @@ try:
 
     fp = FormParser(mode)
     fp.parse_forms()
-    # fp.get_invalid_parsed_forms()
     fp.close_con()
 
 except Exception:
