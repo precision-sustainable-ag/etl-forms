@@ -323,6 +323,7 @@ class FormParser:
     def parse_form(self, row_entry, form_version_key, table_name):
         entry = json.loads(row_entry.get("data"))
         
+        empty_form = True
         for kobo_row in form_version_key:
             new_row = {
                 "rawuid": row_entry.get("uid"),
@@ -350,10 +351,14 @@ class FormParser:
                 return False, error_message
 
             elif self.row_is_not_null(kobo_row, new_row):
-                    new_row["pushed_to_prod"] = 0
-                    self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
+                new_row["pushed_to_prod"] = 0
+                self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
+                empty_form = False
 
-        return True, "success"
+        if empty_form:
+            return False, "empty form"
+        else:
+            return True, "success"
 
     def iterate_tables(self, table_list, asset_name, row_entry, form_version):
         for table in table_list:
