@@ -150,55 +150,6 @@ class FormParser:
                 self.convert_to_excel(value_2, r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}.xlsx'.format(key_2))
 
         self.convert_to_excel(self.invalid_row_table_pairs, r'C:\Users\mikah\Documents\etl-forms\excel_dump\invalid_row_table_pairs.xlsx')
-        # self.convert_to_excel(self.valid_row_table_pairs, r'C:\Users\mikah\Documents\etl-forms\excel_dump\valid_row_table_pairs.xlsx')
-
-    def query_table(self, table_name, query):
-        postgres_con = sqlite3.connect('sqlite_dbs/{}.db'.format(table_name))
-        postgres_cur = postgres_con.cursor()
-        postgres_cur.execute(query)
-
-    def insert_new_rows(self, dataframe, table_name):
-        dataframe.to_sql("temp_table", self.postgres_engine, if_exists="replace")
-
-        # query = """\
-        #     DELETE FROM {}
-        # """.format(table_name)
-
-        query = """\
-            INSERT INTO {}
-            SELECT *
-            FROM temp_table
-            WHERE rawuid NOT IN
-                (SELECT rawuid 
-                FROM {})
-        """.format(table_name, table_name)
-
-        self.postgres_cur.execute(query)
-        self.postgres_con.commit()
-
-    def save_unique_rows(self, dataframe, table_name):
-        if dataframe.empty:
-            return
-
-        dataframe.to_sql("temp_table", self.postgres_engine, if_exists="replace")
-
-        # query = """\
-        #     SELECT * FROM temp_table
-        #     WHERE (uid, table_name) NOT IN
-        #         (SELECT uid, table_name
-        #         FROM {})
-        # """.format(table_name)
-
-        query = """\
-            SELECT tt.*
-            FROM   temp_table tt 
-            LEFT   JOIN {} vt USING (uid)
-            WHERE  vt.uid IS NULL;
-        """.format(table_name)
-
-        unique_rows = pd.read_sql(query, self.postgres_engine)
-
-        # unique_rows.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
 
     def convert_to_sql(self, dataframe, table_name):
         dataframe.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
