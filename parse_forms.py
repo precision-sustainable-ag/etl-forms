@@ -180,7 +180,6 @@ class FormParser:
         if dataframe.empty:
             return
 
-        print(dataframe)
         dataframe.to_sql("temp_table", self.postgres_engine, if_exists="replace")
 
         # query = """\
@@ -198,8 +197,6 @@ class FormParser:
         """.format(table_name)
 
         unique_rows = pd.read_sql(query, self.postgres_engine)
-
-        print(unique_rows)
 
         # unique_rows.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
 
@@ -239,8 +236,6 @@ class FormParser:
 
             if uid not in self.invalid_parsed_form_tables[table_name]:
                 self.invalid_parsed_form_tables[table_name][int(uid)] = True
-
-        print(self.invalid_parsed_form_tables)
 
     def get_all_responses(self):
         mysql_host = os.environ.get('MYSQL_HOST')
@@ -416,9 +411,10 @@ class FormParser:
             table_name = table.get("table_name")
             row_uid = row_entry.get("uid")
 
-            if self.valid_parsed_form_tables.get(table_name).get(row_uid) or self.invalid_parsed_form_tables.get(table_name).get(row_uid):
-                continue
 
+            if self.valid_parsed_form_tables and self.invalid_parsed_form_tables and (self.valid_parsed_form_tables.get(table_name).get(row_uid) or self.invalid_parsed_form_tables.get(table_name).get(row_uid)):
+                continue
+            
             if table_name in self.asset_dataframes.get(asset_name):
                 valid_row_table_pairs = self.asset_dataframes.get(asset_name).get(table_name)
             else:
@@ -452,16 +448,14 @@ class FormParser:
             if table_list:
                 self.iterate_tables(table_list, asset_name, row_entry, form_version)
 
-        print(self.invalid_row_table_pairs)
-
         if self.mode == "test":
             print("saving to excel")
             self.save_all_to_excel()
         elif self.mode == "live":
             print("saving to sql")
             self.save_to_postgres()
-            print("saving to excel")
-            self.save_all_to_excel()
+            # print("saving to excel")
+            # self.save_all_to_excel()
 
 
 try:
