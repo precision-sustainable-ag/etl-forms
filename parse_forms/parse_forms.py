@@ -212,7 +212,8 @@ class FormParser:
 
         def convert_date(data):
             try:
-                return time.mktime(datetime.datetime.strptime(data, "%Y-%m-%d").timetuple())
+                # return time.mktime(datetime.datetime.strptime(data, "%Y-%m-%d").timetuple())
+                return datetime.datetime.strptime(data, "%Y-%m-%d")
             except Exception:
                 print("not a valid date")
                 return data
