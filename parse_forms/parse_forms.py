@@ -142,6 +142,7 @@ class FormParser:
 
     def close_con(self):
         self.postgres_con.close()
+        print("Closing connections")
 
     def save_all_to_excel(self):
         for key, value in self.asset_dataframes.items():
@@ -323,6 +324,7 @@ class FormParser:
     def parse_form(self, row_entry, form_version_key, table_name):
         entry = json.loads(row_entry.get("data"))
         
+        empty_form = True
         for kobo_row in form_version_key:
             new_row = {
                 "rawuid": row_entry.get("uid"),
@@ -350,10 +352,14 @@ class FormParser:
                 return False, error_message
 
             elif self.row_is_not_null(kobo_row, new_row):
-                    new_row["pushed_to_prod"] = 0
-                    self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
+                new_row["pushed_to_prod"] = 0
+                self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
+                empty_form = False
 
-        return True, "success"
+        if empty_form:
+            return False, "empty form"
+        else:
+            return True, "success"
 
     def iterate_tables(self, table_list, asset_name, row_entry, form_version):
         for table in table_list:
@@ -378,12 +384,14 @@ class FormParser:
                 valid_row, message = self.parse_form(row_entry, table_key, table.get("table_name"))
 
                 if valid_row:
+                    print("successfully parsed form uid {} for table {}".format(row_uid, table_name))
                     self.asset_dataframes.get(asset_name)[table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
                 else:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = message
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     row_entry.pop("err")
+                    print("could not parse form uid {} for table {}".format(row_uid, table_name))
 
     def parse_forms(self):
         self.get_valid_parsed_forms()
