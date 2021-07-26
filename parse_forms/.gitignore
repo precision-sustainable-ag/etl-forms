@@ -4,5 +4,6 @@
 python.db
 sqlite_dbs/**
 excel_dump/**
+logs/**
 .env
 *.pyc
