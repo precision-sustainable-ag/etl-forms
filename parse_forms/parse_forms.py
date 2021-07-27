@@ -103,7 +103,7 @@ class FormParser:
 
         functions = {
             "not_null": not_null,
-            "check_reqex": check_regex
+            "check_regex": check_regex
         }
 
         for test in tests:

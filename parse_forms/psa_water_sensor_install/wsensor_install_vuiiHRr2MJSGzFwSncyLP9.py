@@ -34,10 +34,6 @@ data = [
                 "datatype": "date",
             },
             {
-                "kobo_name": "code",
-                "db_names": ["time_end"],
-            },
-            {
                 "kobo_name": "Any_issues_to_report_about_your_sensors",
                 "db_names": ["notes"],
             },
@@ -59,6 +55,6 @@ data = [
             },
         ],
         "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
-        "all_cols": ["code", "subplot", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "time_end", "bare_lon", "bare_lat", "cover_lon", "cover_lat"]
+        "all_cols": ["code", "subplot", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "bare_lon", "bare_lat", "cover_lon", "cover_lat"]
     }
 ]
