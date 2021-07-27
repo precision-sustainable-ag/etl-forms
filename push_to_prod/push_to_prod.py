@@ -103,6 +103,7 @@ class ProductionPusher:
             )
 
             print(insert_query.as_string(self.local_con))
+            print(values_list)
 
             self.try_queries(update_query, insert_query, values_list, row_entry.get("sid"), raw_uid, prod_table_name)
 
@@ -143,8 +144,9 @@ class ProductionPusher:
                 ),
             )
 
-            print(update_prod_query.as_string(self.local_con))
             values_dict.update(unique_dict)
+            print(update_prod_query.as_string(self.local_con))
+            print(values_dict)
 
             update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
             update_local_query = sql.SQL(update_sql_string).format(
