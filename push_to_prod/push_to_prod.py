@@ -1,17 +1,9 @@
-import json
 import pandas as pd
-import re
-import sqlite3
 import sys
-import time
-import datetime
-import psycopg2
 from psycopg2 import sql
 import os
 from dotenv import load_dotenv
 import sqlalchemy
-import mysql.connector
-from pytz import timezone
 import traceback
 
 import tables.shadow_table_info
@@ -62,6 +54,105 @@ class ProductionPusher:
         self.shadow_con.close()
         self.local_con.close()
 
+    def try_queries(self, shadow_query, prod_query, prod_values, sid, raw_uid, prod_table_name):
+        try:
+            self.local_cur.execute(prod_query, prod_values)
+            if self.local_cur.rowcount == 0:
+                print("no rows affected")
+            self.local_con.commit()
+            self.shadow_cur.execute(shadow_query, [sid])
+            self.shadow_con.commit()
+            print("succsessfully pushed row {} for table {}".format(raw_uid, prod_table_name))
+        except psycopg2.errors.UniqueViolation:
+            print("could not push row {} for table {}, row already exists".format(raw_uid, prod_table_name))
+            print(traceback.print_exc(file=sys.stdout))
+            self.shadow_cur.execute(shadow_query, [sid])
+            self.shadow_con.commit()
+        except Exception:
+            print("could not push row {} for table {}, a different error occured".format(raw_uid, prod_table_name))
+            print(traceback.print_exc(file=sys.stdout))
+
+    def insert_row(self, values_from_table, all_rows, prod_table_name, table):
+        rows_list = []
+        for value in all_rows:
+            rows_list.append(sql.Identifier(value))
+
+        unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table), self.shadow_engine))
+
+        for index, row_entry in unpushed_rows.iterrows():
+            print("\n")
+            raw_uid = row_entry.get("rawuid")
+            values_list = []
+            for value in all_rows:
+                data = row_entry.get(value)
+                values_list.append(data)
+
+
+            insert_query = "INSERT INTO {table} ({fields}) VALUES ({values})"
+            insert_query = sql.SQL(insert_query).format(
+                table=sql.Identifier(prod_table_name),
+                fields=sql.SQL(',').join(rows_list),
+                values = sql.SQL(', ').join(sql.Placeholder() * len(values_list))
+            )
+
+            update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
+            update_query = sql.SQL(update_sql_string).format(
+                table=sql.Identifier(table),
+                sid = sql.Placeholder()
+            )
+
+            print(insert_query.as_string(self.local_con))
+
+            self.try_queries(update_query, insert_query, values_list, row_entry.get("sid"), raw_uid, prod_table_name)
+
+    def update_row(self, values_from_table, all_rows, prod_table_name, table, unique_cols):
+        rows_list = []
+        for value in values_from_table:
+            rows_list.append(sql.Identifier(value))
+
+        unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table), self.shadow_engine))
+
+        for index, row_entry in unpushed_rows.iterrows():
+            print("\n")
+            raw_uid = row_entry.get("rawuid")
+            values_dict = {}
+            for value in values_from_table:
+                data = row_entry.get(value)
+                values_dict[value] = data
+
+            unique_dict = {}
+            for value in unique_cols:
+                data = row_entry.get(value)
+                unique_dict[value] = data
+
+            obj = []
+            for i, (k, v) in enumerate(unique_dict.items()):
+                if i == len(unique_dict)-1:
+                    obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]))
+                else:
+                    obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k), sql.SQL(" AND ")]))                    
+
+            update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {id}").format(
+                table=sql.Identifier(prod_table_name),
+                values=sql.SQL(', ').join(
+                    sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]) for k in values_dict.keys()
+                ),
+                id=sql.SQL('').join(
+                    obj
+                ),
+            )
+
+            print(update_prod_query.as_string(self.local_con))
+            values_dict.update(unique_dict)
+
+            update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
+            update_local_query = sql.SQL(update_sql_string).format(
+                table=sql.Identifier(table),
+                sid = sql.Placeholder()
+            )
+
+            self.try_queries(update_local_query, update_prod_query, values_dict, row_entry.get("sid"), raw_uid, prod_table_name)
+
     def push_to_prod(self):
         for table, info in self.shadow_table_info.items():
             prod_table_name = table.split("__")[0]
@@ -70,118 +161,12 @@ class ProductionPusher:
             all_rows = info.get("all_rows")
             unique_cols = info.get("unique_cols")
             mode = info.get("mode")
-            unicity_constraint = info.get("unicity_constraint")
 
             if mode == "insert":
-                rows_list = []
-                for value in all_rows:
-                    rows_list.append(sql.Identifier(value))
-
-                unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table), self.shadow_engine))
-
-                for index, row_entry in unpushed_rows.iterrows():
-                    print("\n")
-                    raw_uid = row_entry.get("rawuid")
-                    values_list = []
-                    for value in all_rows:
-                        data = row_entry.get(value)
-                        values_list.append(data)
-
-
-                    insert_sql_string = "INSERT INTO {table} ({fields}) VALUES ({values})"
-                    insert_query = sql.SQL(insert_sql_string).format(
-                        table=sql.Identifier(prod_table_name),
-                        fields=sql.SQL(',').join(rows_list),
-                        values = sql.SQL(', ').join(sql.Placeholder() * len(values_list))
-                    )
-
-                    update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
-                    update_query = sql.SQL(update_sql_string).format(
-                        table=sql.Identifier(table),
-                        sid = sql.Placeholder()
-                    )
-
-                    print(insert_query.as_string(self.local_con))
-
-                    try:
-                        self.local_cur.execute(insert_query, values_list)
-                        if self.local_cur.rowcount == 0:
-                            print("no rows affected")
-                        self.local_con.commit()
-                        self.shadow_cur.execute(update_query, [row_entry.get("sid")])
-                        self.shadow_con.commit()
-                        print("succsessfully pushed row {} for table {}".format(raw_uid, prod_table_name))
-                    except psycopg2.errors.UniqueViolation:
-                        print("could not push row {} for table {}, row already exists".format(raw_uid, prod_table_name))
-                        print(traceback.print_exc(file=sys.stdout))
-                        self.shadow_cur.execute(update_query, [row_entry.get("sid")])
-                        self.shadow_con.commit()
-                    except Exception:
-                        print("could not push row {} for table {}, a different error occured".format(raw_uid, prod_table_name))
-                        print(traceback.print_exc(file=sys.stdout))
+                self.insert_row(values_from_table, all_rows, prod_table_name, table)
 
             elif mode == "update":
-                rows_list = []
-                for value in values_from_table:
-                    rows_list.append(sql.Identifier(value))
-
-                unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table), self.shadow_engine))
-
-                for index, row_entry in unpushed_rows.iterrows():
-                    print("\n")
-                    raw_uid = row_entry.get("rawuid")
-                    values_dict = {}
-                    for value in values_from_table:
-                        data = row_entry.get(value)
-                        values_dict[value] = data
-
-                    unique_dict = {}
-                    for value in unique_cols:
-                        data = row_entry.get(value)
-                        unique_dict[value] = data
-
-                    obj = []
-                    for i, (k, v) in enumerate(unique_dict.items()):
-                        if i == len(unique_dict)-1:
-                            obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]))
-                        else:
-                            obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k), sql.SQL(" AND ")]))                    
-
-                    update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {id}").format(
-                        table=sql.Identifier(prod_table_name),
-                        values=sql.SQL(', ').join(
-                            sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]) for k in values_dict.keys()
-                        ),
-                        id=sql.SQL('').join(
-                            obj
-                        ),
-                    )
-
-                    print(update_prod_query.as_string(self.local_con))
-                    values_dict.update(unique_dict)
-
-                    update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
-                    update_local_query = sql.SQL(update_sql_string).format(
-                        table=sql.Identifier(table),
-                        sid = sql.Placeholder()
-                    )
-
-                    try:
-                        self.local_cur.execute(update_prod_query, values_dict)
-                        if self.local_cur.rowcount == 0:
-                            print("no rows affected")
-                        self.local_con.commit()
-                        self.shadow_cur.execute(update_local_query, [row_entry.get("sid")])
-                        self.shadow_con.commit()
-                        print("succsessfully pushed row {} for table {}".format(raw_uid, prod_table_name))
-                    except psycopg2.errors.UniqueViolation:
-                        print("could not push row {} for table {}, row already exists".format(raw_uid, prod_table_name))
-                        print(traceback.print_exc(file=sys.stdout))
-                        self.shadow_cur.execute(update_local_query, [row_entry.get("sid")])
-                        self.shadow_con.commit()
-                    except Exception:
-                        print("could not push row {} for table {}, another error occured".format(raw_uid, prod_table_name))
-                        print(traceback.print_exc(file=sys.stdout))
+                self.update_row(values_from_table, all_rows, prod_table_name, table, unique_cols)
 
 pp = ProductionPusher()
 pp.push_to_prod()
