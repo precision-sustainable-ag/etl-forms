@@ -1,11 +1,11 @@
-#run and log parse_forms.py
+# run and log parse_forms.py
 Set-Location C:\Users\mikah\Documents\etl-forms
 git checkout master 
 git pull > logs\tempfile.txt
 python parse_forms\parse_forms.py >> logs\tempfile.txt
 Write-Output "`n" >> logs\tempfile.txt
 
-#run and log push_to_prod.py
+# run and log push_to_prod.py
 python push_to_prod\push_to_prod.py >> logs\tempfile.txt
 Write-Output "`n" >> logs\tempfile.txt
 Get-Content logs\logs.txt >> logs\tempfile.txt
