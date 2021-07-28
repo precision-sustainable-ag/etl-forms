@@ -6,7 +6,7 @@ data = [
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
-                "tests": ["check_reqex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
+                "tests": ["check_regex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -33,7 +33,7 @@ data = [
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
-                "tests": ["check_reqex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
+                "tests": ["check_regex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -59,7 +59,7 @@ data = [
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
-                "tests": ["check_reqex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
+                "tests": ["check_regex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -85,7 +85,7 @@ data = [
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
-                "tests": ["check_reqex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
+                "tests": ["check_regex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -111,7 +111,7 @@ data = [
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
-                "tests": ["check_reqex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
+                "tests": ["check_regex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -137,7 +137,7 @@ data = [
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
-                "tests": ["check_reqex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
+                "tests": ["check_regex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -163,7 +163,7 @@ data = [
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
-                "tests": ["check_reqex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
+                "tests": ["check_regex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -189,7 +189,7 @@ data = [
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0,1,2,3],
-                "tests": ["check_reqex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
+                "tests": ["check_regex ^[A-Z0-9]{3}-[12]-[AB]-[0-5]$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {

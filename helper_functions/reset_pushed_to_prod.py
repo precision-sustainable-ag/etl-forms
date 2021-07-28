@@ -54,19 +54,18 @@ class Resetter:
         for table in self.tables:
             unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {}".format(table), self.shadow_engine))
 
-            for index, row_entry in unpushed_rows.iterrows():
-                update_sql_string = "UPDATE {table} SET pushed_to_prod = 0 WHERE sid = {sid}"
-                update_query = sql.SQL(update_sql_string).format(
-                    table=sql.Identifier(table),
-                    sid = sql.Placeholder()
-                )
+            # for index, row_entry in unpushed_rows.iterrows():
+            update_sql_string = "UPDATE {table} SET pushed_to_prod = 0"
+            update_query = sql.SQL(update_sql_string).format(
+                table=sql.Identifier(table),
+            )
 
-                try:
-                    self.shadow_cur.execute(update_query, [row_entry.get("sid")])
-                    self.shadow_con.commit()
-                except Exception:
-                    print("error")
-                    print(traceback.print_exc(file=sys.stdout))
+            try:
+                self.shadow_cur.execute(update_query)
+                self.shadow_con.commit()
+            except Exception:
+                print("error")
+                print(traceback.print_exc(file=sys.stdout))
 
 r = Resetter()
 r.push_to_prod()

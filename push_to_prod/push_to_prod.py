@@ -55,30 +55,47 @@ class ProductionPusher:
         self.shadow_con.close()
         self.local_con.close()
 
-    def try_queries(self, shadow_query, prod_query, prod_values, sid, raw_uid, prod_table_name):
+    def update_failed_rows(self, table_name, failing_sid, rawuid):
+        insert_query = "INSERT INTO not_pushed_to_prod (table_name, failing_sid, rawuid) VALUES ({values})"
+        insert_query = sql.SQL(insert_query).format(
+            values = sql.SQL(', ').join(sql.Placeholder() * 3)
+        )
+
+        try:
+            self.shadow_cur.execute(insert_query, [table_name, failing_sid, rawuid])
+            self.shadow_con.commit()
+        except Exception:
+            print("could not insert into not_pushed_to_prod")
+            print(traceback.print_exc(file=sys.stdout))
+
+    def try_queries(self, shadow_query, prod_query, prod_values, sid, raw_uid, prod_table_name, table_name):
+        #insert into %{} values (%{})
         try:
             self.local_cur.execute(prod_query, prod_values)
             if self.local_cur.rowcount == 0:
                 print("no rows affected")
+                # store into table
+                self.update_failed_rows(table_name, sid, raw_uid)
+                raise Exception("no rows affected")
             self.local_con.commit()
             self.shadow_cur.execute(shadow_query, [sid])
             self.shadow_con.commit()
-            print("succsessfully pushed row {} for table {}".format(raw_uid, prod_table_name))
+            print("successfully pushed row {} for table {}".format(raw_uid, prod_table_name))
         except psycopg2.errors.UniqueViolation:
             print("could not push row {} for table {}, row already exists".format(raw_uid, prod_table_name))
             print(traceback.print_exc(file=sys.stdout))
             self.shadow_cur.execute(shadow_query, [sid])
             self.shadow_con.commit()
         except Exception:
-            print("could not push row {} for table {}, a different error occured".format(raw_uid, prod_table_name))
+            print("could not push row {} for table {}, a different error occurred".format(raw_uid, prod_table_name))
             print(traceback.print_exc(file=sys.stdout))
 
-    def insert_row(self, values_from_table, all_rows, prod_table_name, table):
+    def insert_row(self, values_from_table, all_rows, prod_table_name, table_name):
         rows_list = []
         for value in all_rows:
             rows_list.append(sql.Identifier(value))
 
-        unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table), self.shadow_engine))
+        unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
 
         for index, row_entry in unpushed_rows.iterrows():
             print("\n")
@@ -98,21 +115,21 @@ class ProductionPusher:
 
             update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
             update_query = sql.SQL(update_sql_string).format(
-                table=sql.Identifier(table),
+                table=sql.Identifier(table_name),
                 sid = sql.Placeholder()
             )
 
             print(insert_query.as_string(self.local_con))
             print(values_list)
 
-            self.try_queries(update_query, insert_query, values_list, row_entry.get("sid"), raw_uid, prod_table_name)
+            self.try_queries(update_query, insert_query, values_list, row_entry.get("sid"), raw_uid, prod_table_name, table_name)
 
-    def update_row(self, values_from_table, all_rows, prod_table_name, table, unique_cols):
+    def update_row(self, values_from_table, all_rows, prod_table_name, table_name, unique_cols):
         rows_list = []
         for value in values_from_table:
             rows_list.append(sql.Identifier(value))
 
-        unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table), self.shadow_engine))
+        unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
 
         for index, row_entry in unpushed_rows.iterrows():
             print("\n")
@@ -132,15 +149,25 @@ class ProductionPusher:
                 if i == len(unique_dict)-1:
                     obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]))
                 else:
-                    obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k), sql.SQL(" AND ")]))                    
+                    obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k), sql.SQL(" AND ")]))   
 
-            update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {id}").format(
+            values_obj = []
+            for i, (k, v) in enumerate(values_dict.items()):
+                if i == len(values_dict)-1:
+                    values_obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" IS NULL ")]))
+                else:
+                    values_obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" IS NULL "), sql.SQL("AND ")]))      
+
+            update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {identifiers} AND {is_null_vals}").format(
                 table=sql.Identifier(prod_table_name),
                 values=sql.SQL(', ').join(
                     sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]) for k in values_dict.keys()
                 ),
-                id=sql.SQL('').join(
+                identifiers=sql.SQL('').join(
                     obj
+                ),
+                is_null_vals=sql.SQL('').join(
+                    values_obj
                 ),
             )
 
@@ -150,15 +177,15 @@ class ProductionPusher:
 
             update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
             update_local_query = sql.SQL(update_sql_string).format(
-                table=sql.Identifier(table),
+                table=sql.Identifier(table_name),
                 sid = sql.Placeholder()
             )
 
-            self.try_queries(update_local_query, update_prod_query, values_dict, row_entry.get("sid"), raw_uid, prod_table_name)
+            self.try_queries(update_local_query, update_prod_query, values_dict, row_entry.get("sid"), raw_uid, prod_table_name, table_name)
 
     def push_to_prod(self):
-        for table, info in self.shadow_table_info.items():
-            prod_table_name = table.split("__")[0]
+        for table_name, info in self.shadow_table_info.items():
+            prod_table_name = table_name.split("__")[0]
 
             values_from_table = info.get("values_from_table")
             all_rows = info.get("all_rows")
@@ -166,10 +193,10 @@ class ProductionPusher:
             mode = info.get("mode")
 
             if mode == "insert":
-                self.insert_row(values_from_table, all_rows, prod_table_name, table)
+                self.insert_row(values_from_table, all_rows, prod_table_name, table_name)
 
             elif mode == "update":
-                self.update_row(values_from_table, all_rows, prod_table_name, table, unique_cols)
+                self.update_row(values_from_table, all_rows, prod_table_name, table_name, unique_cols)
 
 pp = ProductionPusher()
 pp.push_to_prod()

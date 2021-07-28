@@ -174,20 +174,25 @@ class FormParser:
                     if uid[0] not in self.valid_parsed_form_tables[key_2]:
                         self.valid_parsed_form_tables[key_2][uid[0]] = True
 
+        print(self.valid_parsed_form_tables)
+
     def get_invalid_parsed_forms(self):
         query = "SELECT * FROM invalid_row_table_pairs"
 
         self.postgres_cur.execute(query)
         
         for row in self.postgres_cur.fetchall():
+            # print(row)
             table_name = row[5]
-            uid = row[7]
+            uid = row[8]
 
             if table_name not in self.invalid_parsed_form_tables:
                 self.invalid_parsed_form_tables[table_name] = {}
 
             if uid not in self.invalid_parsed_form_tables[table_name]:
                 self.invalid_parsed_form_tables[table_name][int(uid)] = True
+
+        print(self.invalid_parsed_form_tables)
 
     def get_all_responses(self):
         mysql_host = os.environ.get('MYSQL_HOST')
@@ -328,7 +333,7 @@ class FormParser:
         for kobo_row in form_version_key:
             new_row = {
                 "rawuid": row_entry.get("uid"),
-                "parsed_at": time.time()
+                "parsed_at": datetime.datetime.now()
             }
             
             if kobo_row.get("extra_cols"):
@@ -341,7 +346,7 @@ class FormParser:
                 row_is_valid = self.validate_row(kobo_row, new_row)
                 
                 if not row_is_valid:
-                    error_message = str(kobo_row.get("completeness_cols")) + " failed completeness cols for table " + table_name + " row data = " + json.dumps(new_row)
+                    error_message = str(kobo_row.get("completeness_cols")) + " failed completeness cols for table " + table_name #+ " row data = " + json.dumps(new_row)
 
             active_farm, farm_message = self.assert_active(new_row, entry)
 
@@ -370,7 +375,9 @@ class FormParser:
             row_uid = row_entry.get("uid")
 
 
-            if self.valid_parsed_form_tables and self.invalid_parsed_form_tables and (self.valid_parsed_form_tables.get(table_name).get(row_uid) or self.invalid_parsed_form_tables.get(table_name).get(row_uid)):
+            if self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name).get(row_uid):
+                continue
+            if self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name).get(row_uid):
                 continue
             
             if table_name in self.asset_dataframes.get(asset_name):
@@ -428,5 +435,5 @@ try:
     fp.close_con()
 
 except Exception:
-    print("an error occured \n")
+    print("an error ocurred \n")
     print(traceback.print_exc(file=sys.stdout))
