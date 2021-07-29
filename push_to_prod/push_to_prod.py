@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 import sqlalchemy
 import traceback
+import logging
 
 import tables.shadow_table_info
 
@@ -14,6 +15,7 @@ class ProductionPusher:
         load_dotenv()
         self.connect_to_postgres_shadow()
         self.connect_to_postgres_local()
+        self.create_loggers()
         print("connected to dbs")
 
         self.shadow_table_info = tables.shadow_table_info.info
@@ -55,6 +57,24 @@ class ProductionPusher:
         self.shadow_con.close()
         self.local_con.close()
 
+    def setup_logger(self, name, log_file, level=logging.INFO):
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        handler = logging.FileHandler(log_file)        
+        handler.setFormatter(formatter)
+
+        logger = logging.getLogger(name)
+        logger.setLevel(level)
+        logger.addHandler(handler)
+
+        return logger
+    
+    def create_loggers(self):
+        self.successful_logger = self.setup_logger('successful_logger', './logs/successful.log')
+        self.failed_unicity_constraint_logger = self.setup_logger('failed_unicity_constraint_logger', './logs/failed_unicity_constraint.log')
+        self.no_rows_affected_logger = self.setup_logger('no_rows_affected_logger', './logs/no_rows_affected.log')
+        self.not_inserted_into_not_pushed_to_prod = self.setup_logger('not_inserted_into_not_pushed_to_prod', './logs/not_inserted_into_not_pushed_to_prod.log')
+        self.general_error_logger = self.setup_logger('general_error_logger', './logs/general_error.log')
+
     def update_failed_rows(self, table_name, failing_sid, rawuid):
         insert_query = "INSERT INTO not_pushed_to_prod (table_name, failing_sid, rawuid) VALUES ({values})"
         insert_query = sql.SQL(insert_query).format(
@@ -65,30 +85,26 @@ class ProductionPusher:
             self.shadow_cur.execute(insert_query, [table_name, failing_sid, rawuid])
             self.shadow_con.commit()
         except Exception:
-            print("could not insert into not_pushed_to_prod")
-            print(traceback.print_exc(file=sys.stdout))
+            self.not_inserted_into_not_pushed_to_prod.error(table_name + "\n" + str(failing_sid) + "\n" + str(rawuid) + "\n")
 
     def try_queries(self, shadow_query, prod_query, prod_values, sid, raw_uid, prod_table_name, table_name):
-        #insert into %{} values (%{})
         try:
             self.local_cur.execute(prod_query, prod_values)
             if self.local_cur.rowcount == 0:
-                print("no rows affected")
-                # store into table
+                self.no_rows_affected_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
                 self.update_failed_rows(table_name, sid, raw_uid)
-                raise Exception("no rows affected")
+                return
             self.local_con.commit()
             self.shadow_cur.execute(shadow_query, [sid])
             self.shadow_con.commit()
-            print("successfully pushed row {} for table {}".format(raw_uid, prod_table_name))
+            self.successful_logger.info("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
         except psycopg2.errors.UniqueViolation:
-            print("could not push row {} for table {}, row already exists".format(raw_uid, prod_table_name))
-            print(traceback.print_exc(file=sys.stdout))
+            self.failed_unicity_constraint_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
             self.shadow_cur.execute(shadow_query, [sid])
             self.shadow_con.commit()
         except Exception:
-            print("could not push row {} for table {}, a different error occurred".format(raw_uid, prod_table_name))
-            print(traceback.print_exc(file=sys.stdout))
+            self.general_error_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
+            self.general_error_logger.error(str(traceback.print_exc(file=sys.stdout)) + "\n")
 
     def insert_row(self, values_from_table, all_rows, prod_table_name, table_name):
         rows_list = []
@@ -98,7 +114,6 @@ class ProductionPusher:
         unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
 
         for index, row_entry in unpushed_rows.iterrows():
-            print("\n")
             raw_uid = row_entry.get("rawuid")
             values_list = []
             for value in all_rows:
@@ -119,10 +134,39 @@ class ProductionPusher:
                 sid = sql.Placeholder()
             )
 
-            print(insert_query.as_string(self.local_con))
-            print(values_list)
-
             self.try_queries(update_query, insert_query, values_list, row_entry.get("sid"), raw_uid, prod_table_name, table_name)
+
+    def generate_update_prod_sql(self, values_dict, unique_dict, prod_table_name):
+        identifiers_list = []
+        # creates list of sql statements (var1 = %{} AND var2 = ${} ...etc)
+        for i, (k, v) in enumerate(unique_dict.items()):
+            if i == len(unique_dict)-1:
+                identifiers_list.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]))
+            else:
+                identifiers_list.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k), sql.SQL(" AND ")])) 
+
+        null_vals_list = []
+        # creates list of sql statements (var1 IS NULL AND var2 IS NULL ...etc)
+        for i, (k, v) in enumerate(values_dict.items()):
+            if i == len(values_dict)-1:
+                null_vals_list.append(sql.Composed([sql.Identifier(k), sql.SQL(" IS NULL ")]))
+            else:
+                null_vals_list.append(sql.Composed([sql.Identifier(k), sql.SQL(" IS NULL "), sql.SQL("AND ")]))      
+
+        update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {identifiers} AND {is_null_vals}").format(
+            table=sql.Identifier(prod_table_name),
+            values=sql.SQL(', ').join(
+                sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]) for k in values_dict.keys()
+            ),
+            identifiers=sql.SQL('').join(
+                identifiers_list
+            ),
+            is_null_vals=sql.SQL('').join(
+                null_vals_list
+            ),
+        )
+
+        return update_prod_query
 
     def update_row(self, values_from_table, all_rows, prod_table_name, table_name, unique_cols):
         rows_list = []
@@ -132,7 +176,7 @@ class ProductionPusher:
         unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
 
         for index, row_entry in unpushed_rows.iterrows():
-            print("\n")
+            # print("\n")
             raw_uid = row_entry.get("rawuid")
             values_dict = {}
             for value in values_from_table:
@@ -144,42 +188,15 @@ class ProductionPusher:
                 data = row_entry.get(value)
                 unique_dict[value] = data
 
-            obj = []
-            for i, (k, v) in enumerate(unique_dict.items()):
-                if i == len(unique_dict)-1:
-                    obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]))
-                else:
-                    obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k), sql.SQL(" AND ")]))   
-
-            values_obj = []
-            for i, (k, v) in enumerate(values_dict.items()):
-                if i == len(values_dict)-1:
-                    values_obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" IS NULL ")]))
-                else:
-                    values_obj.append(sql.Composed([sql.Identifier(k), sql.SQL(" IS NULL "), sql.SQL("AND ")]))      
-
-            update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {identifiers} AND {is_null_vals}").format(
-                table=sql.Identifier(prod_table_name),
-                values=sql.SQL(', ').join(
-                    sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]) for k in values_dict.keys()
-                ),
-                identifiers=sql.SQL('').join(
-                    obj
-                ),
-                is_null_vals=sql.SQL('').join(
-                    values_obj
-                ),
-            )
-
-            values_dict.update(unique_dict)
-            print(update_prod_query.as_string(self.local_con))
-            print(values_dict)
+            update_prod_query = self.generate_update_prod_sql(values_dict, unique_dict, prod_table_name)
 
             update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
             update_local_query = sql.SQL(update_sql_string).format(
                 table=sql.Identifier(table_name),
                 sid = sql.Placeholder()
             )
+
+            values_dict.update(unique_dict)
 
             self.try_queries(update_local_query, update_prod_query, values_dict, row_entry.get("sid"), raw_uid, prod_table_name, table_name)
 

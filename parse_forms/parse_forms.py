@@ -12,6 +12,7 @@ import sqlalchemy
 import mysql.connector
 from pytz import timezone
 import traceback
+import logging
 
 import assets.asset_dataframes
 import assets.asset_names
@@ -21,6 +22,7 @@ class FormParser:
     def __init__(self, mode):
         load_dotenv()
         self.connect_to_postgres()
+        self.create_loggers()
 
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')
@@ -61,6 +63,21 @@ class FormParser:
         self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
 
         print("Connections established")
+
+    def setup_logger(self, name, log_file, level=logging.INFO):
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        handler = logging.FileHandler(log_file)        
+        handler.setFormatter(formatter)
+
+        logger = logging.getLogger(name)
+        logger.setLevel(level)
+        logger.addHandler(handler)
+
+        return logger
+    
+    def create_loggers(self):
+        self.successful_parse_logger = self.setup_logger('successful_parse_logger', './logs/successful_parse.log')
+        self.unsuccessful_parse_logger = self.setup_logger('unsuccessful_parse_logger', './logs/unsuccessful_parse.log')
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -174,7 +191,7 @@ class FormParser:
                     if uid[0] not in self.valid_parsed_form_tables[key_2]:
                         self.valid_parsed_form_tables[key_2][uid[0]] = True
 
-        print(self.valid_parsed_form_tables)
+        # print(self.valid_parsed_form_tables)
 
     def get_invalid_parsed_forms(self):
         query = "SELECT * FROM invalid_row_table_pairs"
@@ -192,7 +209,7 @@ class FormParser:
             if uid not in self.invalid_parsed_form_tables[table_name]:
                 self.invalid_parsed_form_tables[table_name][int(uid)] = True
 
-        print(self.invalid_parsed_form_tables)
+        # print(self.invalid_parsed_form_tables)
 
     def get_all_responses(self):
         mysql_host = os.environ.get('MYSQL_HOST')
@@ -391,14 +408,14 @@ class FormParser:
                 valid_row, message = self.parse_form(row_entry, table_key, table.get("table_name"))
 
                 if valid_row:
-                    print("successfully parsed form uid {} for table {}".format(row_uid, table_name))
+                    self.successful_parse_logger.info("successfully parsed form uid {} for table {}".format(row_uid, table_name))
                     self.asset_dataframes.get(asset_name)[table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
                 else:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = message
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     row_entry.pop("err")
-                    print("could not parse form uid {} for table {}".format(row_uid, table_name))
+                    self.unsuccessful_parse_logger.error("could not parse form uid {} for table {}".format(row_uid, table_name))
 
     def parse_forms(self):
         self.get_valid_parsed_forms()
