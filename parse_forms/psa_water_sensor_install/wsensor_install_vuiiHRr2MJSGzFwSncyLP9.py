@@ -43,13 +43,13 @@ data = [
             },
             {
                 "kobo_name": "What_is_the_GPS_loca_on_of_your_bare_node",
-                "db_names": ["bare_lon", "bare_lat"],
+                "db_names": ["bare_lat", "bare_lon"],
                 "separator": " ",
                 "indices": [0,1],      
             },
             {
                 "kobo_name": "What_is_the_GPS_loca_your_cover_crop_node",
-                "db_names": ["cover_lon", "cover_lat"],
+                "db_names": ["cover_lat", "cover_lon"],
                 "separator": " ",
                 "indices": [0,1],      
             },
