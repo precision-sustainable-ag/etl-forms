@@ -6,6 +6,7 @@ import sys
 import time
 import datetime
 import psycopg2
+from psycopg2 import sql
 import os
 from dotenv import load_dotenv
 import sqlalchemy
@@ -22,6 +23,7 @@ class FormParser:
     def __init__(self, mode):
         load_dotenv()
         self.connect_to_postgres()
+        self.connect_to_mysql()
         self.create_loggers()
 
         date_utc = datetime.datetime.now()
@@ -63,6 +65,16 @@ class FormParser:
         self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
 
         print("Connections established")
+
+    def connect_to_mysql(self):
+        mysql_host = os.environ.get('MYSQL_HOST')
+        mysql_dbname = os.environ.get('MYSQL_DBNAME')
+        mysql_user = os.environ.get('MYSQL_USER')
+        mysql_password = os.environ.get('MYSQL_PASSWORD')
+        
+        # Make mysql connections
+        mysql_engine_string = "mysql://{0}:{1}@{2}/{3}".format(mysql_user, mysql_password, mysql_host, mysql_dbname)
+        self.mysql_engine = sqlalchemy.create_engine(mysql_engine_string)
 
     def setup_logger(self, name, log_file, level=logging.INFO):
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -172,6 +184,21 @@ class FormParser:
     def convert_to_sql(self, dataframe, table_name):
         dataframe.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
 
+    def delete_from_table(self, table_name, uid):
+        print(table_name, uid)
+        delete_query = "DELETE FROM {table_name} WHERE rawuid = {uid}"
+        delete_query = sql.SQL(delete_query).format(
+            table_name = sql.Identifier(table_name),
+            uid = sql.Placeholder()
+        )
+
+        try:
+            self.postgres_cur.execute(delete_query, [uid])
+            self.postgres_con.commit()
+        except Exception:
+            print("error")
+            print(traceback.print_exc(file=sys.stdout))
+
     def save_to_postgres(self):
         for key, value in self.asset_dataframes.items():
             for key_2, value_2 in value.items():
@@ -212,16 +239,7 @@ class FormParser:
         # print(self.invalid_parsed_form_tables)
 
     def get_all_responses(self):
-        mysql_host = os.environ.get('MYSQL_HOST')
-        mysql_dbname = os.environ.get('MYSQL_DBNAME')
-        mysql_user = os.environ.get('MYSQL_USER')
-        mysql_password = os.environ.get('MYSQL_PASSWORD')
-        
-        # Make mysql connections
-        mysql_engine_string = "mysql://{0}:{1}@{2}/{3}".format(mysql_user, mysql_password, mysql_host, mysql_dbname)
-        mysql_engine = sqlalchemy.create_engine(mysql_engine_string)
-
-        self.data = pd.read_sql("SELECT * FROM kobo", mysql_engine)
+        self.data = pd.read_sql("SELECT * FROM kobo", self.mysql_engine)
     
     def cast_data(self, data, datatype):
         if not data:
@@ -383,7 +401,7 @@ class FormParser:
         else:
             return True, "success"
 
-    def iterate_tables(self, table_list, asset_name, row_entry, form_version):
+    def iterate_tables(self, table_list, asset_name, row_entry, form_version, not_reparse = True):
         for table in table_list:
             self.temp_valid_rows = pd.DataFrame()
             valid_row_table_pairs = None
@@ -392,9 +410,9 @@ class FormParser:
             row_uid = row_entry.get("uid")
 
 
-            if self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name).get(row_uid):
+            if not_reparse and self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name).get(row_uid):
                 continue
-            if self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name).get(row_uid):
+            if not_reparse and self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name).get(row_uid):
                 continue
             
             if table_name in self.asset_dataframes.get(asset_name):
@@ -403,6 +421,8 @@ class FormParser:
                 continue
 
             table_key = table.get("table_keys").get(form_version)
+
+            
 
             if table_key:
                 valid_row, message = self.parse_form(row_entry, table_key, table.get("table_name"))
@@ -416,6 +436,33 @@ class FormParser:
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     row_entry.pop("err")
                     self.unsuccessful_parse_logger.error("could not parse form uid {} for table {}".format(row_uid, table_name))
+
+    def update_table(self, dataframe, table_name, uid):
+        self.delete_from_table(table_name, uid)
+        self.convert_to_sql(dataframe, table_name)
+
+    def update_reparsed_rows(self, asset_name, uid):
+        print(self.invalid_row_table_pairs)
+
+        for key, value in self.asset_dataframes.get(asset_name).items():
+            # print(value)
+            self.update_table(value, key, uid)
+    
+    def reparse_form(self, uid):
+        row_entry = pd.read_sql("SELECT * FROM kobo WHERE uid = {}".format(uid), self.mysql_engine).iloc[0]
+        # print(type(row_entry))
+        # print(row_entry.get("data"))
+        asset_name = row_entry.get("asset_name")
+        entry = json.loads(row_entry.get("data"))
+        form_version = entry.get("__version__")
+
+        table_list = self.asset_names.get(asset_name)
+
+        if table_list:
+            self.iterate_tables(table_list, asset_name, row_entry, form_version, False)
+
+        self.update_reparsed_rows(asset_name, uid)
+        
 
     def parse_forms(self):
         self.get_valid_parsed_forms()
@@ -444,11 +491,18 @@ class FormParser:
 
 try:
     mode = None
+    uid = None
     if len(sys.argv) > 1:
         mode = sys.argv[1]  
+        if len(sys.argv) > 2:
+            uid = sys.argv[2]
 
     fp = FormParser(mode)
-    fp.parse_forms()
+    if mode == "test" or mode == "live" or mode == None:
+        fp.parse_forms()
+    elif mode == "reparse":
+        fp.reparse_form(uid)
+
     fp.close_con()
 
 except Exception:
