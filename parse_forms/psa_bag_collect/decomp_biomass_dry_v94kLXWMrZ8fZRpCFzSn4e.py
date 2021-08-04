@@ -13,6 +13,7 @@ data = [
                 "kobo_name": "decomp_bag_collect_date",
                 "db_names": ["recovery_date"],
                 "datatype": "date",
+                "tests": ["not_null"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -23,9 +24,9 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "recovery_date"],   
+        "completeness_cols": ["code", "subplot", "subsample", "time"],   
         # {'code': 'SRT', 'subplot': '2', 'subsample': 'A', 'time': '0', 'empty_bag_wt': '146.92', 'notes': None, 'submitted_by': 'al_psa'} 
-        "all_cols": ["code", "subplot", "subsample", "time", "recovery_date"]
+        "all_cols": ["code", "subplot", "subsample", "time"]
     },
     {
         "cols_from_form": [
@@ -41,6 +42,7 @@ data = [
                 "kobo_name": "decomp_bag_collect_date",
                 "db_names": ["recovery_date"],
                 "datatype": "date",
+                "tests": ["not_null"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -51,8 +53,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "recovery_date"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "recovery_date"]
+        "completeness_cols": ["code", "subplot", "subsample", "time"],    
+        "all_cols": ["code", "subplot", "subsample", "time"]
     },
     {
         "cols_from_form": [
@@ -68,6 +70,7 @@ data = [
                 "kobo_name": "decomp_bag_collect_date",
                 "db_names": ["recovery_date"],
                 "datatype": "date",
+                "tests": ["not_null"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -78,8 +81,8 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "recovery_date"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "recovery_date"]
+        "completeness_cols": ["code", "subplot", "subsample", "time"],    
+        "all_cols": ["code", "subplot", "subsample", "time"]
     },
     {
         "cols_from_form": [
@@ -95,6 +98,7 @@ data = [
                 "kobo_name": "decomp_bag_collect_date",
                 "db_names": ["recovery_date"],
                 "datatype": "date",
+                "tests": ["not_null"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
@@ -105,7 +109,7 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],
-        "completeness_cols": ["code", "subplot", "subsample", "time", "recovery_date"],    
-        "all_cols": ["code", "subplot", "subsample", "time", "recovery_date"]
+        "completeness_cols": ["code", "subplot", "subsample", "time"],    
+        "all_cols": ["code", "subplot", "subsample", "time"]
     },
 ]
