@@ -10,14 +10,17 @@ data = [
             {
                 "kobo_name": "barcode_gateway",
                 "db_names": ["gateway_serial_no"],
+                "tests": ["not_null", "check_regex ^210[0-9]{5}$"],
             },
             {
                 "kobo_name": "group_uv9yg82/bare_node_rep1",
                 "db_names": ["bare_node_serial_no"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
             },
             {
                 "kobo_name": "group_uv9yg82/cover_crop_node_rep1",
                 "db_names": ["cover_node_serial_no"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
             },
             {
                 "kobo_name": "farm_info_group/date_install",
@@ -48,7 +51,7 @@ data = [
         "extra_cols": [
             {"name": "subplot", "value": 1}
         ],
-        "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
+        # "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
         "all_cols": ["code", "subplot", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "bare_lon", "bare_lat", "cover_lon", "cover_lat"]
     },
     {
@@ -70,14 +73,17 @@ data = [
             {
                 "kobo_name": "barcode_gateway",
                 "db_names": ["gateway_serial_no"],
+                "tests": ["not_null", "check_regex ^210[0-9]{5}$"],
             },
             {
                 "kobo_name": "group_uv9yg82/bare_node_rep2",
                 "db_names": ["bare_node_serial_no"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
             },
             {
                 "kobo_name": "group_uv9yg82/cover_crop_node_rep2",
                 "db_names": ["cover_node_serial_no"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
             },
             {
                 "kobo_name": "farm_info_group/date_install",
@@ -108,7 +114,7 @@ data = [
         "extra_cols": [
             {"name": "subplot", "value": 2}
         ],
-        "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
+        # "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
         "all_cols": ["code", "subplot", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "bare_lon", "bare_lat", "cover_lon", "cover_lat"]
     },
 ]

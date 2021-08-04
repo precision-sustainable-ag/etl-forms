@@ -18,15 +18,17 @@ data = [
             {
                 "kobo_name": "Scan_the_barcode_on_side_of_your_Gateway",
                 "db_names": ["gateway_serial_no"],
-                "tests": ["not_null"]
+                "tests": ["not_null", "check_regex ^210[0-9]{5}$"],
             },
             {
                 "kobo_name": "Scan_your_bare_node",
                 "db_names": ["bare_node_serial_no"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
             },
             {
                 "kobo_name": "Scan_your_cover_crop_node",
                 "db_names": ["cover_node_serial_no"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
             },
             {
                 "kobo_name": "What_day_did_you_install_the_sensors",
@@ -54,7 +56,7 @@ data = [
                 "indices": [0,1],      
             },
         ],
-        "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
+        # "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
         "all_cols": ["code", "subplot", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "bare_lon", "bare_lat", "cover_lon", "cover_lat"]
     }
 ]
