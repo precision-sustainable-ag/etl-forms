@@ -323,13 +323,22 @@ class FormParser:
         farm_code = new_row.get("code")
         end = entry.get("end")
         year = ""
+        month = ""
         if end:
-            year = end.split("-")[0]
+            date = end.split("-")
+            year = date[0]
+            month = date[1]
         
         if not farm_code:
             return True, message
 
         active_farms_for_year = self.active_farm_codes.get(year)
+        if int(month) >= 10:
+            print("month >= 10")
+            active_farms_for_year.update(self.active_farm_codes.get(str(int(year) + 1)))
+        elif int(month) <= 3:
+            print("month <= 3")
+            active_farms_for_year.update(self.active_farm_codes.get(str(int(year) - 1)))
 
         if active_farms_for_year:
             if active_farms_for_year.get(farm_code):

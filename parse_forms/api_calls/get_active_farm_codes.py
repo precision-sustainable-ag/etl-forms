@@ -8,7 +8,7 @@ YEARS_OBJECT = {}
 
 def get_farms(year):
     api_headers = { "x-api-key": "ac96221f-a850-11eb-96fa-001dd80125f3"}
-    uri = "/onfarm/raw?table=site_information&year={}".format(year)
+    uri = "/onfarm/raw?table=site_information&year={}&options=showtest".format(year)
 
     # print(uri)
 
