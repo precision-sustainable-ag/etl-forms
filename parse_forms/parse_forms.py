@@ -15,46 +15,55 @@ from pytz import timezone
 import traceback
 import logging
 
-import assets.asset_dataframes
-import assets.asset_names
-import api_calls.get_active_farm_codes
+from .assets import asset_dataframes
+from .assets import asset_names
+from .api_calls import get_active_farm_codes
 
 class FormParser:
-    def __init__(self, mode):
+    def __init__(self, mode=None):
         load_dotenv()
-        self.connect_to_postgres()
         self.connect_to_mysql()
         self.create_loggers()
 
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')
         loc_dt = date_utc.astimezone(eastern)
+        print("Starting parsing")
         print(loc_dt)
 
-        if mode:
-            self.mode = mode
-        else:
-            self.mode = "live"
+        self.mode = mode
+
+        if self.mode == "live":
+            print("live")
+            self.connect_to_shadow_live()
+        elif self.mode == "local":
+            print("local")
+            self.connect_to_shadow_local()
 
         self.temp_valid_rows = pd.DataFrame()
 
-        self.asset_names = assets.asset_names.asset_names
-        self.asset_dataframes = assets.asset_dataframes.asset_dataframes
+        self.asset_names = asset_names.asset_names
+        self.asset_dataframes = asset_dataframes.asset_dataframes
         
         self.invalid_row_table_pairs = pd.DataFrame()
         self.valid_row_table_pairs = pd.DataFrame()
 
-        self.active_farm_codes = api_calls.get_active_farm_codes.create_years_object()
+        self.active_farm_codes = get_active_farm_codes.create_years_object()
 
         self.valid_parsed_form_tables = {}
         self.invalid_parsed_form_tables = {}
 
-    def connect_to_postgres(self):
-        postgres_host = os.environ.get('POSTGRESQL_SHADOW_HOST')
-        postgres_dbname = os.environ.get('POSTGRESQL_SHADOW_DBNAME')
-        postgres_user = os.environ.get('POSTGRESQL_SHADOW_USER')
-        postgres_password = os.environ.get('POSTGRESQL_SHADOW_PASSWORD')
-        postgres_sslmode = os.environ.get('POSTGRESQL_SHADOW_SSLMODE')
+        # self.encountered_unicity_error = 0
+        # self.encountered__error = 0
+        self.encountered_parsing_error = 0
+        # self.encountered_no_rows_error = 0
+
+    def connect_to_shadow_live(self):
+        postgres_host = os.environ.get('LIVE_SHADOW_HOST')
+        postgres_dbname = os.environ.get('LIVE_SHADOW_DBNAME')
+        postgres_user = os.environ.get('LIVE_SHADOW_USER')
+        postgres_password = os.environ.get('LIVE_SHADOW_PASSWORD')
+        postgres_sslmode = os.environ.get('LIVE_SHADOW_SSLMODE')
 
         # Make postgres connections
         postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
@@ -64,7 +73,25 @@ class FormParser:
         postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
         self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-        print("Connections established")
+        print("Connected to shadow live")
+    
+    def connect_to_shadow_local(self):
+        postgres_host = os.environ.get('LOCAL_SHADOW_HOST')
+        postgres_dbname = os.environ.get('LOCAL_SHADOW_DBNAME')
+        postgres_user = os.environ.get('LOCAL_SHADOW_USER')
+        postgres_password = os.environ.get('LOCAL_SHADOW_PASSWORD')
+        postgres_sslmode = os.environ.get('LOCAL_SHADOW_SSLMODE')
+        postgres_port = os.environ.get('LOCAL_SHADOW_PORT')
+
+        # Make postgres connections
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
+        self.postgres_con = psycopg2.connect(postgres_con_string)
+        self.postgres_cur = self.postgres_con.cursor()
+
+        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
+        self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
+
+        print("Connected to shadow local")
 
     def connect_to_mysql(self):
         mysql_host = os.environ.get('MYSQL_HOST')
@@ -123,6 +150,7 @@ class FormParser:
                 regex = re.compile(regex)
             except Exception:
                 print("invalid regex")
+                self.encountered_parsing_error += 1
                 return False
 
             if re.search(regex, data):
@@ -198,6 +226,7 @@ class FormParser:
         except Exception:
             print("error")
             print(traceback.print_exc(file=sys.stdout))
+            self.encountered_parsing_error += 1
 
     def save_to_postgres(self):
         for key, value in self.asset_dataframes.items():
@@ -257,6 +286,7 @@ class FormParser:
                 return datetime.datetime.strptime(data, "%Y-%m-%d")
             except Exception:
                 print("not a valid date")
+                self.encountered_parsing_error += 1
                 return data
         
         data_types = {
@@ -334,10 +364,8 @@ class FormParser:
 
         active_farms_for_year = self.active_farm_codes.get(year)
         if int(month) >= 10:
-            print("month >= 10")
             active_farms_for_year.update(self.active_farm_codes.get(str(int(year) + 1)))
         elif int(month) <= 3:
-            print("month <= 3")
             active_farms_for_year.update(self.active_farm_codes.get(str(int(year) - 1)))
 
         if active_farms_for_year:
@@ -445,6 +473,7 @@ class FormParser:
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     row_entry.pop("err")
                     self.unsuccessful_parse_logger.error("could not parse form uid {} for table {}".format(row_uid, table_name))
+                    self.encountered_parsing_error += 1
 
     def update_table(self, dataframe, table_name, uid):
         self.delete_from_table(table_name, uid)
@@ -488,32 +517,35 @@ class FormParser:
             if table_list:
                 self.iterate_tables(table_list, asset_name, row_entry, form_version)
 
-        if self.mode == "test":
-            print("saving to excel")
-            self.save_all_to_excel()
-        elif self.mode == "live":
-            print("saving to sql")
-            self.save_to_postgres()
-            # print("saving to excel")
-            # self.save_all_to_excel()
+        
+        date_utc = datetime.datetime.now()
+        eastern = timezone('US/Eastern')
+        loc_dt = date_utc.astimezone(eastern)
+        print("Saving to sql")
+        print(loc_dt)
+
+        if self.encountered_parsing_error > 0:
+            print("Encountered {} parsing errors".format(self.encountered_parsing_error))
+
+        self.save_to_postgres()
 
 
-try:
-    mode = None
-    uid = None
-    if len(sys.argv) > 1:
-        mode = sys.argv[1]  
-        if len(sys.argv) > 2:
-            uid = sys.argv[2]
+# try:
+#     mode = None
+#     uid = None
+#     if len(sys.argv) > 1:
+#         mode = sys.argv[1]  
+#         if len(sys.argv) > 2:
+#             uid = sys.argv[2]
 
-    fp = FormParser(mode)
-    if mode == "test" or mode == "live" or mode == None:
-        fp.parse_forms()
-    elif mode == "reparse":
-        fp.reparse_form(uid)
+#     fp = FormParser(mode)
+#     if mode == "test" or mode == "live" or mode == None:
+#         fp.parse_forms()
+#     elif mode == "reparse":
+#         fp.reparse_form(uid)
 
-    fp.close_con()
+#     fp.close_con()
 
-except Exception:
-    print("an error ocurred \n")
-    print(traceback.print_exc(file=sys.stdout))
+# except Exception:
+#     print("an error ocurred \n")
+#     print(traceback.print_exc(file=sys.stdout))

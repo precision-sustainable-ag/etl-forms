@@ -7,28 +7,73 @@ from dotenv import load_dotenv
 import sqlalchemy
 import traceback
 import logging
+import time
+import datetime
+from pytz import timezone
 
-import tables.shadow_table_info
+from .tables import shadow_table_info
 
 class ProductionPusher:
-    def __init__(self):
+    def __init__(self, mode=None):
         load_dotenv()
-        self.connect_to_postgres_shadow()
-        self.connect_to_postgres_local()
+
+        date_utc = datetime.datetime.now()
+        eastern = timezone('US/Eastern')
+        loc_dt = date_utc.astimezone(eastern)
+        print("Starting to push to prod")
+        print(loc_dt)
+
         self.create_loggers()
-        print("connected to dbs")
+        # print("connected to dbs")
 
-        self.shadow_table_info = tables.shadow_table_info.info
+        self.shadow_table_info = shadow_table_info.info
 
-    def connect_to_postgres_shadow(self):
-        postgres_host = os.environ.get('POSTGRESQL_SHADOW_HOST')
-        postgres_dbname = os.environ.get('POSTGRESQL_SHADOW_DBNAME')
-        postgres_user = os.environ.get('POSTGRESQL_SHADOW_USER')
-        postgres_password = os.environ.get('POSTGRESQL_SHADOW_PASSWORD')
-        postgres_sslmode = os.environ.get('POSTGRESQL_SHADOW_SSLMODE')
+        self.mode = mode
+
+        if self.mode == "live":
+            print("live")
+            self.connect_to_shadow_live()
+            self.connect_to_prod_live()
+        elif self.mode == "local" or self.mode == None:
+            print("local")
+            self.connect_to_shadow_local()
+            self.connect_to_prod_local()
+
+        self.encountered_unicity_error = 0
+        self.encountered_no_rows_error = 0
+        self.encountered_not_pushed_error = 0
+        self.encountered_general_error = 0
+
+    def connect_to_shadow_local(self):
+        postgres_host = os.environ.get('LOCAL_SHADOW_HOST')
+        postgres_dbname = os.environ.get('LOCAL_SHADOW_DBNAME')
+        postgres_user = os.environ.get('LOCAL_SHADOW_USER')
+        postgres_password = os.environ.get('LOCAL_SHADOW_PASSWORD')
+        postgres_sslmode = os.environ.get('LOCAL_SHADOW_SSLMODE')
+        postgres_port = os.environ.get('LOCAL_SHADOW_PORT')
+
+        # Make postgres connections
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
+        # print(postgres_con_string)
+        self.shadow_con = psycopg2.connect(postgres_con_string)
+        self.shadow_cur = self.shadow_con.cursor()
+        self.shadow_con.autocommit = True
+
+        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
+        self.shadow_engine = sqlalchemy.create_engine(postgres_engine_string)
+
+        print("connected to shadow local")
+
+    def connect_to_shadow_live(self):
+        postgres_host = os.environ.get('LIVE_SHADOW_HOST')
+        postgres_dbname = os.environ.get('LIVE_SHADOW_DBNAME')
+        postgres_user = os.environ.get('LIVE_SHADOW_USER')
+        postgres_password = os.environ.get('LIVE_SHADOW_PASSWORD')
+        postgres_sslmode = os.environ.get('LIVE_SHADOW_SSLMODE')
 
         # Make postgres connections
         postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
+        # print(postgres_con_string)
         self.shadow_con = psycopg2.connect(postgres_con_string)
         self.shadow_cur = self.shadow_con.cursor()
         self.shadow_con.autocommit = True
@@ -36,22 +81,45 @@ class ProductionPusher:
         postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
         self.shadow_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-    def connect_to_postgres_local(self):
-        postgres_host = os.environ.get('POSTGRESQL_LOCAL_HOST')
-        postgres_dbname = os.environ.get('POSTGRESQL_LOCAL_DBNAME')
-        postgres_user = os.environ.get('POSTGRESQL_LOCAL_USER')
-        postgres_password = os.environ.get('POSTGRESQL_LOCAL_PASSWORD')
-        postgres_sslmode = os.environ.get('POSTGRESQL_LOCAL_SSLMODE')
-        postgres_port = os.environ.get('POSTGRESQL_LOCAL_PORT')
+        print("connected to shadow live")
+
+    def connect_to_prod_local(self):
+        postgres_host = os.environ.get('LOCAL_PROD_HOST')
+        postgres_dbname = os.environ.get('LOCAL_PROD_DBNAME')
+        postgres_user = os.environ.get('LOCAL_PROD_USER')
+        postgres_password = os.environ.get('LOCAL_PROD_PASSWORD')
+        postgres_sslmode = os.environ.get('LOCAL_PROD_SSLMODE')
+        postgres_port = os.environ.get('LOCAL_PROD_PORT')
 
         # Make postgres connections
         postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
+        # print(postgres_con_string)
+        self.local_con = psycopg2.connect(postgres_con_string)
+        self.local_cur = self.local_con.cursor()
+        self.local_con.autocommit = True
+
+        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
+        self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
+
+        print("connected to prod local")
+
+    def connect_to_prod_live(self):
+        postgres_host = os.environ.get('LIVE_PROD_HOST')
+        postgres_dbname = os.environ.get('LIVE_PROD_DBNAME')
+        postgres_user = os.environ.get('LIVE_PROD_USER')
+        postgres_password = os.environ.get('LIVE_PROD_PASSWORD')
+        postgres_sslmode = os.environ.get('LIVE_PROD_SSLMODE')
+
+        # Make postgres connections
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
         self.local_con = psycopg2.connect(postgres_con_string)
         self.local_cur = self.local_con.cursor()
         self.local_con.autocommit = True
 
         postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
         self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
+
+        print("connected to prod live")
 
     def close_cons(self):
         self.shadow_con.close()
@@ -86,6 +154,7 @@ class ProductionPusher:
             self.shadow_con.commit()
         except Exception:
             self.not_inserted_into_not_pushed_to_prod.error(table_name + "\n" + str(failing_sid) + "\n" + str(rawuid) + "\n")
+            self.encountered_not_pushed_error += 1
 
     def try_queries(self, shadow_query, prod_query, prod_values, sid, raw_uid, prod_table_name, table_name):
         try:
@@ -93,6 +162,7 @@ class ProductionPusher:
             if self.local_cur.rowcount == 0:
                 self.no_rows_affected_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
                 self.update_failed_rows(table_name, sid, raw_uid)
+                self.encountered_no_rows_error += 1
                 return
             self.local_con.commit()
             self.shadow_cur.execute(shadow_query, [sid])
@@ -102,9 +172,11 @@ class ProductionPusher:
             self.failed_unicity_constraint_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
             self.shadow_cur.execute(shadow_query, [sid])
             self.shadow_con.commit()
+            self.encountered_unicity_error += 1
         except Exception:
             self.general_error_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
             self.general_error_logger.error(str(traceback.print_exc(file=sys.stdout)) + "\n")
+            self.encountered_general_error += 1
 
     def insert_row(self, values_from_table, all_rows, prod_table_name, table_name):
         rows_list = []
@@ -214,7 +286,38 @@ class ProductionPusher:
 
             elif mode == "update":
                 self.update_row(values_from_table, all_rows, prod_table_name, table_name, unique_cols)
+                
+        date_utc = datetime.datetime.now()
+        eastern = timezone('US/Eastern')
+        loc_dt = date_utc.astimezone(eastern)
+        print("Finished pushing to prod")
+        print(loc_dt)
 
-pp = ProductionPusher()
-pp.push_to_prod()
-pp.close_cons()
+        self.encountered_unicity_error = 0
+        self.encountered_no_rows_error = 0
+        self.encountered_not_pushed_error = 0
+        self.encountered_general_error = 0
+
+        # print("Encountered {} unicity errors, {} no rows updated errors, {} not pushed errors, {} general errors".format())
+
+        if self.encountered_unicity_error > 0 or self.encountered_no_rows_error > 0 or self.encountered_not_pushed_error > 0 or self.encountered_general_error:
+            print("Encountered {} unicity errors,\n {} no rows updated errors,\n {} not pushed errors,\n {} general errors\n"\
+                .format(self.encountered_unicity_error, self.encountered_no_rows_error, self.encountered_not_pushed_error, self.encountered_general_error))
+# try:
+#     mode = None
+#     uid = None
+#     if len(sys.argv) > 1:
+#         mode = sys.argv[1]  
+
+#     pp = ProductionPusher(mode)
+
+#     # pp.push_to_prod()
+#     pp.close_cons()
+
+# except Exception:
+#     print("an error ocurred \n")
+#     print(traceback.print_exc(file=sys.stdout))
+
+# pp = ProductionPusher()
+# pp.push_to_prod()
+# pp.close_cons()

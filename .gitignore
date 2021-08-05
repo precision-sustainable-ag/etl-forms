@@ -2,3 +2,5 @@ __pycache__/
 logs/**
 helper_functions/make_new_image.ps1
 .env
+__init__.py
+run_live.py
