@@ -64,7 +64,7 @@ class ListMaker:
                 for row in dict_list:
                     for col in row.get("cols_from_form"):
                         kobo_name = col.get("kobo_name")
-                        if kobo_name not in editable_list and kobo_name != "WON'T BE FOUND" and not kobo_name.startswith("_"):
+                        if kobo_name not in editable_list and kobo_name != "WON'T BE FOUND" and not kobo_name.startswith("_") and "gps" not in kobo_name.lower():
                             editable_list.append(kobo_name)
         
             editable_list_by_version[version] = json.dumps(editable_list)
