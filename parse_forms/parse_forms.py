@@ -438,7 +438,7 @@ class FormParser:
         else:
             return True, "success"
 
-    def iterate_tables(self, table_list, asset_name, row_entry, form_version, not_reparse = True):
+    def iterate_tables(self, table_list, asset_name, row_entry, form_version, xform_id_string, not_reparse = True):
         for table in table_list:
             self.temp_valid_rows = pd.DataFrame()
             valid_row_table_pairs = None
@@ -470,6 +470,7 @@ class FormParser:
                 else:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = message
+                    row_entry["xform_id_string"] = xform_id_string
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     row_entry.pop("err")
                     self.unsuccessful_parse_logger.error("could not parse form uid {} for table {}".format(row_uid, table_name))
@@ -511,11 +512,12 @@ class FormParser:
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
+            xform_id_string = entry.get("xform_id_string")
 
             table_list = self.asset_names.get(asset_name)
 
             if table_list:
-                self.iterate_tables(table_list, asset_name, row_entry, form_version)
+                self.iterate_tables(table_list, asset_name, row_entry, form_version, xform_id_string)
 
         
         date_utc = datetime.datetime.now()
