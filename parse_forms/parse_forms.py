@@ -512,7 +512,7 @@ class FormParser:
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
-            xform_id_string = entry.get("xform_id_string")
+            xform_id_string = entry.get("_xform_id_string")
 
             table_list = self.asset_names.get(asset_name)
 
