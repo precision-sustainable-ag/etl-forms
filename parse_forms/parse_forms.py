@@ -28,16 +28,16 @@ class FormParser:
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')
         loc_dt = date_utc.astimezone(eastern)
-        print("Starting parsing")
-        print(loc_dt)
+        self.global_logger.info("Starting parsing")
+        self.global_logger.info(loc_dt)
 
         self.mode = mode
 
         if self.mode == "live":
-            print("live")
+            self.global_logger.info("live")
             self.connect_to_shadow_live()
         elif self.mode == "local":
-            print("local")
+            self.global_logger.info("local")
             self.connect_to_shadow_local()
 
         self.temp_valid_rows = pd.DataFrame()
@@ -73,7 +73,7 @@ class FormParser:
         postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
         self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-        print("Connected to shadow live")
+        self.global_logger.info("Connected to shadow live")
     
     def connect_to_shadow_local(self):
         postgres_host = os.environ.get('LOCAL_SHADOW_HOST')
@@ -91,7 +91,7 @@ class FormParser:
         postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
         self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-        print("Connected to shadow local")
+        self.global_logger.info("Connected to shadow local")
 
     def connect_to_mysql(self):
         mysql_host = os.environ.get('MYSQL_HOST')
@@ -117,6 +117,7 @@ class FormParser:
     def create_loggers(self):
         self.successful_parse_logger = self.setup_logger('successful_parse_logger', './logs/successful_parse.log')
         self.unsuccessful_parse_logger = self.setup_logger('unsuccessful_parse_logger', './logs/unsuccessful_parse.log')
+        self.global_logger = self.setup_logger('global_logger', './logs/global.log')
 
     def convert_data(self, data, conversions):
         if not data or not conversions:
@@ -149,7 +150,7 @@ class FormParser:
             try:
                 regex = re.compile(regex)
             except Exception:
-                print("invalid regex")
+                self.global_logger.info("invalid regex")
                 self.encountered_parsing_error += 1
                 return False
 
@@ -199,12 +200,12 @@ class FormParser:
 
     def close_con(self):
         self.postgres_con.close()
-        print("Closing connections")
+        self.global_logger.info("Closing connections")
 
     def save_all_to_excel(self):
         for key, value in self.asset_dataframes.items():
             for key_2, value_2 in value.items():
-                # print(value_2)
+                # self.global_logger.info(value_2)
                 self.convert_to_excel(value_2, r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}.xlsx'.format(key_2))
 
         self.convert_to_excel(self.invalid_row_table_pairs, r'C:\Users\mikah\Documents\etl-forms\excel_dump\invalid_row_table_pairs.xlsx')
@@ -213,7 +214,7 @@ class FormParser:
         dataframe.to_sql(table_name, self.postgres_engine, if_exists="append", index=False)
 
     def delete_from_table(self, table_name, uid):
-        print(table_name, uid)
+        self.global_logger.info(table_name, uid)
         delete_query = "DELETE FROM {table_name} WHERE rawuid = {uid}"
         delete_query = sql.SQL(delete_query).format(
             table_name = sql.Identifier(table_name),
@@ -224,8 +225,8 @@ class FormParser:
             self.postgres_cur.execute(delete_query, [uid])
             self.postgres_con.commit()
         except Exception:
-            print("error")
-            print(traceback.print_exc(file=sys.stdout))
+            self.global_logger.info("error")
+            self.global_logger.info(traceback.print_exc(file=sys.stdout))
             self.encountered_parsing_error += 1
 
     def save_to_postgres(self):
@@ -238,7 +239,7 @@ class FormParser:
     def get_valid_parsed_forms(self):
         for key, value in self.asset_dataframes.items():
             for key_2, value_2 in value.items():
-                query = "SELECT DISTINCT rawuid FROM {}".format(key_2)
+                query = "SELECT DISTINCT rawuid FROM {} ORDER BY rawuid".format(key_2)
 
                 self.postgres_cur.execute(query)
                 if key_2 not in self.valid_parsed_form_tables:
@@ -247,15 +248,16 @@ class FormParser:
                     if uid[0] not in self.valid_parsed_form_tables[key_2]:
                         self.valid_parsed_form_tables[key_2][uid[0]] = True
 
-        # print(self.valid_parsed_form_tables)
+        # self.global_logger.info(self.valid_parsed_form_tables)
+        print(self.valid_parsed_form_tables)
 
     def get_invalid_parsed_forms(self):
-        query = "SELECT * FROM invalid_row_table_pairs"
+        query = "SELECT * FROM invalid_row_table_pairs ORDER BY uid"
 
         self.postgres_cur.execute(query)
         
         for row in self.postgres_cur.fetchall():
-            # print(row)
+            # self.global_logger.info(row)
             table_name = row[5]
             uid = row[8]
 
@@ -265,7 +267,8 @@ class FormParser:
             if uid not in self.invalid_parsed_form_tables[table_name]:
                 self.invalid_parsed_form_tables[table_name][int(uid)] = True
 
-        # print(self.invalid_parsed_form_tables)
+        # self.global_logger.info(self.invalid_parsed_form_tables)
+        print(self.invalid_parsed_form_tables)
 
     def get_all_responses(self):
         self.data = pd.read_sql("SELECT * FROM kobo", self.mysql_engine)
@@ -285,7 +288,7 @@ class FormParser:
                 # return time.mktime(datetime.datetime.strptime(data, "%Y-%m-%d").timetuple())
                 return datetime.datetime.strptime(data, "%Y-%m-%d")
             except Exception:
-                print("not a valid date")
+                self.global_logger.info("not a valid date")
                 self.encountered_parsing_error += 1
                 return data
         
@@ -481,16 +484,16 @@ class FormParser:
         self.convert_to_sql(dataframe, table_name)
 
     def update_reparsed_rows(self, asset_name, uid):
-        print(self.invalid_row_table_pairs)
+        self.global_logger.info(self.invalid_row_table_pairs)
 
         for key, value in self.asset_dataframes.get(asset_name).items():
-            # print(value)
+            # self.global_logger.info(value)
             self.update_table(value, key, uid)
     
     def reparse_form(self, uid):
         row_entry = pd.read_sql("SELECT * FROM kobo WHERE uid = {}".format(uid), self.mysql_engine).iloc[0]
-        # print(type(row_entry))
-        # print(row_entry.get("data"))
+        # self.global_logger.info(type(row_entry))
+        # self.global_logger.info(row_entry.get("data"))
         asset_name = row_entry.get("asset_name")
         entry = json.loads(row_entry.get("data"))
         form_version = entry.get("__version__")
@@ -523,11 +526,11 @@ class FormParser:
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')
         loc_dt = date_utc.astimezone(eastern)
-        print("Saving to sql")
-        print(loc_dt)
+        self.global_logger.info("Saving to sql")
+        self.global_logger.info(loc_dt)
 
         if self.encountered_parsing_error > 0:
-            print("Encountered {} parsing errors".format(self.encountered_parsing_error))
+            self.global_logger.info("Encountered {} parsing errors".format(self.encountered_parsing_error))
 
         self.save_to_postgres()
 
@@ -549,5 +552,5 @@ class FormParser:
 #     fp.close_con()
 
 # except Exception:
-#     print("an error ocurred \n")
-#     print(traceback.print_exc(file=sys.stdout))
+#     self.global_logger.info("an error ocurred \n")
+#     self.global_logger.info(traceback.print_exc(file=sys.stdout))
