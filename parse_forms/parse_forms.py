@@ -271,7 +271,7 @@ class FormParser:
         print(self.invalid_parsed_form_tables)
 
     def get_all_responses(self):
-        self.data = pd.read_sql("SELECT * FROM kobo", self.mysql_engine)
+        self.data = pd.read_sql("SELECT * FROM kobo ORDER BY uid", self.mysql_engine)
     
     def cast_data(self, data, datatype):
         if not data:
@@ -449,12 +449,18 @@ class FormParser:
             table_name = table.get("table_name")
             row_uid = row_entry.get("uid")
 
+            # print("start " + str(row_uid))
+
 
             if not_reparse and self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name).get(row_uid):
+                # print("valid row " + str(row_uid))
                 continue
             if not_reparse and self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name).get(row_uid):
+                # print("invalid row " + str(row_uid))
                 continue
             
+            # print("not parsed " + str(row_uid))
+
             if table_name in self.asset_dataframes.get(asset_name):
                 valid_row_table_pairs = self.asset_dataframes.get(asset_name).get(table_name)
             else:
@@ -512,6 +518,7 @@ class FormParser:
         self.get_all_responses()
 
         for index, row_entry in self.data.iterrows():
+            # print("start " + str(row_entry.get("uid")))
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
@@ -521,6 +528,8 @@ class FormParser:
 
             if table_list:
                 self.iterate_tables(table_list, asset_name, row_entry, form_version, xform_id_string)
+            else:
+                print("no table list " + str(row_entry.get("uid")))
 
         
         date_utc = datetime.datetime.now()
