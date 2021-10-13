@@ -20,22 +20,23 @@ class ProductionPusher:
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')
         loc_dt = date_utc.astimezone(eastern)
-        print("Starting to push to prod")
-        print(loc_dt)
 
         self.create_loggers()
-        # print("connected to dbs")
+        self.global_logger.info("Starting to push to prod")
+        self.global_logger.info(loc_dt)
+        
+        # self.global_logger.info("connected to dbs")
 
         self.shadow_table_info = shadow_table_info.info
 
         self.mode = mode
 
         if self.mode == "live":
-            print("live")
+            self.global_logger.info("live")
             self.connect_to_shadow_live()
             self.connect_to_prod_live()
         elif self.mode == "local" or self.mode == None:
-            print("local")
+            self.global_logger.info("local")
             self.connect_to_shadow_local()
             self.connect_to_prod_local()
 
@@ -54,7 +55,7 @@ class ProductionPusher:
 
         # Make postgres connections
         postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
-        # print(postgres_con_string)
+        # self.global_logger.info(postgres_con_string)
         self.shadow_con = psycopg2.connect(postgres_con_string)
         self.shadow_cur = self.shadow_con.cursor()
         self.shadow_con.autocommit = True
@@ -62,7 +63,7 @@ class ProductionPusher:
         postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
         self.shadow_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-        print("connected to shadow local")
+        self.global_logger.info("connected to shadow local")
 
     def connect_to_shadow_live(self):
         postgres_host = os.environ.get('LIVE_SHADOW_HOST')
@@ -73,7 +74,7 @@ class ProductionPusher:
 
         # Make postgres connections
         postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
-        # print(postgres_con_string)
+        # self.global_logger.info(postgres_con_string)
         self.shadow_con = psycopg2.connect(postgres_con_string)
         self.shadow_cur = self.shadow_con.cursor()
         self.shadow_con.autocommit = True
@@ -81,7 +82,7 @@ class ProductionPusher:
         postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
         self.shadow_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-        print("connected to shadow live")
+        self.global_logger.info("connected to shadow live")
 
     def connect_to_prod_local(self):
         postgres_host = os.environ.get('LOCAL_PROD_HOST')
@@ -93,7 +94,7 @@ class ProductionPusher:
 
         # Make postgres connections
         postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
-        # print(postgres_con_string)
+        # self.global_logger.info(postgres_con_string)
         self.local_con = psycopg2.connect(postgres_con_string)
         self.local_cur = self.local_con.cursor()
         self.local_con.autocommit = True
@@ -101,7 +102,7 @@ class ProductionPusher:
         postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
         self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-        print("connected to prod local")
+        self.global_logger.info("connected to prod local")
 
     def connect_to_prod_live(self):
         postgres_host = os.environ.get('LIVE_PROD_HOST')
@@ -119,7 +120,7 @@ class ProductionPusher:
         postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
         self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
 
-        print("connected to prod live")
+        self.global_logger.info("connected to prod live")
 
     def close_cons(self):
         self.shadow_con.close()
@@ -142,6 +143,7 @@ class ProductionPusher:
         self.no_rows_affected_logger = self.setup_logger('no_rows_affected_logger', './logs/no_rows_affected.log')
         self.not_inserted_into_not_pushed_to_prod = self.setup_logger('not_inserted_into_not_pushed_to_prod', './logs/not_inserted_into_not_pushed_to_prod.log')
         self.general_error_logger = self.setup_logger('general_error_logger', './logs/general_error.log')
+        self.global_logger = self.setup_logger('global_logger', './logs/global.log')
 
     def update_failed_rows(self, table_name, failing_sid, rawuid):
         insert_query = "INSERT INTO not_pushed_to_prod (table_name, failing_sid, rawuid) VALUES ({values})"
@@ -248,7 +250,7 @@ class ProductionPusher:
         unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
 
         for index, row_entry in unpushed_rows.iterrows():
-            # print("\n")
+            # self.global_logger.info("\n")
             raw_uid = row_entry.get("rawuid")
             values_dict = {}
             for value in values_from_table:
@@ -290,18 +292,18 @@ class ProductionPusher:
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')
         loc_dt = date_utc.astimezone(eastern)
-        print("Finished pushing to prod")
-        print(loc_dt)
+        self.global_logger.info("Finished pushing to prod")
+        self.global_logger.info(loc_dt)
 
         self.encountered_unicity_error = 0
         self.encountered_no_rows_error = 0
         self.encountered_not_pushed_error = 0
         self.encountered_general_error = 0
 
-        # print("Encountered {} unicity errors, {} no rows updated errors, {} not pushed errors, {} general errors".format())
+        # self.global_logger.info("Encountered {} unicity errors, {} no rows updated errors, {} not pushed errors, {} general errors".format())
 
         if self.encountered_unicity_error > 0 or self.encountered_no_rows_error > 0 or self.encountered_not_pushed_error > 0 or self.encountered_general_error:
-            print("Encountered {} unicity errors,\n {} no rows updated errors,\n {} not pushed errors,\n {} general errors\n"\
+            self.global_logger.info("Encountered {} unicity errors,\n {} no rows updated errors,\n {} not pushed errors,\n {} general errors\n"\
                 .format(self.encountered_unicity_error, self.encountered_no_rows_error, self.encountered_not_pushed_error, self.encountered_general_error))
 # try:
 #     mode = None
@@ -315,8 +317,8 @@ class ProductionPusher:
 #     pp.close_cons()
 
 # except Exception:
-#     print("an error ocurred \n")
-#     print(traceback.print_exc(file=sys.stdout))
+#     self.global_logger.info("an error ocurred \n")
+#     self.global_logger.info(traceback.print_exc(file=sys.stdout))
 
 # pp = ProductionPusher()
 # pp.push_to_prod()

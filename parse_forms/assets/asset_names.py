@@ -12,7 +12,7 @@ from ..psa_bag_dry_wt import decomp_biomass_dry_vDqdEsDav5K6hSRHrgYJmM as decomp
 from ..psa_bag_dry_wt import decomp_biomass_dry_vusvAjv42DfdfjKkFWm6H3 as decomp_biomass_dry_vusvAjv42DfdfjKkFWm6H3
 
 from ..psa_bag_collect import decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e as decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e
-from ..psa_bag_collect import decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG as decomp_biomass_dryLVmcbGVhR3C3fkW9ZhHG
+from ..psa_bag_collect import decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG as decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG
 
 from ..psa_biomass_decomp_bag import biomass_in_field_vEchkcAone8S7y4eYhgru4 as biomass_in_field_vEchkcAone8S7y4eYhgru4
 from ..psa_biomass_decomp_bag import biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh as biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh
@@ -73,7 +73,7 @@ asset_names = {
             "table_name": "decomp_biomass_dry__decomp_bag_collect",
             "table_keys": {
                 "v94kLXWMrZ8fZRpCFzSn4e": decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e.data,
-                "v5LVmcbGVhR3C3fkW9ZhHG": decomp_biomass_dryLVmcbGVhR3C3fkW9ZhHG.data,
+                "v5LVmcbGVhR3C3fkW9ZhHG": decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG.data,
             },
         },
     ],
