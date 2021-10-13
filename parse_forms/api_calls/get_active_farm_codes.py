@@ -3,7 +3,7 @@ import http.client
 import json
 
 api_connection = http.client.HTTPSConnection("api.precisionsustainableag.org")
-YEARS = ["2017", "2018", "2019", "2020", "2021", "2022", "2023"]
+YEARS = ["2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
 YEARS_OBJECT = {}
 
 def get_farms(year):
