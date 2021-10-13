@@ -15,8 +15,15 @@ from pytz import timezone
 import traceback
 import logging
 
-from .assets import asset_dataframes
-from .assets import asset_names
+# sys.path.append(r"C:\Users\mikah\Documents\etl-forms\parse_forms")
+
+# from .assets import xform_id_string_dataframes
+# from .assets import xform_id_strings
+# from .assets import asset_dataframes
+# from .assets import asset_names
+from .assets import xform_id_strings
+from .assets import xform_id_string_dataframes
+# import assets.xfr
 from .api_calls import get_active_farm_codes
 
 class FormParser:
@@ -42,8 +49,8 @@ class FormParser:
 
         self.temp_valid_rows = pd.DataFrame()
 
-        self.asset_names = asset_names.asset_names
-        self.asset_dataframes = asset_dataframes.asset_dataframes
+        self.xform_id_strings = xform_id_strings.xform_id_strings
+        self.xform_id_string_dataframes = xform_id_string_dataframes.xform_id_string_dataframes
         
         self.invalid_row_table_pairs = pd.DataFrame()
         self.valid_row_table_pairs = pd.DataFrame()
@@ -202,7 +209,7 @@ class FormParser:
         print("Closing connections")
 
     def save_all_to_excel(self):
-        for key, value in self.asset_dataframes.items():
+        for key, value in self.xform_id_string_dataframes.items():
             for key_2, value_2 in value.items():
                 # print(value_2)
                 self.convert_to_excel(value_2, r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}.xlsx'.format(key_2))
@@ -229,14 +236,14 @@ class FormParser:
             self.encountered_parsing_error += 1
 
     def save_to_postgres(self):
-        for key, value in self.asset_dataframes.items():
+        for key, value in self.xform_id_string_dataframes.items():
             for key_2, value_2 in value.items():
                 self.convert_to_sql(value_2, key_2)
 
         self.convert_to_sql(self.invalid_row_table_pairs, "invalid_row_table_pairs")
 
     def get_valid_parsed_forms(self):
-        for key, value in self.asset_dataframes.items():
+        for key, value in self.xform_id_string_dataframes.items():
             for key_2, value_2 in value.items():
                 query = "SELECT DISTINCT rawuid FROM {}".format(key_2)
 
@@ -452,8 +459,8 @@ class FormParser:
             if not_reparse and self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name).get(row_uid):
                 continue
             
-            if table_name in self.asset_dataframes.get(asset_name):
-                valid_row_table_pairs = self.asset_dataframes.get(asset_name).get(table_name)
+            if table_name in self.xform_id_string_dataframes.get(xform_id_string):
+                valid_row_table_pairs = self.xform_id_string_dataframes.get(xform_id_string).get(table_name)
             else:
                 continue
 
@@ -466,7 +473,7 @@ class FormParser:
 
                 if valid_row:
                     self.successful_parse_logger.info("successfully parsed form uid {} for table {}".format(row_uid, table_name))
-                    self.asset_dataframes.get(asset_name)[table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
+                    self.xform_id_string_dataframes.get(xform_id_string)[table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
                 else:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = message
@@ -480,10 +487,10 @@ class FormParser:
         self.delete_from_table(table_name, uid)
         self.convert_to_sql(dataframe, table_name)
 
-    def update_reparsed_rows(self, asset_name, uid):
+    def update_reparsed_rows(self, xform_id_string, uid):
         print(self.invalid_row_table_pairs)
 
-        for key, value in self.asset_dataframes.get(asset_name).items():
+        for key, value in self.xform_id_string_dataframes.get(xform_id_string).items():
             # print(value)
             self.update_table(value, key, uid)
     
@@ -495,7 +502,7 @@ class FormParser:
         entry = json.loads(row_entry.get("data"))
         form_version = entry.get("__version__")
 
-        table_list = self.asset_names.get(asset_name)
+        table_list = self.xform_id_strings.get(asset_name)
 
         if table_list:
             self.iterate_tables(table_list, asset_name, row_entry, form_version, False)
@@ -512,9 +519,10 @@ class FormParser:
             asset_name = row_entry.get("asset_name")
             entry = json.loads(row_entry.get("data"))
             form_version = entry.get("__version__")
-            xform_id_string = entry.get("xform_id_string")
+            xform_id_string = entry.get("_xform_id_string")
 
-            table_list = self.asset_names.get(asset_name)
+            table_list = self.xform_id_strings.get(xform_id_string)
+            # print(table_list)
 
             if table_list:
                 self.iterate_tables(table_list, asset_name, row_entry, form_version, xform_id_string)
