@@ -32,19 +32,20 @@ class Resetter:
         ]
 
     def connect_to_postgres_shadow(self):
-        postgres_host = os.environ.get('POSTGRESQL_SHADOW_HOST')
-        postgres_dbname = os.environ.get('POSTGRESQL_SHADOW_DBNAME')
-        postgres_user = os.environ.get('POSTGRESQL_SHADOW_USER')
-        postgres_password = os.environ.get('POSTGRESQL_SHADOW_PASSWORD')
-        postgres_sslmode = os.environ.get('POSTGRESQL_SHADOW_SSLMODE')
+        postgres_host = os.environ.get('LOCAL_SHADOW_HOST')
+        postgres_dbname = os.environ.get('LOCAL_SHADOW_DBNAME')
+        postgres_user = os.environ.get('LOCAL_SHADOW_USER')
+        postgres_password = os.environ.get('LOCAL_SHADOW_PASSWORD')
+        postgres_sslmode = os.environ.get('LOCAL_SHADOW_SSLMODE')
+        postgres_port = os.environ.get('LOCAL_SHADOW_PORT')
 
         # Make postgres connections
-        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
         self.shadow_con = psycopg2.connect(postgres_con_string)
         self.shadow_cur = self.shadow_con.cursor()
         self.shadow_con.autocommit = True
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
+        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
         self.shadow_engine = sqlalchemy.create_engine(postgres_engine_string)
 
     def close_cons(self):
