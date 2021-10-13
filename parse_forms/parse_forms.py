@@ -256,7 +256,7 @@ class FormParser:
                         self.valid_parsed_form_tables[key_2][uid[0]] = True
 
         # self.global_logger.info(self.valid_parsed_form_tables)
-        print(self.valid_parsed_form_tables)
+        # print(self.valid_parsed_form_tables)
 
     def get_invalid_parsed_forms(self):
         query = "SELECT * FROM invalid_row_table_pairs ORDER BY uid"
@@ -275,7 +275,7 @@ class FormParser:
                 self.invalid_parsed_form_tables[table_name][int(uid)] = True
 
         # self.global_logger.info(self.invalid_parsed_form_tables)
-        print(self.invalid_parsed_form_tables)
+        # print(self.invalid_parsed_form_tables)
 
     def get_all_responses(self):
         self.data = pd.read_sql("SELECT * FROM kobo ORDER BY uid", self.mysql_engine)
@@ -495,7 +495,7 @@ class FormParser:
         self.convert_to_sql(dataframe, table_name)
 
     def update_reparsed_rows(self, xform_id_string, uid):
-        print(self.invalid_row_table_pairs)
+        # print(self.invalid_row_table_pairs)
 
         for key, value in self.xform_id_string_dataframes.get(xform_id_string).items():
             # print(value)
