@@ -412,8 +412,8 @@ class FormParser:
         entry = json.loads(row_entry.get("data"))
         
         empty_form = True
+        error_list = []
         for kobo_row in form_version_key:
-            error_list = []
             new_row = {
                 "rawuid": row_entry.get("uid"),
                 "parsed_at": datetime.datetime.now()
@@ -436,19 +436,18 @@ class FormParser:
 
             active_farm, farm_message = self.assert_active(new_row, entry)
 
-            if not active_farm:
+            if not active_farm and farm_message not in error_list:
                 error_list += [farm_message]
 
-            if (not row_passed_tests or not row_is_valid or not active_farm):
-                return False, error_list
-
-            elif self.row_is_not_null(kobo_row, new_row):
+            if row_passed_tests and row_is_valid and active_farm and self.row_is_not_null(kobo_row, new_row):
                 new_row["pushed_to_prod"] = 0
                 self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
                 empty_form = False
 
         if empty_form:
-            return False, ["empty form"]
+            error_list.append("Empty form"  + " for table " + table_name)
+        if len(error_list) != 0:
+            return False, error_list
         else:
             return True, "success"
 
