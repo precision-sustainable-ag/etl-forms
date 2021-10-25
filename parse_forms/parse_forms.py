@@ -390,7 +390,7 @@ class FormParser:
 
     def get_cols_from_form(self, kobo_row, entry, new_row, table_name):
         row_passed_tests = True
-        error_message = ""
+        error_messages = []
 
         for data in kobo_row.get("cols_from_form"):
             status, converted_data = self.test_and_format_data(data, entry, new_row)
@@ -402,16 +402,17 @@ class FormParser:
                     data = self.split_data(data.get("db_names"), converted_data, data.get("separator"), data.get("indices"), new_row)
             else:
                 row_passed_tests = False
-                error_message = str(data.get("kobo_name")) + " row failed tests for table " + table_name
-                break
+                error_messages.append("`[\"" +str(data.get("kobo_name")) + "\"]`" + " row failed tests for table " + table_name)
+                # break
 
-        return row_passed_tests, error_message
+        return row_passed_tests, error_messages
 
 
     def parse_form(self, row_entry, form_version_key, table_name):
         entry = json.loads(row_entry.get("data"))
         
         empty_form = True
+        error_list = []
         for kobo_row in form_version_key:
             new_row = {
                 "rawuid": row_entry.get("uid"),
@@ -421,30 +422,32 @@ class FormParser:
             if kobo_row.get("extra_cols"):
                 self.add_cols(new_row, kobo_row.get("extra_cols"))
 
-            row_passed_tests, error_message = self.get_cols_from_form(kobo_row, entry, new_row, table_name)
+            row_passed_tests, error_messages = self.get_cols_from_form(kobo_row, entry, new_row, table_name)
+
+            error_list += error_messages
             
             row_is_valid = True
             if kobo_row.get("completeness_cols") and row_passed_tests:
                 row_is_valid = self.validate_row(kobo_row, new_row)
                 
                 if not row_is_valid:
-                    error_message = str(kobo_row.get("completeness_cols")) + " failed completeness cols for table " + table_name #+ " row data = " + json.dumps(new_row)
+                    error_message = "`" + json.dumps(kobo_row.get("completeness_errs")) + "` " + str(kobo_row.get("completeness_err_message")) + " for table " + table_name
+                    error_list += [error_message]
 
             active_farm, farm_message = self.assert_active(new_row, entry)
 
-            if not active_farm:
-                error_message = farm_message
+            if not active_farm and farm_message not in error_list:
+                error_list += [farm_message]
 
-            if (not row_passed_tests or not row_is_valid or not active_farm):
-                return False, error_message
-
-            elif self.row_is_not_null(kobo_row, new_row):
+            if row_passed_tests and row_is_valid and active_farm and self.row_is_not_null(kobo_row, new_row):
                 new_row["pushed_to_prod"] = 0
                 self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
                 empty_form = False
 
         if empty_form:
-            return False, "empty form"
+            error_list.append("Empty form"  + " for table " + table_name)
+        if len(error_list) != 0:
+            return False, error_list
         else:
             return True, "success"
 
@@ -476,14 +479,14 @@ class FormParser:
             
 
             if table_key:
-                valid_row, message = self.parse_form(row_entry, table_key, table.get("table_name"))
+                valid_row, messages = self.parse_form(row_entry, table_key, table.get("table_name"))
 
                 if valid_row:
                     self.successful_parse_logger.info("successfully parsed form uid {} for table {}".format(row_uid, table_name))
                     self.xform_id_string_dataframes.get(xform_id_string)[table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
                 else:
                     row_entry["table_name"] = table_name
-                    row_entry["err"] = message
+                    row_entry["err"] = json.dumps(messages)
                     row_entry["xform_id_string"] = xform_id_string
                     self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(row_entry, ignore_index=True)
                     row_entry.pop("err")
