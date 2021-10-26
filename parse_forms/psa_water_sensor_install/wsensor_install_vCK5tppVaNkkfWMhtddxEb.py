@@ -4,23 +4,23 @@ data = [
             {
                 "kobo_name": "farm_info_group/code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
                 "kobo_name": "barcode_gateway",
                 "db_names": ["gateway_serial_no"],
-                "tests": ["not_null", "check_regex ^210[0-9]{5}$"],
+                "tests": ["not_null", "check_regex ^210[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "group_uv9yg82/bare_node_rep1",
                 "db_names": ["bare_node_serial_no"],
-                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "group_uv9yg82/cover_crop_node_rep1",
                 "db_names": ["cover_node_serial_no"],
-                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "farm_info_group/date_install",
@@ -59,7 +59,7 @@ data = [
             {
                 "kobo_name": "farm_info_group/code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             # {
@@ -73,17 +73,17 @@ data = [
             {
                 "kobo_name": "barcode_gateway",
                 "db_names": ["gateway_serial_no"],
-                "tests": ["not_null", "check_regex ^210[0-9]{5}$"],
+                "tests": ["not_null", "check_regex ^210[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "group_uv9yg82/bare_node_rep2",
                 "db_names": ["bare_node_serial_no"],
-                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "group_uv9yg82/cover_crop_node_rep2",
                 "db_names": ["cover_node_serial_no"],
-                "tests": ["not_null", "check_regex ^180[0-9]{5}$"],
+                "tests": ["not_null", "check_regex ^180[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "farm_info_group/date_install",

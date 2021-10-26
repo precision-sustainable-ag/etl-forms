@@ -10,7 +10,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -36,7 +36,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -62,7 +62,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -88,7 +88,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -114,7 +114,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -140,7 +140,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -166,7 +166,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -192,7 +192,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -218,7 +218,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -244,7 +244,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -270,7 +270,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -296,7 +296,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -322,7 +322,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -348,7 +348,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -374,7 +374,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -400,7 +400,7 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$"],
+                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
