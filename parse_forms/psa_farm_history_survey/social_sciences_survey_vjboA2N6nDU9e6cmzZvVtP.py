@@ -2,6 +2,23 @@ data = [
     {
         "cols_from_form": [
             {
+                "kobo_name": "_submission_time",
+                "db_names": ["submitted_at"],
+                "datatype": "date",
+            },
+            {
+                "kobo_name": "group_social_sci_survey/producer_id",
+                "db_names": ["producer_id"],
+            },
+            {
+                "kobo_name": "group_ct2kn52/grower_phone",
+                "db_names": ["producer_phone"],
+            },
+            {
+                "kobo_name": "group_ct2kn52/grower_email",
+                "db_names": ["producer_email"],
+            },
+            {
                 "kobo_name": "group_social_sci_survey/crop_acres",
                 "db_names": ["crop_acres"],
             },
@@ -32,14 +49,6 @@ data = [
             {
                 "kobo_name": "group_social_sci_survey/cover_crop_rotation",
                 "db_names": ["cover_crop_rotation"],
-            },
-            {
-                "kobo_name": "group_social_sci_survey/favorite_cover_crop",
-                "db_names": ["favorite_cover_crop"],
-                "multi_select": {
-                    "no": 0,
-                    "yes": 1
-                },
             },
             {
                 "kobo_name": "group_social_sci_survey/favorite_winter_cover_crop",
@@ -143,7 +152,7 @@ data = [
             },
             {
                 "kobo_name": "group_social_sci_survey/yield_data_share",
-                "db_names": ["yield_data_share"],
+                "db_names": ["sharing_comfort_yield_monitor"],
                 "multi_select": {
                     "no": 0,
                     "yes": 1
@@ -158,10 +167,6 @@ data = [
                 "db_names": ["why_participating"],
             },
             {
-                "kobo_name": "group_social_sci_survey/generalfarmendnote",
-                "db_names": ["generalfarmendnote"],
-            },
-            {
                 "kobo_name": "WON'T BE FOUND",
                 "db_names": ["notes"],
             },
@@ -170,5 +175,39 @@ data = [
                 "db_names": ["submitted_by"],
             },
         ],  
+        "all_cols": [
+            "crop_acres", 
+            "farm_crop_rotation", 
+            "cover_crop_acres", 
+            "cover_crop_acres_terminated", 
+            "cover_crop_acres_typical",
+            "first_year_cover_crop", 
+            "every_year", 
+            "cover_crop_rotation", 
+            "favorite_winter_cover_crop", 
+            "insured_acres", 
+            "removed_insurance", 
+            "if_yes_remove_insurance_note", 
+            "claim_cover_crop", 
+            "if_yes_claim_note", 
+            "tilled_acres",
+            "farm_tillage_type", 
+            "tillage_it_depends", 
+            "previous_tillage", 
+            "years_since_tillage",
+            "tilled_acres_cover_crop", 
+            "tillage_type_cover_crop", 
+            "tillage_cover_crop_it_depends", 
+            "previous_tillage_cover_crop",
+            "years_since_tillage_cover_crop",
+            "info_sources", 
+            "dst_use", 
+            "software_use", 
+            "devices_use",
+            "yield_monitor",
+            "yield_data_share", 
+            "percent_rented", 
+            "why_participating",
+        ]
     }
 ]

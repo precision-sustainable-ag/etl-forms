@@ -462,7 +462,7 @@ class FormParser:
             # print("start " + str(row_uid))
 
 
-            if not_reparse and self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name).get(row_uid):
+            if not_reparse and self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name) and self.valid_parsed_form_tables.get(table_name).get(row_uid):
                 # print("valid row " + str(row_uid))
                 continue
             if not_reparse and self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name) and self.invalid_parsed_form_tables.get(table_name).get(row_uid):
