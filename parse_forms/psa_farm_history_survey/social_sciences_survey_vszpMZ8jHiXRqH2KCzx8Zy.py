@@ -7,16 +7,18 @@ data = [
                 "datatype": "date",
             },
             {
-                "kobo_name": "group_social_sci_survey/producer_id",
+                "kobo_name": "group_ct2kn52/producer_id",
                 "db_names": ["producer_id"],
             },
             {
                 "kobo_name": "group_ct2kn52/grower_phone",
                 "db_names": ["producer_phone"],
+                "conversions": ["numbers_only"],
             },
             {
                 "kobo_name": "group_ct2kn52/grower_email",
                 "db_names": ["producer_email"],
+                "conversions": ["to_lowercase"],
             },
             {
                 "kobo_name": "group_social_sci_survey/crop_acres",
@@ -205,9 +207,10 @@ data = [
             "software_use", 
             "devices_use",
             "yield_monitor",
-            "yield_data_share", 
+            "sharing_comfort_yield_monitor", 
             "percent_rented", 
             "why_participating",
         ],
+        "verify_producer": True,
     }
 ]

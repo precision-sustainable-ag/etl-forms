@@ -37,12 +37,12 @@ def create_object(data):
 
     return producers_object
 
-def create_years_object():
+def create_producers_object():
     data = get_producers()
     producers_object = create_object(data)
-    print(producers_object)
+    # print(producers_object)
 
     # print(YEARS_OBJECT)
-    # return producers_object
+    return producers_object
 
-create_years_object()
+# create_years_object()
