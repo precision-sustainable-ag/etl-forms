@@ -26,6 +26,11 @@ from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz as decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs as decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs
 
+from ..psa_farm_history_survey import social_sciences_survey_vybw9K58Yjxo7RFWNboAam as social_sciences_survey_vybw9K58Yjxo7RFWNboAam
+from ..psa_farm_history_survey import social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy as social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy
+from ..psa_farm_history_survey import social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP as social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP
+from ..psa_farm_history_survey import social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs as social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs
+
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
         {   
@@ -105,6 +110,19 @@ xform_id_strings = {
                 "vLamBBuk4isVXD6ZxyNzjs": decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs.data,
             },
             "asset_name": "psa biomass decomp bag",
+        },
+    ],
+
+    "aZjGUZ6htFZV5hFgxjP4oa": [
+        {   
+            "table_name": "social_sciences_survey__farm_history_survey",
+            "table_keys": {
+                "vybw9K58Yjxo7RFWNboAam": social_sciences_survey_vybw9K58Yjxo7RFWNboAam.data,
+                "vszpMZ8jHiXRqH2KCzx8Zy": social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy.data,
+                "vjboA2N6nDU9e6cmzZvVtP": social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP.data,
+                "vUhSQRn3KbRTan9wqjFAqs": social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs.data,
+            },
+            "asset_name": "psa farm history survey",
         },
     ],
 }

@@ -192,8 +192,9 @@ class ProductionPusher:
             values_list = []
             for value in all_rows:
                 data = row_entry.get(value)
+                if pd.isna(data):
+                    data = None
                 values_list.append(data)
-
 
             insert_query = "INSERT INTO {table} ({fields}) VALUES ({values})"
             insert_query = sql.SQL(insert_query).format(

@@ -25,6 +25,7 @@ from .assets import xform_id_strings
 from .assets import xform_id_string_dataframes
 # import assets.xfr
 from .api_calls import get_active_farm_codes
+from .api_calls import get_producers
 
 class FormParser:
     def __init__(self, mode=None):
@@ -56,6 +57,7 @@ class FormParser:
         self.valid_row_table_pairs = pd.DataFrame()
 
         self.active_farm_codes = get_active_farm_codes.create_years_object()
+        self.valid_producers = get_producers.create_producers_object()
 
         self.valid_parsed_form_tables = {}
         self.invalid_parsed_form_tables = {}
@@ -138,6 +140,10 @@ class FormParser:
 
         if "strip_whitespace" in conversions:
             data = "".join(data.split())
+
+        if "numbers_only" in conversions:
+            numeric_filter = filter(str.isdigit, data)
+            data = "".join(numeric_filter)
 
         return data
 
@@ -388,6 +394,15 @@ class FormParser:
             message = "No data " + " for " + str(year)
             return False, message
 
+    def get_producer_id(self, new_row):
+        if new_row.get("producer_phone") and self.valid_producers.get(new_row.get("producer_phone")):
+            return self.valid_producers.get(new_row.get("producer_phone"))
+        elif new_row.get("producer_email") and self.valid_producers.get(new_row.get("producer_email")):
+            return self.valid_producers.get(new_row.get("producer_email"))
+        else:
+            return False
+
+
     def get_cols_from_form(self, kobo_row, entry, new_row, table_name):
         row_passed_tests = True
         error_messages = []
@@ -412,6 +427,7 @@ class FormParser:
         entry = json.loads(row_entry.get("data"))
         
         empty_form = True
+        valid_producer = True
         error_list = []
         for kobo_row in form_version_key:
             new_row = {
@@ -436,13 +452,23 @@ class FormParser:
 
             active_farm, farm_message = self.assert_active(new_row, entry)
 
+            if kobo_row.get("verify_producer") and row_passed_tests:
+                producer_id = self.get_producer_id(new_row)
+                if producer_id:
+                    new_row["producer_id"] = producer_id
+                else:
+                    error_list += ["producer with that email or phone does not exist"]
+                    valid_producer = False
+
             if not active_farm and farm_message not in error_list:
                 error_list += [farm_message]
 
-            if row_passed_tests and row_is_valid and active_farm and self.row_is_not_null(kobo_row, new_row):
+            if self.row_is_not_null(kobo_row, new_row):
+                empty_form = False
+
+            if row_passed_tests and row_is_valid and active_farm and self.row_is_not_null(kobo_row, new_row) and valid_producer:
                 new_row["pushed_to_prod"] = 0
                 self.temp_valid_rows = self.temp_valid_rows.append(new_row, ignore_index=True)
-                empty_form = False
 
         if empty_form:
             error_list.append("Empty form"  + " for table " + table_name)
@@ -462,10 +488,10 @@ class FormParser:
             # print("start " + str(row_uid))
 
 
-            if not_reparse and self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name).get(row_uid):
+            if not_reparse and self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name) and self.valid_parsed_form_tables.get(table_name).get(row_uid):
                 # print("valid row " + str(row_uid))
                 continue
-            if not_reparse and self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name).get(row_uid):
+            if not_reparse and self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name) and self.invalid_parsed_form_tables.get(table_name).get(row_uid):
                 # print("invalid row " + str(row_uid))
                 continue
             
