@@ -1,3 +1,5 @@
+# to run use 'python -m generate_editable_lists.generate_editable_lists' from ./etl-forms
+
 import os
 from dotenv import load_dotenv
 import datetime
@@ -8,7 +10,9 @@ from psycopg2 import sql
 import pandas as pd
 import json
 
-from parse_forms.assets.asset_names import asset_names
+# from ..parse_forms.assets.asset_names import asset_names
+import parse_forms.assets.xform_id_strings as xform_id_strings
+
 
 class ListMaker:
     def __init__(self, mode=None):
@@ -21,6 +25,24 @@ class ListMaker:
         print(loc_dt)
 
         self.connect_to_shadow_live()
+
+    def connect_to_shadow_local(self):
+        postgres_host = os.environ.get('LOCAL_SHADOW_HOST')
+        postgres_dbname = os.environ.get('LOCAL_SHADOW_DBNAME')
+        postgres_user = os.environ.get('LOCAL_SHADOW_USER')
+        postgres_password = os.environ.get('LOCAL_SHADOW_PASSWORD')
+        postgres_sslmode = os.environ.get('LOCAL_SHADOW_SSLMODE')
+        postgres_port = os.environ.get('LOCAL_SHADOW_PORT')
+
+        # Make postgres connections
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
+        self.postgres_con = psycopg2.connect(postgres_con_string)
+        self.postgres_cur = self.postgres_con.cursor()
+
+        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
+        self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
+
+        self.global_logger.info("Connected to shadow local")
 
     def connect_to_shadow_live(self):
         postgres_host = os.environ.get('LIVE_SHADOW_HOST')
@@ -44,7 +66,7 @@ class ListMaker:
     def generate_version_dict(self):
         version_dict = {}
 
-        for asset_name, data in asset_names.items():
+        for asset_name, data in xform_id_strings.xform_id_strings.items():
             for table in data:
                 for version, obj in table.get("table_keys").items():
                     if version_dict.get(version):
