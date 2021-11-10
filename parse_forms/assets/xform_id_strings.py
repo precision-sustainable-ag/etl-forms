@@ -31,6 +31,8 @@ from ..psa_farm_history_survey import social_sciences_survey_vszpMZ8jHiXRqH2KCzx
 from ..psa_farm_history_survey import social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP as social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP
 from ..psa_farm_history_survey import social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs as social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs
 
+from ..psa_farm_history_survey import farm_history_vjboA2N6nDU9e6cmzZvVtP as farm_history_vjboA2N6nDU9e6cmzZvVtP
+
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
         {   
@@ -124,5 +126,12 @@ xform_id_strings = {
             },
             "asset_name": "psa farm history survey",
         },
+        # {   
+        #     "table_name": "farm_history__farm_history_survey",
+        #     "table_keys": {
+        #         "vjboA2N6nDU9e6cmzZvVtP": farm_history_vjboA2N6nDU9e6cmzZvVtP.data,
+        #     },
+        #     "asset_name": "psa farm history survey",
+        # },
     ],
 }
