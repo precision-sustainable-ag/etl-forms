@@ -32,6 +32,9 @@ from ..psa_farm_history_survey import social_sciences_survey_vjboA2N6nDU9e6cmzZv
 from ..psa_farm_history_survey import social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs as social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs
 
 from ..psa_farm_history_survey import farm_history_vjboA2N6nDU9e6cmzZvVtP as farm_history_vjboA2N6nDU9e6cmzZvVtP
+from ..psa_farm_history_survey import farm_history_vszpMZ8jHiXRqH2KCzx8Zy as farm_history_vszpMZ8jHiXRqH2KCzx8Zy
+from ..psa_farm_history_survey import farm_history_vUhSQRn3KbRTan9wqjFAqs as farm_history_vUhSQRn3KbRTan9wqjFAqs
+from ..psa_farm_history_survey import farm_history_vybw9K58Yjxo7RFWNboAam as farm_history_vybw9K58Yjxo7RFWNboAam
 
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
@@ -126,12 +129,15 @@ xform_id_strings = {
             },
             "asset_name": "psa farm history survey",
         },
-        # {   
-        #     "table_name": "farm_history__farm_history_survey",
-        #     "table_keys": {
-        #         "vjboA2N6nDU9e6cmzZvVtP": farm_history_vjboA2N6nDU9e6cmzZvVtP.data,
-        #     },
-        #     "asset_name": "psa farm history survey",
-        # },
+        {   
+            "table_name": "farm_history__farm_history_survey",
+            "table_keys": {
+                "vjboA2N6nDU9e6cmzZvVtP": farm_history_vjboA2N6nDU9e6cmzZvVtP.data,
+                "vszpMZ8jHiXRqH2KCzx8Zy": farm_history_vszpMZ8jHiXRqH2KCzx8Zy.data,
+                "vUhSQRn3KbRTan9wqjFAqs": farm_history_vUhSQRn3KbRTan9wqjFAqs.data,
+                "vybw9K58Yjxo7RFWNboAam": farm_history_vybw9K58Yjxo7RFWNboAam.data,
+            },
+            "asset_name": "psa farm history survey",
+        },
     ],
 }

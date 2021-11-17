@@ -72,4 +72,9 @@ info = {
         ],
         "mode": "insert",
     },
+    "biomass_in_field__biomass_decomp_bag": {
+        "values_from_table": ["fresh_wt_a", "fresh_wt_b", "bag_wt_a", "bag_wt_b", "legumes_40"],
+        "unique_cols": ["code", "subplot"],
+        "mode": "update",
+    },
 }
