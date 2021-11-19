@@ -99,8 +99,8 @@ class ProductionPusher:
         self.local_cur = self.local_con.cursor()
         self.local_con.autocommit = True
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
-        self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
+        # postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
+        # self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
 
         self.global_logger.info("connected to prod local")
 
@@ -117,8 +117,8 @@ class ProductionPusher:
         self.local_cur = self.local_con.cursor()
         self.local_con.autocommit = True
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
-        self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
+        # postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
+        # self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
 
         self.global_logger.info("connected to prod live")
 
@@ -171,11 +171,13 @@ class ProductionPusher:
             self.shadow_con.commit()
             self.successful_logger.info("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
         except psycopg2.errors.UniqueViolation:
+            print(prod_query, prod_values)
             self.failed_unicity_constraint_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
             self.shadow_cur.execute(shadow_query, [sid])
             self.shadow_con.commit()
             self.encountered_unicity_error += 1
         except Exception:
+            print(prod_query, prod_values)
             self.general_error_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
             self.general_error_logger.error(str(traceback.print_exc(file=sys.stdout)) + "\n")
             self.encountered_general_error += 1

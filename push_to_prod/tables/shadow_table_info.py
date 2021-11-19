@@ -72,6 +72,21 @@ info = {
         ],
         "mode": "insert",
     },
+    "farm_history__farm_history_survey": {
+        "values_from_table": [
+            "previous_cash_crop", 
+            "cc_planting_method", 
+            "cc_termination_method", 
+            "cc_planting_date", 
+            "cc_total_rate",
+            "total_n_previous_crop",
+            "post_harvest_fertility",
+            "cash_crop_variety",
+            "cash_crop_maturity_group",
+        ],
+        "unique_cols": ["code"],
+        "mode": "update",
+    },
     "biomass_in_field__biomass_decomp_bag": {
         "values_from_table": ["fresh_wt_a", "fresh_wt_b", "bag_wt_a", "bag_wt_b", "legumes_40"],
         "unique_cols": ["code", "subplot"],
