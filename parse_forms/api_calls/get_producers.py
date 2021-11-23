@@ -23,7 +23,7 @@ def get_producers():
     api_data = api_res.read()
     # convert to json	
     json_api_data = api_data.decode('utf8')	
-    print(json_api_data)
+    # print(json_api_data)
     api_json_data = json.loads(json_api_data)
 
     # print(api_json_data)

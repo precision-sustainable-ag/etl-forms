@@ -13,6 +13,7 @@ from pytz import timezone
 
 from .tables import shadow_table_info
 
+
 class ProductionPusher:
     def __init__(self, mode=None):
         load_dotenv()
@@ -24,7 +25,7 @@ class ProductionPusher:
         self.create_loggers()
         self.global_logger.info("Starting to push to prod")
         self.global_logger.info(loc_dt)
-        
+
         # self.global_logger.info("connected to dbs")
 
         self.shadow_table_info = shadow_table_info.info
@@ -54,13 +55,15 @@ class ProductionPusher:
         postgres_port = os.environ.get('LOCAL_SHADOW_PORT')
 
         # Make postgres connections
-        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(
+            postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
         # self.global_logger.info(postgres_con_string)
         self.shadow_con = psycopg2.connect(postgres_con_string)
         self.shadow_cur = self.shadow_con.cursor()
         self.shadow_con.autocommit = True
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
+        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
+            postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
         self.shadow_engine = sqlalchemy.create_engine(postgres_engine_string)
 
         self.global_logger.info("connected to shadow local")
@@ -73,13 +76,15 @@ class ProductionPusher:
         postgres_sslmode = os.environ.get('LIVE_SHADOW_SSLMODE')
 
         # Make postgres connections
-        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(
+            postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
         # self.global_logger.info(postgres_con_string)
         self.shadow_con = psycopg2.connect(postgres_con_string)
         self.shadow_cur = self.shadow_con.cursor()
         self.shadow_con.autocommit = True
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
+        postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(
+            postgres_user, postgres_password, postgres_host, postgres_dbname)
         self.shadow_engine = sqlalchemy.create_engine(postgres_engine_string)
 
         self.global_logger.info("connected to shadow live")
@@ -93,14 +98,15 @@ class ProductionPusher:
         postgres_port = os.environ.get('LOCAL_PROD_PORT')
 
         # Make postgres connections
-        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4} port={5}".format(
+            postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode, postgres_port)
         # self.global_logger.info(postgres_con_string)
         self.local_con = psycopg2.connect(postgres_con_string)
         self.local_cur = self.local_con.cursor()
         self.local_con.autocommit = True
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
-        self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
+        # postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
+        # self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
 
         self.global_logger.info("connected to prod local")
 
@@ -112,13 +118,14 @@ class ProductionPusher:
         postgres_sslmode = os.environ.get('LIVE_PROD_SSLMODE')
 
         # Make postgres connections
-        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
+        postgres_con_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(
+            postgres_host, postgres_user, postgres_dbname, postgres_password, postgres_sslmode)
         self.local_con = psycopg2.connect(postgres_con_string)
         self.local_cur = self.local_con.cursor()
         self.local_con.autocommit = True
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
-        self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
+        # postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(postgres_user, postgres_password, postgres_host, postgres_dbname)
+        # self.local_engine = sqlalchemy.create_engine(postgres_engine_string)
 
         self.global_logger.info("connected to prod live")
 
@@ -128,7 +135,7 @@ class ProductionPusher:
 
     def setup_logger(self, name, log_file, level=logging.INFO):
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-        handler = logging.FileHandler(log_file)        
+        handler = logging.FileHandler(log_file)
         handler.setFormatter(formatter)
 
         logger = logging.getLogger(name)
@@ -136,48 +143,61 @@ class ProductionPusher:
         logger.addHandler(handler)
 
         return logger
-    
+
     def create_loggers(self):
-        self.successful_logger = self.setup_logger('successful_logger', './logs/successful.log')
-        self.failed_unicity_constraint_logger = self.setup_logger('failed_unicity_constraint_logger', './logs/failed_unicity_constraint.log')
-        self.no_rows_affected_logger = self.setup_logger('no_rows_affected_logger', './logs/no_rows_affected.log')
-        self.not_inserted_into_not_pushed_to_prod = self.setup_logger('not_inserted_into_not_pushed_to_prod', './logs/not_inserted_into_not_pushed_to_prod.log')
-        self.general_error_logger = self.setup_logger('general_error_logger', './logs/general_error.log')
-        self.global_logger = self.setup_logger('global_logger', './logs/global.log')
+        self.successful_logger = self.setup_logger(
+            'successful_logger', './logs/successful.log')
+        self.failed_unicity_constraint_logger = self.setup_logger(
+            'failed_unicity_constraint_logger', './logs/failed_unicity_constraint.log')
+        self.no_rows_affected_logger = self.setup_logger(
+            'no_rows_affected_logger', './logs/no_rows_affected.log')
+        self.not_inserted_into_not_pushed_to_prod = self.setup_logger(
+            'not_inserted_into_not_pushed_to_prod', './logs/not_inserted_into_not_pushed_to_prod.log')
+        self.general_error_logger = self.setup_logger(
+            'general_error_logger', './logs/general_error.log')
+        self.global_logger = self.setup_logger(
+            'global_logger', './logs/global.log')
 
     def update_failed_rows(self, table_name, failing_sid, rawuid):
         insert_query = "INSERT INTO not_pushed_to_prod (table_name, failing_sid, rawuid) VALUES ({values})"
         insert_query = sql.SQL(insert_query).format(
-            values = sql.SQL(', ').join(sql.Placeholder() * 3)
+            values=sql.SQL(', ').join(sql.Placeholder() * 3)
         )
 
         try:
-            self.shadow_cur.execute(insert_query, [table_name, failing_sid, rawuid])
+            self.shadow_cur.execute(
+                insert_query, [table_name, failing_sid, rawuid])
             self.shadow_con.commit()
         except Exception:
-            self.not_inserted_into_not_pushed_to_prod.error(table_name + "\n" + str(failing_sid) + "\n" + str(rawuid) + "\n")
+            self.not_inserted_into_not_pushed_to_prod.error(
+                table_name + "\n" + str(failing_sid) + "\n" + str(rawuid) + "\n")
             self.encountered_not_pushed_error += 1
 
     def try_queries(self, shadow_query, prod_query, prod_values, sid, raw_uid, prod_table_name, table_name):
         try:
             self.local_cur.execute(prod_query, prod_values)
             if self.local_cur.rowcount == 0:
-                self.no_rows_affected_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
+                self.no_rows_affected_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(
+                    prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
                 self.update_failed_rows(table_name, sid, raw_uid)
                 self.encountered_no_rows_error += 1
                 return
             self.local_con.commit()
             self.shadow_cur.execute(shadow_query, [sid])
             self.shadow_con.commit()
-            self.successful_logger.info("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
+            self.successful_logger.info("\n" + prod_query.as_string(self.local_con) + "\n" + str(
+                prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
         except psycopg2.errors.UniqueViolation:
-            self.failed_unicity_constraint_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
+            self.failed_unicity_constraint_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(
+                prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
             self.shadow_cur.execute(shadow_query, [sid])
             self.shadow_con.commit()
             self.encountered_unicity_error += 1
         except Exception:
-            self.general_error_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
-            self.general_error_logger.error(str(traceback.print_exc(file=sys.stdout)) + "\n")
+            self.general_error_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(
+                prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
+            self.general_error_logger.error(
+                str(traceback.print_exc(file=sys.stdout)) + "\n")
             self.encountered_general_error += 1
 
     def insert_row(self, values_from_table, all_rows, prod_table_name, table_name):
@@ -185,7 +205,8 @@ class ProductionPusher:
         for value in all_rows:
             rows_list.append(sql.Identifier(value))
 
-        unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
+        unpushed_rows = pd.DataFrame(pd.read_sql(
+            "SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
 
         for index, row_entry in unpushed_rows.iterrows():
             raw_uid = row_entry.get("rawuid")
@@ -200,33 +221,38 @@ class ProductionPusher:
             insert_query = sql.SQL(insert_query).format(
                 table=sql.Identifier(prod_table_name),
                 fields=sql.SQL(',').join(rows_list),
-                values = sql.SQL(', ').join(sql.Placeholder() * len(values_list))
+                values=sql.SQL(', ').join(sql.Placeholder() * len(values_list))
             )
 
             update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
-            update_query = sql.SQL(update_sql_string).format(
+            update_local_query = sql.SQL(update_sql_string).format(
                 table=sql.Identifier(table_name),
-                sid = sql.Placeholder()
+                sid=sql.Placeholder()
             )
 
-            self.try_queries(update_query, insert_query, values_list, row_entry.get("sid"), raw_uid, prod_table_name, table_name)
+            self.try_queries(update_local_query, insert_query, values_list, row_entry.get(
+                "sid"), raw_uid, prod_table_name, table_name)
 
     def generate_update_prod_sql(self, values_dict, unique_dict, prod_table_name):
         identifiers_list = []
         # creates list of sql statements (var1 = %{} AND var2 = ${} ...etc)
         for i, (k, v) in enumerate(unique_dict.items()):
             if i == len(unique_dict)-1:
-                identifiers_list.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]))
+                identifiers_list.append(sql.Composed(
+                    [sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]))
             else:
-                identifiers_list.append(sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k), sql.SQL(" AND ")])) 
+                identifiers_list.append(sql.Composed(
+                    [sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k), sql.SQL(" AND ")]))
 
         null_vals_list = []
         # creates list of sql statements (var1 IS NULL AND var2 IS NULL ...etc)
         for i, (k, v) in enumerate(values_dict.items()):
             if i == len(values_dict)-1:
-                null_vals_list.append(sql.Composed([sql.Identifier(k), sql.SQL(" IS NULL ")]))
+                null_vals_list.append(sql.Composed(
+                    [sql.Identifier(k), sql.SQL(" IS NULL ")]))
             else:
-                null_vals_list.append(sql.Composed([sql.Identifier(k), sql.SQL(" IS NULL "), sql.SQL("AND ")]))      
+                null_vals_list.append(sql.Composed(
+                    [sql.Identifier(k), sql.SQL(" IS NULL "), sql.SQL("AND ")]))
 
         update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {identifiers} AND {is_null_vals}").format(
             table=sql.Identifier(prod_table_name),
@@ -248,7 +274,8 @@ class ProductionPusher:
         for value in values_from_table:
             rows_list.append(sql.Identifier(value))
 
-        unpushed_rows = pd.DataFrame(pd.read_sql("SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
+        unpushed_rows = pd.DataFrame(pd.read_sql(
+            "SELECT * FROM {} WHERE pushed_to_prod = 0".format(table_name), self.shadow_engine))
 
         for index, row_entry in unpushed_rows.iterrows():
             # self.global_logger.info("\n")
@@ -256,6 +283,8 @@ class ProductionPusher:
             values_dict = {}
             for value in values_from_table:
                 data = row_entry.get(value)
+                if pd.isna(data):
+                    data = None
                 values_dict[value] = data
 
             unique_dict = {}
@@ -263,17 +292,19 @@ class ProductionPusher:
                 data = row_entry.get(value)
                 unique_dict[value] = data
 
-            update_prod_query = self.generate_update_prod_sql(values_dict, unique_dict, prod_table_name)
+            update_prod_query = self.generate_update_prod_sql(
+                values_dict, unique_dict, prod_table_name)
 
             update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
             update_local_query = sql.SQL(update_sql_string).format(
                 table=sql.Identifier(table_name),
-                sid = sql.Placeholder()
+                sid=sql.Placeholder()
             )
 
             values_dict.update(unique_dict)
 
-            self.try_queries(update_local_query, update_prod_query, values_dict, row_entry.get("sid"), raw_uid, prod_table_name, table_name)
+            self.try_queries(update_local_query, update_prod_query, values_dict, row_entry.get(
+                "sid"), raw_uid, prod_table_name, table_name)
 
     def push_to_prod(self):
         for table_name, info in self.shadow_table_info.items():
@@ -285,11 +316,13 @@ class ProductionPusher:
             mode = info.get("mode")
 
             if mode == "insert":
-                self.insert_row(values_from_table, all_rows, prod_table_name, table_name)
+                self.insert_row(values_from_table, all_rows,
+                                prod_table_name, table_name)
 
             elif mode == "update":
-                self.update_row(values_from_table, all_rows, prod_table_name, table_name, unique_cols)
-                
+                self.update_row(values_from_table, all_rows,
+                                prod_table_name, table_name, unique_cols)
+
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')
         loc_dt = date_utc.astimezone(eastern)
@@ -304,13 +337,14 @@ class ProductionPusher:
         # self.global_logger.info("Encountered {} unicity errors, {} no rows updated errors, {} not pushed errors, {} general errors".format())
 
         if self.encountered_unicity_error > 0 or self.encountered_no_rows_error > 0 or self.encountered_not_pushed_error > 0 or self.encountered_general_error:
-            self.global_logger.info("Encountered {} unicity errors,\n {} no rows updated errors,\n {} not pushed errors,\n {} general errors\n"\
-                .format(self.encountered_unicity_error, self.encountered_no_rows_error, self.encountered_not_pushed_error, self.encountered_general_error))
+            self.global_logger.info("Encountered {} unicity errors,\n {} no rows updated errors,\n {} not pushed errors,\n {} general errors\n"
+                                    .format(self.encountered_unicity_error, self.encountered_no_rows_error, self.encountered_not_pushed_error, self.encountered_general_error))
+
 # try:
 #     mode = None
 #     uid = None
 #     if len(sys.argv) > 1:
-#         mode = sys.argv[1]  
+#         mode = sys.argv[1]
 
 #     pp = ProductionPusher(mode)
 
