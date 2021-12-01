@@ -88,13 +88,9 @@ info = {
         "mode": "update",
     },
     "farm_history__biomass_decomp_bag": {
-        "values_from_table": ["code", "cc_termination_date", "growth_stage_grains", "growth_stage_legumes", "growth_stage_brassicas"],
+        "values_from_table": ["cc_termination_date", "growth_stage_grains", "growth_stage_legumes", "growth_stage_brassicas"],
         "unique_cols": ["code"],
         "mode": "update",
     },
-    "biomass_in_field__biomass_decomp_bag": {
-        "values_from_table": ["fresh_wt_a", "fresh_wt_b", "bag_wt_a", "bag_wt_b", "legumes_40"],
-        "unique_cols": ["code", "subplot"],
-        "mode": "update",
-    },
+
 }
