@@ -87,4 +87,9 @@ info = {
         "unique_cols": ["code"],
         "mode": "update",
     },
+    "farm_history__biomass_decomp_bag": {
+        "values_from_table": ["cc_termination_date", "growth_stage_grains", "growth_stage_legumes", "growth_stage_brassicas"],
+        "unique_cols": ["code"],
+        "mode": "update",
+    },
 }
