@@ -92,5 +92,4 @@ info = {
         "unique_cols": ["code"],
         "mode": "update",
     },
-
 }

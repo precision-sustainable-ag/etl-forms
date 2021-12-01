@@ -10,6 +10,7 @@ data = [
             {
                 "kobo_name": "termination_date",
                 "db_names": ["cc_termination_date"],
+                "tests": ["not_null"],
                 "datatype": "date",
             },
             {
