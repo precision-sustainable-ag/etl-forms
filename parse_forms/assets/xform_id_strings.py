@@ -26,6 +26,9 @@ from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz as decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs as decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs
 
+from ..psa_biomass_decomp_bag import farm_history_vLamBBuk4isVXD6ZxyNzjs as farm_history_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import farm_history_vEchkcAone8S7y4eYhgru4 as farm_history_vEchkcAone8S7y4eYhgru4
+
 from ..psa_farm_history_survey import social_sciences_survey_vybw9K58Yjxo7RFWNboAam as social_sciences_survey_vybw9K58Yjxo7RFWNboAam
 from ..psa_farm_history_survey import social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy as social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy
 from ..psa_farm_history_survey import social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP as social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP
@@ -113,6 +116,14 @@ xform_id_strings = {
                 "vcrycicDgojagKK5b7hTAP": decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP.data,
                 "va4wrosaFh5fN8rUZnKZHz": decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz.data,
                 "vLamBBuk4isVXD6ZxyNzjs": decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs.data,
+            },
+            "asset_name": "psa biomass decomp bag",
+        },
+        {   
+            "table_name": "farm_history__biomass_decomp_bag",
+            "table_keys": {
+                "vLamBBuk4isVXD6ZxyNzjs": farm_history_vLamBBuk4isVXD6ZxyNzjs.data,
+                "vEchkcAone8S7y4eYhgru4": farm_history_vEchkcAone8S7y4eYhgru4.data,
             },
             "asset_name": "psa biomass decomp bag",
         },
