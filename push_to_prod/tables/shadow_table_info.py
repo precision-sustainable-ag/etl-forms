@@ -92,4 +92,9 @@ info = {
         "unique_cols": ["code"],
         "mode": "update",
     },
+    "decomp_biomass_dry__biomass_decomp_bag": {
+        "values_from_table": ["recovery_date"],
+        "unique_cols": ["code", "time"],
+        "mode": "update",
+    },
 }

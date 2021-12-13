@@ -3,7 +3,7 @@ import pandas as pd
 empty_dataframe = pd.DataFrame()
 
 xform_id_string_dataframes = {
-    "ak6HVZZJPwC2EgR3qVWTsA": {    
+    "ak6HVZZJPwC2EgR3qVWTsA": {
         "gps_corners__gps": empty_dataframe,
     },
     "aixsrhq7hngRuJaPMLCMQy": {
@@ -22,6 +22,7 @@ xform_id_string_dataframes = {
         "biomass_in_field__biomass_decomp_bag": empty_dataframe,
         "decomp_biomass_fresh__biomass_decomp_bag": empty_dataframe,
         "farm_history__biomass_decomp_bag": empty_dataframe,
+        "decomp_biomass_dry__biomass_decomp_bag": empty_dataframe,
     },
     "aZjGUZ6htFZV5hFgxjP4oa": {
         "social_sciences_survey__farm_history_survey": empty_dataframe,
