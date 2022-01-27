@@ -404,6 +404,21 @@ class FormParser:
         else:
             return False
 
+    def validate_gps_points(self, form_rows):
+        row_obj = {}
+
+        for index, row in form_rows.iterrows():
+            row_obj[row["treatment"] + str(row["subplot"])
+                    ] = pd.isna(row.get("latitude")) or pd.isna(row.get("longitude")) and row_obj.get(row["treatment"] + str(row["subplot"]))
+
+        valid_form = True
+
+        for key in row_obj:
+            if row_obj.get(key) == True:
+                valid_form = False
+
+        return valid_form
+
     def get_cols_from_form(self, kobo_row, row_data, new_row, table_name):
         row_passed_tests = True
         error_messages = []
@@ -489,6 +504,7 @@ class FormParser:
         empty_form = True
         valid_producer = True
         error_list = []
+        valid_gps_form = True
 
         for kobo_row in form_version_key:
             if kobo_row.get("entry_to_iterate"):
@@ -497,6 +513,12 @@ class FormParser:
             else:
                 error_list, empty_form, valid_producer = self.extract_row(
                     row_uid, kobo_row, row_data, table_name, error_list, empty_form, valid_producer)
+
+        if table_name == "gps_corners__gps":
+            valid_gps_form = self.validate_gps_points(self.temp_valid_rows)
+            if valid_gps_form == False:
+                print("invalid gps form")
+                error_list.append("GPS points missing for one or more plots")
 
         if empty_form:
             error_list.append("Empty form" + " for table " + table_name)
