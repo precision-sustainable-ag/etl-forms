@@ -227,22 +227,6 @@ class FormParser:
         dataframe.to_sql(table_name, self.postgres_engine,
                          if_exists="append", index=False)
 
-    # def delete_from_table(self, table_name, uid):
-    #     self.global_logger.info(table_name, uid)
-    #     delete_query = "DELETE FROM {table_name} WHERE rawuid = {uid}"
-    #     delete_query = sql.SQL(delete_query).format(
-    #         table_name = sql.Identifier(table_name),
-    #         uid = sql.Placeholder()
-    #     )
-
-    #     try:
-    #         self.postgres_cur.execute(delete_query, [uid])
-    #         self.postgres_con.commit()
-    #     except Exception:
-    #         self.global_logger.info("error")
-    #         self.global_logger.info(traceback.print_exc(file=sys.stdout))
-    #         self.encountered_parsing_error += 1
-
     def save_to_postgres(self):
         for key, value in self.xform_id_string_dataframes.items():
             for key_2, value_2 in value.items():
@@ -404,6 +388,21 @@ class FormParser:
         else:
             return False
 
+    def validate_gps_points(self, form_rows):
+        row_obj = {}
+
+        for index, row in form_rows.iterrows():
+            row_obj[row["treatment"] + str(row["subplot"])
+                    ] = pd.isna(row.get("latitude")) or pd.isna(row.get("longitude")) and row_obj.get(row["treatment"] + str(row["subplot"]))
+
+        valid_form = True
+
+        for key in row_obj:
+            if row_obj.get(key) == True:
+                valid_form = False
+
+        return valid_form
+
     def get_cols_from_form(self, kobo_row, row_data, new_row, table_name):
         row_passed_tests = True
         error_messages = []
@@ -489,6 +488,7 @@ class FormParser:
         empty_form = True
         valid_producer = True
         error_list = []
+        valid_gps_form = True
 
         for kobo_row in form_version_key:
             if kobo_row.get("entry_to_iterate"):
@@ -497,6 +497,12 @@ class FormParser:
             else:
                 error_list, empty_form, valid_producer = self.extract_row(
                     row_uid, kobo_row, row_data, table_name, error_list, empty_form, valid_producer)
+
+        if table_name == "gps_corners__gps":
+            valid_gps_form = self.validate_gps_points(self.temp_valid_rows)
+            if valid_gps_form == False:
+                print("invalid gps form")
+                error_list.append("GPS points missing for one or more plots")
 
         if empty_form:
             error_list.append("Empty form" + " for table " + table_name)
