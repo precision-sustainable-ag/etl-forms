@@ -227,22 +227,6 @@ class FormParser:
         dataframe.to_sql(table_name, self.postgres_engine,
                          if_exists="append", index=False)
 
-    # def delete_from_table(self, table_name, uid):
-    #     self.global_logger.info(table_name, uid)
-    #     delete_query = "DELETE FROM {table_name} WHERE rawuid = {uid}"
-    #     delete_query = sql.SQL(delete_query).format(
-    #         table_name = sql.Identifier(table_name),
-    #         uid = sql.Placeholder()
-    #     )
-
-    #     try:
-    #         self.postgres_cur.execute(delete_query, [uid])
-    #         self.postgres_con.commit()
-    #     except Exception:
-    #         self.global_logger.info("error")
-    #         self.global_logger.info(traceback.print_exc(file=sys.stdout))
-    #         self.encountered_parsing_error += 1
-
     def save_to_postgres(self):
         for key, value in self.xform_id_string_dataframes.items():
             for key_2, value_2 in value.items():
