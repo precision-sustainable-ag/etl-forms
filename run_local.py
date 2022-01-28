@@ -11,7 +11,7 @@ try:
     pp.push_to_prod()
 
     fp.close_con()
-    pp.close_cons()
+    # pp.close_cons()
 except Exception:
     print("A general error ocurred \n")
     print(traceback.print_exc(file=sys.stdout))
