@@ -389,16 +389,25 @@ class FormParser:
             return False
 
     def validate_gps_points(self, form_rows):
+        # row_obj = {
+        #     "C1": [],
+        #     "C2": [],
+        #     "B1": [],
+        #     "B2": [],
+        # }
+
         row_obj = {}
 
         for index, row in form_rows.iterrows():
-            row_obj[row["treatment"] + str(row["subplot"])
-                    ] = pd.isna(row.get("latitude")) or pd.isna(row.get("longitude")) and row_obj.get(row["treatment"] + str(row["subplot"]))
+            if not row_obj.get(row["treatment"] + str(int(row["subplot"]))):
+                row_obj[row["treatment"] + str(int(row["subplot"]))] = []
+            row_obj[row["treatment"] + str(int(row["subplot"]))
+                    ].append((pd.isna(row.get("latitude")) or pd.isna(row.get("longitude"))))
 
         valid_form = True
 
         for key in row_obj:
-            if row_obj.get(key) == True:
+            if any(row_obj.get(key)) and not(all(row_obj.get(key))):
                 valid_form = False
 
         return valid_form
