@@ -97,4 +97,9 @@ info = {
         "unique_cols": ["code", "time"],
         "mode": "update",
     },
+    "farm_history__water_sensor_install": {
+        "values_from_table": ["cash_crop_planting_date"],
+        "unique_cols": ["code"],
+        "mode": "update",
+    },
 }
