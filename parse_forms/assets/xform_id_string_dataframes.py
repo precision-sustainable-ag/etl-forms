@@ -8,6 +8,7 @@ xform_id_string_dataframes = {
     },
     "aixsrhq7hngRuJaPMLCMQy": {
         "wsensor_install__water_sensor_install": empty_dataframe,
+        "farm_history__water_sensor_install": empty_dataframe,
     },
     "aSL7dDqTn6PuPTtCDiEzcg": {
         "decomp_biomass_fresh__decomp_bag_pre_wt": empty_dataframe,
@@ -27,5 +28,5 @@ xform_id_string_dataframes = {
     "aZjGUZ6htFZV5hFgxjP4oa": {
         "social_sciences_survey__farm_history_survey": empty_dataframe,
         "farm_history__farm_history_survey": empty_dataframe,
-    }
+    },
 }
