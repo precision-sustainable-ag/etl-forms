@@ -18,7 +18,7 @@ data = [
             {
                 "kobo_name": "Scan_the_barcode_on_side_of_your_Gateway",
                 "db_names": ["gateway_serial_no"],
-                "tests": ["not_null", "check_regex ^210[0-9]{5}$|^-999$"],
+                "tests": ["check_regex ^210[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "Scan_your_bare_node",
@@ -47,13 +47,13 @@ data = [
                 "kobo_name": "What_is_the_GPS_loca_on_of_your_bare_node",
                 "db_names": ["bare_lat", "bare_lon"],
                 "separator": " ",
-                "indices": [0,1],      
+                "indices": [0, 1],
             },
             {
                 "kobo_name": "What_is_the_GPS_loca_your_cover_crop_node",
                 "db_names": ["cover_lat", "cover_lon"],
                 "separator": " ",
-                "indices": [0,1],      
+                "indices": [0, 1],
             },
         ],
         # "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],

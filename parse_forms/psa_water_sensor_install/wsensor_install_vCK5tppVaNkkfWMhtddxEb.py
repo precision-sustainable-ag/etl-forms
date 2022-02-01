@@ -10,7 +10,7 @@ data = [
             {
                 "kobo_name": "barcode_gateway",
                 "db_names": ["gateway_serial_no"],
-                "tests": ["not_null", "check_regex ^210[0-9]{5}$|^-999$"],
+                "tests": ["check_regex ^210[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "group_uv9yg82/bare_node_rep1",
@@ -39,13 +39,13 @@ data = [
                 "kobo_name": "group_uv9yg82/gps_bare_node_rep1",
                 "db_names": ["bare_lat", "bare_lon"],
                 "separator": " ",
-                "indices": [0,1],       
+                "indices": [0, 1],
             },
             {
                 "kobo_name": "group_uv9yg82/gps_cover_crop_node_rep1",
                 "db_names": ["cover_lat", "cover_lon"],
                 "separator": " ",
-                "indices": [0,1],       
+                "indices": [0, 1],
             },
         ],
         "extra_cols": [
@@ -73,7 +73,7 @@ data = [
             {
                 "kobo_name": "barcode_gateway",
                 "db_names": ["gateway_serial_no"],
-                "tests": ["not_null", "check_regex ^210[0-9]{5}$|^-999$"],
+                "tests": ["check_regex ^210[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "group_uv9yg82/bare_node_rep2",
@@ -102,13 +102,13 @@ data = [
                 "kobo_name": "group_uv9yg82/gps_bare_node_rep2",
                 "db_names": ["bare_lat", "bare_lon"],
                 "separator": " ",
-                "indices": [0,1],        
+                "indices": [0, 1],
             },
             {
                 "kobo_name": "group_uv9yg82/gps_cover_crop_node_rep2",
                 "db_names": ["cover_lat", "cover_lon"],
                 "separator": " ",
-                "indices": [0,1],        
+                "indices": [0, 1],
             },
         ],
         "extra_cols": [
