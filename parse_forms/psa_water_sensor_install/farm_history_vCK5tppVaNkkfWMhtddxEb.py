@@ -10,7 +10,6 @@ data = [
             {
                 "kobo_name": "farm_info_group/crop_planting_date",
                 "db_names": ["cash_crop_planting_date"],
-                "tests": ["not_null"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",
