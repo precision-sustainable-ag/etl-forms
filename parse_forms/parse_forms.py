@@ -172,9 +172,14 @@ class FormParser:
             else:
                 return False
 
+        def check_if_value_equals(data, value):
+            print(data, value)
+            return data == value
+
         functions = {
             "not_null": not_null,
-            "check_regex": check_regex
+            "check_regex": check_regex,
+            "check_if_value_equals": check_if_value_equals,
         }
 
         for test in tests:
@@ -525,12 +530,12 @@ class FormParser:
             self.temp_valid_rows = pd.DataFrame()
             valid_row_table_pairs = None
             table_name = table.get("table_name")
+            save_errors = table.get("save_errors")
 
             table_key = table.get("table_keys").get(form_version)
 
             if (not_reparse and self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name) and self.valid_parsed_form_tables.get(table_name).get(row_uid)) \
                     or (not_reparse and self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name) and self.invalid_parsed_form_tables.get(table_name).get(row_uid)):
-
                 continue
 
             if table_name in self.xform_id_string_dataframes.get(xform_id_string):
@@ -552,9 +557,10 @@ class FormParser:
                     row_entry["table_name"] = table_name
                     row_entry["err"] = json.dumps(messages)
                     row_entry["xform_id_string"] = xform_id_string
-                    self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(
-                        row_entry, ignore_index=True)
-                    row_entry.pop("err")
+                    if save_errors != False:
+                        self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(
+                            row_entry, ignore_index=True)
+                        row_entry.pop("err")
                     self.unsuccessful_parse_logger.error(
                         "could not parse form uid {} for table {}".format(row_uid, table_name))
                     self.encountered_parsing_error += 1

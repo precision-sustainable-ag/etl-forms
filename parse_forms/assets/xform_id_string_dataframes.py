@@ -24,6 +24,7 @@ xform_id_string_dataframes = {
         "decomp_biomass_fresh__biomass_decomp_bag": empty_dataframe,
         "farm_history__biomass_decomp_bag": empty_dataframe,
         "decomp_biomass_dry__biomass_decomp_bag": empty_dataframe,
+        "protocol_enrollment__biomass_decomp_bag": empty_dataframe,
     },
     "aZjGUZ6htFZV5hFgxjP4oa": {
         "social_sciences_survey__farm_history_survey": empty_dataframe,

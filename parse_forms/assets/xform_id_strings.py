@@ -1,59 +1,65 @@
-from ..psa_gps import psa_gps_vFTrkLn3MMbs9wCLEBBh4s as psa_gps
+from ..psa_gps import psa_gps_vFTrkLn3MMbs9wCLEBBh4s
 
-from ..psa_water_sensor_install import wsensor_install_vuiiHRr2MJSGzFwSncyLP9 as wsensor_install_vuiiHRr2MJSGzFwSncyLP9
-from ..psa_water_sensor_install import wsensor_install_vCK5tppVaNkkfWMhtddxEb as wsensor_install_vCK5tppVaNkkfWMhtddxEb
+from ..psa_water_sensor_install import wsensor_install_vuiiHRr2MJSGzFwSncyLP9
+from ..psa_water_sensor_install import wsensor_install_vCK5tppVaNkkfWMhtddxEb
 
-from ..psa_water_sensor_install import farm_history_vCK5tppVaNkkfWMhtddxEb as farm_history_vCK5tppVaNkkfWMhtddxEb
+from ..psa_water_sensor_install import farm_history_vCK5tppVaNkkfWMhtddxEb
 
-from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vQnB8sJFc8JEhYJqXiYQRy as decomp_biomass_fresh_vQnB8sJFc8JEhYJqXiYQRy
-from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vZvVu9PdqRHLeeJGbGha3z as decomp_biomass_fresh_vZvVu9PdqRHLeeJGbGha3z
-from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vgaKFRKRg54E2Z7fvayCxf as decomp_biomass_fresh_vgaKFRKRg54E2Z7fvayCxf
-from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vzazAbS9satE4PXaGNKwBE as decomp_biomass_fresh_vzazAbS9satE4PXaGNKwBE
+from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vQnB8sJFc8JEhYJqXiYQRy
+from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vZvVu9PdqRHLeeJGbGha3z
+from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vgaKFRKRg54E2Z7fvayCxf
+from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vzazAbS9satE4PXaGNKwBE
 
-from ..psa_bag_dry_wt import decomp_biomass_dry_vDqdEsDav5K6hSRHrgYJmM as decomp_biomass_dry_vDqdEsDav5K6hSRHrgYJmM
-from ..psa_bag_dry_wt import decomp_biomass_dry_vusvAjv42DfdfjKkFWm6H3 as decomp_biomass_dry_vusvAjv42DfdfjKkFWm6H3
+from ..psa_bag_dry_wt import decomp_biomass_dry_vDqdEsDav5K6hSRHrgYJmM
+from ..psa_bag_dry_wt import decomp_biomass_dry_vusvAjv42DfdfjKkFWm6H3
 
-from ..psa_bag_collect import decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e as decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e
-from ..psa_bag_collect import decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG as decomp_biomass_dryLVmcbGVhR3C3fkW9ZhHG
+from ..psa_bag_collect import decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e
+from ..psa_bag_collect import decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG
 
-from ..psa_biomass_decomp_bag import biomass_in_field_vEchkcAone8S7y4eYhgru4 as biomass_in_field_vEchkcAone8S7y4eYhgru4
-from ..psa_biomass_decomp_bag import biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh as biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh
-from ..psa_biomass_decomp_bag import biomass_in_field_vcrycicDgojagKK5b7hTAP as biomass_in_field_vcrycicDgojagKK5b7hTAP
-from ..psa_biomass_decomp_bag import biomass_in_field_va4wrosaFh5fN8rUZnKZHz as biomass_in_field_va4wrosaFh5fN8rUZnKZHz
-from ..psa_biomass_decomp_bag import biomass_in_field_vLamBBuk4isVXD6ZxyNzjs as biomass_in_field_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import biomass_in_field_vEchkcAone8S7y4eYhgru4
+from ..psa_biomass_decomp_bag import biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh
+from ..psa_biomass_decomp_bag import biomass_in_field_vcrycicDgojagKK5b7hTAP
+from ..psa_biomass_decomp_bag import biomass_in_field_va4wrosaFh5fN8rUZnKZHz
+from ..psa_biomass_decomp_bag import biomass_in_field_vLamBBuk4isVXD6ZxyNzjs
 
-from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vEchkcAone8S7y4eYhgru4 as decomp_biomass_fresh_vEchkcAone8S7y4eYhgru4
-from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vyYD9Bt3WSjzKorvPhLvLh as decomp_biomass_fresh_vyYD9Bt3WSjzKorvPhLvLh
-from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP as decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP
-from ..psa_biomass_decomp_bag import decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz as decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz
-from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs as decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vEchkcAone8S7y4eYhgru4
+from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vyYD9Bt3WSjzKorvPhLvLh
+from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP
+from ..psa_biomass_decomp_bag import decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz
+from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs
 
-from ..psa_biomass_decomp_bag import farm_history_vLamBBuk4isVXD6ZxyNzjs as farm_history_vLamBBuk4isVXD6ZxyNzjs
-from ..psa_biomass_decomp_bag import farm_history_vEchkcAone8S7y4eYhgru4 as farm_history_vEchkcAone8S7y4eYhgru4
-from ..psa_biomass_decomp_bag import farm_history_vcrycicDgojagKK5b7hTAP as farm_history_vcrycicDgojagKK5b7hTAP
+from ..psa_biomass_decomp_bag import farm_history_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import farm_history_vEchkcAone8S7y4eYhgru4
+from ..psa_biomass_decomp_bag import farm_history_vcrycicDgojagKK5b7hTAP
 
-from ..psa_biomass_decomp_bag import decomp_biomass_dry_vEchkcAone8S7y4eYhgru4 as decomp_biomass_dry_vEchkcAone8S7y4eYhgru4
-from ..psa_biomass_decomp_bag import decomp_biomass_dry_vyYD9Bt3WSjzKorvPhLvLh as decomp_biomass_dry_vyYD9Bt3WSjzKorvPhLvLh
-from ..psa_biomass_decomp_bag import decomp_biomass_dry_vcrycicDgojagKK5b7hTAP as decomp_biomass_dry_vcrycicDgojagKK5b7hTAP
-from ..psa_biomass_decomp_bag import decomp_biomass_dry_va4wrosaFh5fN8rUZnKZHz as decomp_biomass_dry_va4wrosaFh5fN8rUZnKZHz
-from ..psa_biomass_decomp_bag import decomp_biomass_dry_vLamBBuk4isVXD6ZxyNzjs as decomp_biomass_dry_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import decomp_biomass_dry_vEchkcAone8S7y4eYhgru4
+from ..psa_biomass_decomp_bag import decomp_biomass_dry_vyYD9Bt3WSjzKorvPhLvLh
+from ..psa_biomass_decomp_bag import decomp_biomass_dry_vcrycicDgojagKK5b7hTAP
+from ..psa_biomass_decomp_bag import decomp_biomass_dry_va4wrosaFh5fN8rUZnKZHz
+from ..psa_biomass_decomp_bag import decomp_biomass_dry_vLamBBuk4isVXD6ZxyNzjs
 
-from ..psa_farm_history_survey import social_sciences_survey_vybw9K58Yjxo7RFWNboAam as social_sciences_survey_vybw9K58Yjxo7RFWNboAam
-from ..psa_farm_history_survey import social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy as social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy
-from ..psa_farm_history_survey import social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP as social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP
-from ..psa_farm_history_survey import social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs as social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs
+from ..psa_biomass_decomp_bag import protocol_enrollment_vEchkcAone8S7y4eYhgru4
+from ..psa_biomass_decomp_bag import protocol_enrollment_vyYD9Bt3WSjzKorvPhLvLh
+from ..psa_biomass_decomp_bag import protocol_enrollment_vcrycicDgojagKK5b7hTAP
+from ..psa_biomass_decomp_bag import protocol_enrollment_va4wrosaFh5fN8rUZnKZHz
+from ..psa_biomass_decomp_bag import protocol_enrollment_vLamBBuk4isVXD6ZxyNzjs
 
-from ..psa_farm_history_survey import farm_history_vjboA2N6nDU9e6cmzZvVtP as farm_history_vjboA2N6nDU9e6cmzZvVtP
-from ..psa_farm_history_survey import farm_history_vszpMZ8jHiXRqH2KCzx8Zy as farm_history_vszpMZ8jHiXRqH2KCzx8Zy
-from ..psa_farm_history_survey import farm_history_vUhSQRn3KbRTan9wqjFAqs as farm_history_vUhSQRn3KbRTan9wqjFAqs
-from ..psa_farm_history_survey import farm_history_vybw9K58Yjxo7RFWNboAam as farm_history_vybw9K58Yjxo7RFWNboAam
+from ..psa_farm_history_survey import social_sciences_survey_vybw9K58Yjxo7RFWNboAam
+from ..psa_farm_history_survey import social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy
+from ..psa_farm_history_survey import social_sciences_survey_vjboA2N6nDU9e6cmzZvVtP
+from ..psa_farm_history_survey import social_sciences_survey_vUhSQRn3KbRTan9wqjFAqs
+
+from ..psa_farm_history_survey import farm_history_vjboA2N6nDU9e6cmzZvVtP
+from ..psa_farm_history_survey import farm_history_vszpMZ8jHiXRqH2KCzx8Zy
+from ..psa_farm_history_survey import farm_history_vUhSQRn3KbRTan9wqjFAqs
+from ..psa_farm_history_survey import farm_history_vybw9K58Yjxo7RFWNboAam
 
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
         {
             "table_name": "gps_corners__gps",
             "table_keys": {
-                "vFTrkLn3MMbs9wCLEBBh4s": psa_gps.data,
+                "vFTrkLn3MMbs9wCLEBBh4s": psa_gps_vFTrkLn3MMbs9wCLEBBh4s.data,
             },
             "asset_name": "psa gps",
         },
@@ -106,7 +112,7 @@ xform_id_strings = {
             "table_name": "decomp_biomass_dry__decomp_bag_collect",
             "table_keys": {
                 "v94kLXWMrZ8fZRpCFzSn4e": decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e.data,
-                "v5LVmcbGVhR3C3fkW9ZhHG": decomp_biomass_dryLVmcbGVhR3C3fkW9ZhHG.data,
+                "v5LVmcbGVhR3C3fkW9ZhHG": decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG.data,
             },
             "asset_name": "psa decomp bag collect",
         },
@@ -154,6 +160,18 @@ xform_id_strings = {
                 "vLamBBuk4isVXD6ZxyNzjs": decomp_biomass_dry_vLamBBuk4isVXD6ZxyNzjs.data,
             },
             "asset_name": "psa biomass decomp bag",
+        },
+        {
+            "table_name": "protocol_enrollment__biomass_decomp_bag",
+            "table_keys": {
+                "vEchkcAone8S7y4eYhgru4": protocol_enrollment_vEchkcAone8S7y4eYhgru4.data,
+                "vyYD9Bt3WSjzKorvPhLvLh": protocol_enrollment_vyYD9Bt3WSjzKorvPhLvLh.data,
+                "vcrycicDgojagKK5b7hTAP": protocol_enrollment_vcrycicDgojagKK5b7hTAP.data,
+                "va4wrosaFh5fN8rUZnKZHz": protocol_enrollment_va4wrosaFh5fN8rUZnKZHz.data,
+                "vLamBBuk4isVXD6ZxyNzjs": protocol_enrollment_vLamBBuk4isVXD6ZxyNzjs.data,
+            },
+            "asset_name": "psa biomass decomp bag",
+            "save_errors": False,
         },
     ],
 
