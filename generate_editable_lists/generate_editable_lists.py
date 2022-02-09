@@ -87,23 +87,31 @@ class ListMaker:
             "version": [],
             "editable_list": [],
             "entry_to_iterate": [],
+            "iterator_editable_list": [],
         }
         entry_to_iterate = None
 
         for version, obj in version_dict.items():
             editable_list = []
+            iterator_editable_list = []
+            version_has_iterator = False
             for dict_list in obj:
                 for row in dict_list:
                     if row.get("entry_to_iterate"):
                         entry_to_iterate = row.get("entry_to_iterate")
-                    else:
-                        entry_to_iterate = None
+                        version_has_iterator = True
+
                     for col in row.get("cols_from_form"):
                         kobo_name = col.get("kobo_name")
                         if kobo_name not in editable_list and kobo_name != "WON'T BE FOUND" and not kobo_name.startswith("_") and "gps" not in kobo_name.lower():
-                            editable_list.append(kobo_name)
+                            if version_has_iterator:
+                                iterator_editable_list.append(kobo_name)
+                            else:
+                                editable_list.append(kobo_name)
 
             editable_list_by_version["version"].append(version)
+            editable_list_by_version["iterator_editable_list"].append(
+                json.dumps(iterator_editable_list))
             editable_list_by_version["editable_list"].append(
                 json.dumps(editable_list))
             editable_list_by_version["entry_to_iterate"].append(
@@ -120,11 +128,6 @@ class ListMaker:
 
         df = pd.DataFrame(editable_list_by_version)
 
-        # for version, editable_list, entry_to_iterate in editable_list_by_version.items():
-        #     df = df.append({"version": version, "editable_list": editable_list,
-        #                    "entry_to_iterate": entry_to_iterate}, ignore_index=True)
-
-        # df = df.fillna(value=np.nan)
         df = df.astype(object).where(pd.notnull(df), None)
         print(df)
 
