@@ -173,7 +173,6 @@ class FormParser:
                 return False
 
         def check_if_value_equals(data, value):
-            print(data, value)
             return data == value
 
         functions = {
