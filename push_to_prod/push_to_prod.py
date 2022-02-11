@@ -233,7 +233,7 @@ class ProductionPusher:
             self.try_queries(update_local_query, insert_query, values_list, row_entry.get(
                 "sid"), raw_uid, prod_table_name, table_name)
 
-    def generate_update_prod_sql(self, values_dict, unique_dict, prod_table_name, conditions_dict):
+    def generate_update_prod_sql(self, values_dict, unique_dict, prod_table_name, conditions_dict, update_not_nulls):
         identifiers_list = []
         # creates list of sql statements (var1 = %{} AND var2 = ${} ...etc)
         for i, (k, v) in enumerate(unique_dict.items()):
@@ -261,27 +261,43 @@ class ProductionPusher:
                 condition_vals_list.append(sql.Composed(
                     [sql.SQL(" AND "), sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]))
 
-        update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {identifiers} {additional_conditions} AND {is_null_vals}").format(
-            table=sql.Identifier(prod_table_name),
-            values=sql.SQL(', ').join(
-                sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]) for k in values_dict.keys()
-            ),
-            identifiers=sql.SQL('').join(
-                identifiers_list
-            ),
-            additional_conditions=sql.SQL('').join(
-                condition_vals_list
-            ),
-            is_null_vals=sql.SQL('').join(
-                null_vals_list
-            ),
-        )
+        update_prod_query = ""
+
+        if update_not_nulls == True:
+            update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {identifiers} {additional_conditions}").format(
+                table=sql.Identifier(prod_table_name),
+                values=sql.SQL(', ').join(
+                    sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]) for k in values_dict.keys()
+                ),
+                identifiers=sql.SQL('').join(
+                    identifiers_list
+                ),
+                additional_conditions=sql.SQL('').join(
+                    condition_vals_list
+                ),
+            )
+        else:
+            update_prod_query = sql.SQL("UPDATE {table} SET {values} WHERE {identifiers} {additional_conditions} AND {is_null_vals}").format(
+                table=sql.Identifier(prod_table_name),
+                values=sql.SQL(', ').join(
+                    sql.Composed([sql.Identifier(k), sql.SQL(" = "), sql.Placeholder(k)]) for k in values_dict.keys()
+                ),
+                identifiers=sql.SQL('').join(
+                    identifiers_list
+                ),
+                additional_conditions=sql.SQL('').join(
+                    condition_vals_list
+                ),
+                is_null_vals=sql.SQL('').join(
+                    null_vals_list
+                ),
+            )
 
         # print(update_prod_query)
 
         return update_prod_query
 
-    def update_row(self, values_from_table, all_rows, prod_table_name, table_name, unique_cols, additional_conditions):
+    def update_row(self, values_from_table, all_rows, prod_table_name, table_name, unique_cols, additional_conditions, update_not_nulls):
         rows_list = []
         for value in values_from_table:
             rows_list.append(sql.Identifier(value))
@@ -321,7 +337,7 @@ class ProductionPusher:
             # print(conditions_dict)
 
             update_prod_query = self.generate_update_prod_sql(
-                values_dict, unique_dict, prod_table_name, conditions_dict)
+                values_dict, unique_dict, prod_table_name, conditions_dict, update_not_nulls)
 
             update_sql_string = "UPDATE {table} SET pushed_to_prod = 1 WHERE sid = {sid}"
             update_local_query = sql.SQL(update_sql_string).format(
@@ -346,6 +362,7 @@ class ProductionPusher:
             unique_cols = info.get("unique_cols")
             mode = info.get("mode")
             additional_conditions = info.get("additional_conditions")
+            update_not_nulls = info.get("update_not_nulls")
 
             if mode == "insert":
                 self.insert_row(values_from_table, all_rows,
@@ -353,7 +370,7 @@ class ProductionPusher:
 
             elif mode == "update":
                 self.update_row(values_from_table, all_rows,
-                                prod_table_name, table_name, unique_cols, additional_conditions)
+                                prod_table_name, table_name, unique_cols, additional_conditions, update_not_nulls)
 
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')

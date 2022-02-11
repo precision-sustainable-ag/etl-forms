@@ -3,6 +3,7 @@ info = {
         "values_from_table": ["latitude", "longitude"],
         "unique_cols": ["code", "subplot", "treatment", "corner_index"],
         "mode": "update",
+        "update_not_nulls": False,
     },
     "wsensor_install__water_sensor_install": {
         "all_rows": ["subplot", "code", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "bare_lon", "bare_lat", "cover_lon", "cover_lat"],
@@ -12,26 +13,31 @@ info = {
         "values_from_table": ["empty_bag_wt"],
         "unique_cols": ["code", "subplot", "subsample", "time"],
         "mode": "update",
+        "update_not_nulls": False,
     },
     "decomp_biomass_fresh__biomass_decomp_bag": {
         "values_from_table": ["fresh_biomass_wt"],
         "unique_cols": ["code", "subplot", "subsample", "time"],
         "mode": "update",
+        "update_not_nulls": False,
     },
     "decomp_biomass_dry__decomp_bag_dry_wt": {
         "values_from_table": ["dry_biomass_wt"],
         "unique_cols": ["code", "subplot", "subsample", "time"],
         "mode": "update",
+        "update_not_nulls": False,
     },
     "decomp_biomass_dry__decomp_bag_collect": {
         "values_from_table": ["recovery_date"],
         "unique_cols": ["code", "subplot", "subsample", "time"],
         "mode": "update",
+        "update_not_nulls": False,
     },
     "biomass_in_field__biomass_decomp_bag": {
         "values_from_table": ["fresh_wt_a", "fresh_wt_b", "bag_wt_a", "bag_wt_b", "legumes_40"],
         "unique_cols": ["code", "subplot"],
         "mode": "update",
+        "update_not_nulls": False,
     },
     "social_sciences_survey__farm_history_survey": {
         "all_rows": [
@@ -86,20 +92,30 @@ info = {
         ],
         "unique_cols": ["code"],
         "mode": "update",
+        "update_not_nulls": False,
     },
     "farm_history__biomass_decomp_bag": {
         "values_from_table": ["cc_termination_date", "growth_stage_grains", "growth_stage_legumes", "growth_stage_brassicas"],
         "unique_cols": ["code"],
         "mode": "update",
+        "update_not_nulls": False,
     },
     "decomp_biomass_dry__biomass_decomp_bag": {
         "values_from_table": ["recovery_date"],
         "unique_cols": ["code", "time"],
         "mode": "update",
+        "update_not_nulls": False,
+    },
+    "protocol_enrollment__biomass_decomp_bag": {
+        "values_from_table": ["in_field_biomass", "decomp_biomass"],
+        "unique_cols": ["code"],
+        "mode": "update",
+        "update_not_nulls": True,
     },
     "farm_history__water_sensor_install": {
         "values_from_table": ["cash_crop_planting_date"],
         "unique_cols": ["code"],
         "mode": "update",
+        "update_not_nulls": False,
     },
 }
