@@ -8,7 +8,7 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "today",
+                "kobo_name": "start",
                 "db_names": ["recovery_date"],
                 "tests": ["not_null"],
             },
