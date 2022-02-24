@@ -56,7 +56,7 @@ data = [
                 "indices": [0, 1],
             },
         ],
-        # "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
+        "completeness_cols": ["bare_node_serial_no", "cover_node_serial_no"],
         "all_cols": ["code", "subplot", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no", "time_begin", "bare_lon", "bare_lat", "cover_lon", "cover_lat"]
     }
 ]
