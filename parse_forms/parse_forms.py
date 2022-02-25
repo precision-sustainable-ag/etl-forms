@@ -54,10 +54,7 @@ class FormParser:
         self.valid_parsed_form_tables = {}
         self.invalid_parsed_form_tables = {}
 
-        # self.encountered_unicity_error = 0
-        # self.encountered__error = 0
         self.encountered_parsing_error = 0
-        # self.encountered_no_rows_error = 0
 
     def connect_to_shadow_live(self):
         postgres_host = os.environ.get('LIVE_SHADOW_HOST')
@@ -195,37 +192,26 @@ class FormParser:
 
         return True, "Passed all tests"
 
-    def add_cols(self, new_row, extra_cols):
+    def add_cols(self, new_rows, extra_cols):
         if not extra_cols:
             return
         for extra_col in extra_cols:
-            new_row[extra_col.get("name")] = extra_col.get("value")
+            new_rows[extra_col.get("name")] = extra_col.get("value")
 
-    def split_data(self, names, data, seperator, indices, new_row):
+    def split_data(self, names, data, seperator, indices, new_rows, index):
         if not data:
-            return new_row
+            return new_rows
 
         split = data.split(seperator)
 
-        for index, name in enumerate(names):
-            new_row[name] = split[indices[index]]
+        for name_index, name in enumerate(names):
+            new_rows[index][name] = split[indices[name_index]]
 
-        return new_row
-
-    # def convert_to_excel(self, data, file_path):
-    #     data.to_excel (file_path, index = False, header=True)
+        return new_rows
 
     def close_con(self):
         self.postgres_con.close()
         self.global_logger.info("Closing connections")
-
-    # def save_all_to_excel(self):
-    #     for key, value in self.xform_id_string_dataframes.items():
-    #         for key_2, value_2 in value.items():
-    #             # self.global_logger.info(value_2)
-    #             self.convert_to_excel(value_2, r'C:\Users\mikah\Documents\etl-forms\excel_dump\{}.xlsx'.format(key_2))
-
-    #     self.convert_to_excel(self.invalid_row_table_pairs, r'C:\Users\mikah\Documents\etl-forms\excel_dump\invalid_row_table_pairs.xlsx')
 
     def convert_to_sql(self, dataframe, table_name):
         dataframe.to_sql(table_name, self.postgres_engine,
@@ -315,12 +301,12 @@ class FormParser:
 
         return status, converted_data
 
-    def validate_row(self, kobo_row, new_row):
+    def validate_row(self, kobo_row, new_rows):
         row_is_complete_or_null = False
 
         existing_rows = 0
         for col in kobo_row.get("completeness_cols"):
-            if new_row.get(col):
+            if new_rows.get(col):
                 existing_rows += 1
 
         if existing_rows == 0 or existing_rows == len(kobo_row.get("completeness_cols")):
@@ -331,14 +317,14 @@ class FormParser:
         else:
             return False
 
-    def row_is_not_null(self, kobo_row, new_row):
+    def row_is_not_null(self, kobo_row, new_rows):
         if not kobo_row.get("all_cols"):
             return True
 
         row_is_not_null = False
 
         for col in kobo_row.get("all_cols"):
-            if new_row.get(col):
+            if new_rows.get(col):
                 row_is_not_null = True
                 break
 
@@ -347,10 +333,10 @@ class FormParser:
         else:
             return False
 
-    def assert_active(self, new_row, row_data, end):
+    def assert_active(self, new_rows, row_data, end):
         message = "Valid farm code"
 
-        farm_code = new_row.get("code")
+        farm_code = new_rows.get("code")
 
         if not end:
             end = row_data.get("end")
@@ -384,11 +370,11 @@ class FormParser:
             message = "No data " + " for " + str(year)
             return False, message
 
-    def get_producer_id(self, new_row):
-        if new_row.get("producer_phone") and self.valid_producers.get(new_row.get("producer_phone")):
-            return self.valid_producers.get(new_row.get("producer_phone"))
-        elif new_row.get("producer_email") and self.valid_producers.get(new_row.get("producer_email")):
-            return self.valid_producers.get(new_row.get("producer_email"))
+    def get_producer_id(self, new_rows):
+        if new_rows.get("producer_phone") and self.valid_producers.get(new_rows.get("producer_phone")):
+            return self.valid_producers.get(new_rows.get("producer_phone"))
+        elif new_rows.get("producer_email") and self.valid_producers.get(new_rows.get("producer_email")):
+            return self.valid_producers.get(new_rows.get("producer_email"))
         else:
             return False
 
@@ -416,73 +402,114 @@ class FormParser:
 
         return valid_form
 
-    def get_cols_from_form(self, kobo_row, row_data, new_row, table_name):
-        row_passed_tests = True
+    def separate_into_multiple_rows(self, data, row_data, new_rows, rows_passed_tests, error_messages, table_name):
+        try:
+            index = 0
+            template_row = new_rows[0]
+            for item in row_data.get(data.get("kobo_name")).split(data.get("value_separator")):
+                print(item + "\n")
+                new_row_data = row_data
+                new_row_data[data.get("kobo_name")] = item
+
+                status, converted_data = self.test_and_format_data(
+                    data, new_row_data)
+
+                print(status, converted_data)
+
+                if status:
+                    if not data.get("separator"):
+                        new_rows[index][data.get("db_names")[
+                            0]] = converted_data
+                    else:
+                        data = self.split_data(data.get("db_names"), converted_data, data.get(
+                            "separator"), data.get("indices"), new_rows, index)
+                else:
+                    rows_passed_tests = False
+                    error_messages.append(
+                        "`[\"" + str(data.get("kobo_name")) + "\"]`" + " row failed tests for table " + table_name)
+
+                new_rows.append(template_row)
+                index += 1
+
+            return rows_passed_tests, error_messages
+        except Exception:
+            print(traceback.print_exc(file=sys.stdout))
+            return False, error_messages
+
+    def get_cols_from_form(self, kobo_row, row_data, new_rows, table_name):
+        rows_passed_tests = True
         error_messages = []
 
         for data in kobo_row.get("cols_from_form"):
-            status, converted_data = self.test_and_format_data(data, row_data)
-
-            if status:
-                if not data.get("separator"):
-                    new_row[data.get("db_names")[0]] = converted_data
-                else:
-                    data = self.split_data(data.get("db_names"), converted_data, data.get(
-                        "separator"), data.get("indices"), new_row)
+            if data.get("separate_into_multiple_rows") == True:
+                rows_passed_tests, error_messages = self.separate_into_multiple_rows(
+                    data, row_data, new_rows, rows_passed_tests, error_messages, table_name)
             else:
-                row_passed_tests = False
-                error_messages.append(
-                    "`[\"" + str(data.get("kobo_name")) + "\"]`" + " row failed tests for table " + table_name)
-                # break
+                status, converted_data = self.test_and_format_data(
+                    data, row_data)
 
-        return row_passed_tests, error_messages
+                if status:
+                    if not data.get("separator"):
+                        new_rows[0][data.get("db_names")[
+                            0]] = converted_data
+                    else:
+                        data = self.split_data(data.get("db_names"), converted_data, data.get(
+                            "separator"), data.get("indices"), new_rows, 0)
+                else:
+                    rows_passed_tests = False
+                    error_messages.append(
+                        "`[\"" + str(data.get("kobo_name")) + "\"]`" + " row failed tests for table " + table_name)
+
+        return rows_passed_tests, error_messages
 
     def extract_row(self, row_uid, kobo_row, row_data, table_name, error_list, empty_form, valid_producer, end=False, submitted_by=False):
-        new_row = {
+        new_rows = [{
             "rawuid": row_uid,
             "parsed_at": datetime.datetime.now()
-        }
+        }]
 
         if kobo_row.get("extra_cols"):
-            self.add_cols(new_row, kobo_row.get("extra_cols"))
+            self.add_cols(new_rows[0], kobo_row.get("extra_cols"))
 
-        row_passed_tests, error_messages = self.get_cols_from_form(
-            kobo_row, row_data, new_row, table_name)
+        rows_passed_tests, error_messages = self.get_cols_from_form(
+            kobo_row, row_data, new_rows, table_name)
 
         error_list += error_messages
 
-        row_is_valid = True
-        if kobo_row.get("completeness_cols") and row_passed_tests:
-            row_is_valid = self.validate_row(kobo_row, new_row)
+        for row in new_rows:
+            row_is_valid = True
+            if kobo_row.get("completeness_cols") and rows_passed_tests:
+                row_is_valid = self.validate_row(kobo_row, row)
 
-            if not row_is_valid:
-                error_message = "`" + json.dumps(kobo_row.get("completeness_errs")) + "` " + str(
-                    kobo_row.get("completeness_err_message")) + " for table " + table_name
-                error_list += [error_message]
+                if not row_is_valid:
+                    error_message = "`" + json.dumps(kobo_row.get("completeness_errs")) + "` " + str(
+                        kobo_row.get("completeness_err_message")) + " for table " + table_name
+                    error_list += [error_message]
 
-        active_farm, farm_message = self.assert_active(new_row, row_data, end)
+            active_farm, farm_message = self.assert_active(
+                row, row_data, end)
 
-        if kobo_row.get("verify_producer") and row_passed_tests:
-            producer_id = self.get_producer_id(new_row)
-            if producer_id:
-                new_row["producer_id"] = producer_id
-            else:
-                error_list += ["producer with that email or phone does not exist"]
-                valid_producer = False
+            if kobo_row.get("verify_producer") and rows_passed_tests:
+                producer_id = self.get_producer_id(row)
+                if producer_id:
+                    row["producer_id"] = producer_id
+                else:
+                    error_list += ["producer with that email or phone does not exist"]
+                    valid_producer = False
 
-        if not active_farm and farm_message not in error_list:
-            error_list += [farm_message]
+            if not active_farm and farm_message not in error_list:
+                error_list += [farm_message]
 
-        if self.row_is_not_null(kobo_row, new_row):
-            empty_form = False
+            if self.row_is_not_null(kobo_row, row):
+                empty_form = False
 
-        if submitted_by:
-            new_row['submitted_by'] = submitted_by
+            if submitted_by:
+                row['submitted_by'] = submitted_by
 
-        if row_passed_tests and row_is_valid and active_farm and self.row_is_not_null(kobo_row, new_row) and valid_producer:
-            new_row["pushed_to_prod"] = 0
-            self.temp_valid_rows = self.temp_valid_rows.append(
-                new_row, ignore_index=True)
+            if rows_passed_tests and row_is_valid and active_farm and self.row_is_not_null(kobo_row, row) and valid_producer:
+                row["pushed_to_prod"] = 0
+                self.temp_valid_rows = self.temp_valid_rows.append(
+                    row, ignore_index=True)
 
         return error_list, empty_form, valid_producer
 
@@ -490,7 +517,6 @@ class FormParser:
         entry_to_iterate = kobo_row.get("entry_to_iterate")
         end = row_data.get("end")
         submitted_by = row_data.get("_submitted_by")
-        print(submitted_by)
         for item in row_data.get(entry_to_iterate):
             error_list, empty_form, valid_producer = self.extract_row(
                 row_uid, kobo_row, item, table_name, error_list, empty_form, valid_producer, end, submitted_by)
@@ -564,39 +590,12 @@ class FormParser:
                         "could not parse form uid {} for table {}".format(row_uid, table_name))
                     self.encountered_parsing_error += 1
 
-    # def update_table(self, dataframe, table_name, uid):
-    #     self.delete_from_table(table_name, uid)
-    #     self.convert_to_sql(dataframe, table_name)
-
-    # def update_reparsed_rows(self, xform_id_string, uid):
-    #     # print(self.invalid_row_table_pairs)
-
-    #     for key, value in self.xform_id_string_dataframes.get(xform_id_string).items():
-    #         # print(value)
-    #         self.update_table(value, key, uid)
-
-    # def reparse_form(self, uid):
-    #     row_entry = pd.read_sql("SELECT * FROM kobo WHERE uid = {}".format(uid), self.mysql_engine).iloc[0]
-    #     # self.global_logger.info(type(row_entry))
-    #     # self.global_logger.info(row_entry.get("data"))
-    #     asset_name = row_entry.get("asset_name")
-    #     row_data = json.loads(row_entry.get("data"))
-    #     form_version = row_data.get("__version__")
-
-    #     table_list = self.xform_id_strings.get(asset_name)
-
-    #     if table_list:
-    #         self.iterate_tables(table_list, asset_name, row_entry, form_version, False)
-
-    #     self.update_reparsed_rows(asset_name, uid)
-
     def parse_forms(self):
         self.get_valid_parsed_forms()
         self.get_invalid_parsed_forms()
         self.get_all_responses()
 
         for index, row_entry in self.data.iterrows():
-            # print("start " + str(row_entry.get("uid")))
             row_data = json.loads(row_entry.get("data"))
             form_version = row_data.get("__version__")
             xform_id_string = row_data.get("_xform_id_string")
@@ -604,7 +603,6 @@ class FormParser:
             row_data = json.loads(row_entry.get("data"))
 
             table_list = self.xform_id_strings.get(xform_id_string)
-            # print(table_list)
 
             if table_list:
                 self.iterate_tables(
@@ -622,28 +620,4 @@ class FormParser:
             self.global_logger.info("Encountered {} parsing errors".format(
                 self.encountered_parsing_error))
 
-        print(
-            self.xform_id_string_dataframes["aZjGUZ6htFZV5hFgxjP4oa"]["farm_history__farm_history_survey"])
-
         self.save_to_postgres()
-
-
-# try:
-#     mode = None
-#     uid = None
-#     if len(sys.argv) > 1:
-#         mode = sys.argv[1]
-#         if len(sys.argv) > 2:
-#             uid = sys.argv[2]
-
-#     fp = FormParser(mode)
-#     if mode == "test" or mode == "live" or mode == None:
-#         fp.parse_forms()
-#     elif mode == "reparse":
-#         fp.reparse_form(uid)
-
-#     fp.close_con()
-
-# except Exception:
-#     self.global_logger.info("an error ocurred \n")
-#     self.global_logger.info(traceback.print_exc(file=sys.stdout))
