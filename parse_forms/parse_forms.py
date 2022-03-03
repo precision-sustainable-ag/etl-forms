@@ -20,10 +20,12 @@ from .api_calls import get_producers
 
 
 class FormParser:
-    def __init__(self, mode=None):
+    def __init__(self, mode=None, test=False, data=None, active_farm_codes=None, valid_producers=None):
         load_dotenv()
         self.connect_to_mysql()
         self.create_loggers()
+
+        self.test = test
 
         date_utc = datetime.datetime.now()
         eastern = timezone('US/Eastern')
@@ -40,6 +42,22 @@ class FormParser:
             self.global_logger.info("local")
             self.connect_to_shadow_local()
 
+        if self.test:
+            self.data = data
+            self.active_farm_codes = active_farm_codes
+            self.valid_producers = valid_producers
+        else:
+            self.active_farm_codes = get_active_farm_codes.create_years_object()
+            self.valid_producers = get_producers.create_producers_object()
+            self.get_all_responses()
+
+        self.initialize_data_imports()
+
+        self.get_valid_parsed_forms()
+        self.get_invalid_parsed_forms()
+
+    def initialize_data_imports(self):
+        # print("initialize")
         self.temp_valid_rows = pd.DataFrame()
 
         self.xform_id_strings = xform_id_strings.xform_id_strings
@@ -48,16 +66,10 @@ class FormParser:
         self.invalid_row_table_pairs = pd.DataFrame()
         self.valid_row_table_pairs = pd.DataFrame()
 
-        self.active_farm_codes = get_active_farm_codes.create_years_object()
-        self.valid_producers = get_producers.create_producers_object()
-
         self.valid_parsed_form_tables = {}
         self.invalid_parsed_form_tables = {}
 
-        # self.encountered_unicity_error = 0
-        # self.encountered__error = 0
         self.encountered_parsing_error = 0
-        # self.encountered_no_rows_error = 0
 
     def connect_to_shadow_live(self):
         postgres_host = os.environ.get('LIVE_SHADOW_HOST')
@@ -202,13 +214,13 @@ class FormParser:
             new_row[extra_col.get("name")] = extra_col.get("value")
 
     def split_data(self, names, data, seperator, indices, new_row):
-        if not data:
-            return new_row
-
-        split = data.split(seperator)
+        split = data.split(seperator) if data is not None else None
 
         for index, name in enumerate(names):
-            new_row[name] = split[indices[index]]
+            if split is not None:
+                new_row[name] = split[indices[index]]
+            else:
+                new_row[name] = None
 
         return new_row
 
@@ -238,6 +250,27 @@ class FormParser:
 
         self.convert_to_sql(self.invalid_row_table_pairs,
                             "invalid_row_table_pairs")
+
+    def generate_test_object(self):
+        return_obj = {
+            "invalid": self.invalid_row_table_pairs,
+            "valid": [],
+        }
+
+        for key, value in self.xform_id_string_dataframes.items():
+            for key_2, value_2 in value.items():
+                if not value_2.empty:
+                    return_obj["valid"].append({
+                        "table_name": key_2,
+                        "dataframe": value_2,
+                    })
+
+        return return_obj
+
+    def empty_dataframes(self):
+        for key, value in self.xform_id_string_dataframes.items():
+            for key_2, value_2 in value.items():
+                self.xform_id_string_dataframes[key][key_2] = pd.DataFrame()
 
     def get_valid_parsed_forms(self):
         for key, value in self.xform_id_string_dataframes.items():
@@ -283,7 +316,7 @@ class FormParser:
 
         def convert_date(data):
             try:
-                return datetime.datetime.strptime(data, "%Y-%m-%d")
+                return pd.to_datetime(data, format="%Y-%m-%d")
             except Exception:
                 self.global_logger.info("not a valid date")
                 self.encountered_parsing_error += 1
@@ -524,7 +557,7 @@ class FormParser:
         else:
             return True, "success"
 
-    def iterate_tables(self, table_list, row_entry, row_uid, row_data, form_version, xform_id_string, not_reparse=True):
+    def iterate_tables(self, table_list, row_entry, row_uid, row_data, form_version, xform_id_string):
         for table in table_list:
             self.temp_valid_rows = pd.DataFrame()
             valid_row_table_pairs = None
@@ -533,11 +566,14 @@ class FormParser:
 
             table_key = table.get("table_keys").get(form_version)
 
-            if (not_reparse and self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(table_name) and self.valid_parsed_form_tables.get(table_name).get(row_uid)) \
-                    or (not_reparse and self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(table_name) and self.invalid_parsed_form_tables.get(table_name).get(row_uid)):
-                continue
+            table_name_in_df = table_name in self.xform_id_string_dataframes.get(
+                xform_id_string)
+            form_is_already_valid = (self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(
+                table_name) and self.valid_parsed_form_tables.get(table_name).get(row_uid)) != None
+            form_is_already_invalid = (self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(
+                table_name) and self.invalid_parsed_form_tables.get(table_name).get(row_uid)) != None
 
-            if table_name in self.xform_id_string_dataframes.get(xform_id_string):
+            if table_name_in_df and ((not form_is_already_valid and not self.test) or not form_is_already_invalid):
                 valid_row_table_pairs = self.xform_id_string_dataframes.get(
                     xform_id_string).get(table_name)
             else:
@@ -591,9 +627,6 @@ class FormParser:
     #     self.update_reparsed_rows(asset_name, uid)
 
     def parse_forms(self):
-        self.get_valid_parsed_forms()
-        self.get_invalid_parsed_forms()
-        self.get_all_responses()
 
         for index, row_entry in self.data.iterrows():
             # print("start " + str(row_entry.get("uid")))
@@ -622,10 +655,10 @@ class FormParser:
             self.global_logger.info("Encountered {} parsing errors".format(
                 self.encountered_parsing_error))
 
-        print(
-            self.xform_id_string_dataframes["aZjGUZ6htFZV5hFgxjP4oa"]["farm_history__farm_history_survey"])
-
-        self.save_to_postgres()
+        if not self.test:
+            self.save_to_postgres()
+        else:
+            return self.generate_test_object()
 
 
 # try:

@@ -11,6 +11,7 @@ data = [
                 "kobo_name": "start",
                 "db_names": ["recovery_date"],
                 "tests": ["not_null"],
+                "datatype": "date",
             },
             {
                 "kobo_name": "WON'T BE FOUND",

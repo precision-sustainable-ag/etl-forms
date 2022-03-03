@@ -44,6 +44,10 @@ data = [
                 },
             },
             {
+                "kobo_name": "WON'T BE FOUND",
+                "db_names": ["notes"],
+            },
+            {
                 "kobo_name": "_submitted_by",
                 "db_names": ["submitted_by"],
             },
