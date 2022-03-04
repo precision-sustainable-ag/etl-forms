@@ -202,7 +202,7 @@ xform_id_strings = {
             "asset_name": "psa farm history survey",
         },
         {
-            "table_name": "cc_species__farm_history_survey",
+            "table_name": "cc_mixture__farm_history_survey",
             "table_keys": {
                 "vjboA2N6nDU9e6cmzZvVtP": cc_species_vjboA2N6nDU9e6cmzZvVtP.data,
                 "vszpMZ8jHiXRqH2KCzx8Zy": cc_species_vszpMZ8jHiXRqH2KCzx8Zy.data,

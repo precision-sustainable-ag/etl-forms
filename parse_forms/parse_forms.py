@@ -12,6 +12,7 @@ import mysql.connector
 from pytz import timezone
 import traceback
 import logging
+import copy
 
 from .assets import xform_id_strings
 from .assets import xform_id_string_dataframes
@@ -213,15 +214,6 @@ class FormParser:
         for extra_col in extra_cols:
             new_rows[extra_col.get("name")] = extra_col.get("value")
 
-    # def split_data(self, names, data, seperator, indices, new_rows, index):
-    #     if not data:
-    #         return new_rows
-
-    #     split = data.split(seperator)
-
-    #     for name_index, name in enumerate(names):
-    #         new_rows[index][name] = split[indices[name_index]]
-
     def split_data(self, names, data, seperator, indices, new_rows, index):
         split = data.split(seperator) if data is not None else None
 
@@ -230,7 +222,6 @@ class FormParser:
                 new_rows[index][name] = split[indices[name_index]]
             else:
                 new_rows[index][name] = None
-        return new_rows
 
     def close_con(self):
         self.postgres_con.close()
@@ -449,30 +440,25 @@ class FormParser:
     def separate_into_multiple_rows(self, data, row_data, new_rows, rows_passed_tests, error_messages, table_name):
         try:
             index = 0
-            template_row = new_rows[0]
 
-            print(row_data.get(data.get("kobo_name")))
-            print(row_data.get(data.get("kobo_name")).split(
-                data.get("value_separator")))
+            print(new_rows)
 
             for item in row_data.get(data.get("kobo_name")).split(data.get("value_separator")):
-                print("original item " + item)
+                if index != 0:
+                    template_row = copy.copy(new_rows[0])
+                    new_rows.append(template_row)
+
                 new_row_data = row_data
                 new_row_data[data.get("kobo_name")] = item
 
                 status, converted_data = self.test_and_format_data(
                     data, new_row_data)
 
-                print("converted data")
-                print(status, converted_data)
-
                 if status:
                     if not data.get("separator"):
-                        print("no sep storing")
                         new_rows[index][data.get("db_names")[
                             0]] = converted_data
                     else:
-                        print("sep storing")
                         data = self.split_data(data.get("db_names"), converted_data, data.get(
                             "separator"), data.get("indices"), new_rows, index)
                 else:
@@ -480,13 +466,7 @@ class FormParser:
                     error_messages.append(
                         "`[\"" + str(data.get("kobo_name")) + "\"]`" + " row failed tests for table " + table_name)
 
-                new_rows.append(template_row)
                 index += 1
-
-                print("\n")
-
-            print("new rows")
-            print(new_rows)
 
             return rows_passed_tests, error_messages
         except Exception:
@@ -624,10 +604,14 @@ class FormParser:
             form_is_already_invalid = (self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(
                 table_name) and self.invalid_parsed_form_tables.get(table_name).get(row_uid)) != None
 
-            if table_name_in_df and ((not form_is_already_valid and not self.test) or not form_is_already_invalid):
+            if table_name_in_df and ((not form_is_already_valid or self.test) and not form_is_already_invalid):
+                # print(table_name_in_df, form_is_already_valid,
+                #       form_is_already_invalid, self.test)
+                print("parse ", str(row_uid))
                 valid_row_table_pairs = self.xform_id_string_dataframes.get(
                     xform_id_string).get(table_name)
             else:
+                print("no parse ", str(row_uid))
                 continue
 
             if table_key:
