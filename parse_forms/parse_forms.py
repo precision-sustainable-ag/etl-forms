@@ -441,8 +441,6 @@ class FormParser:
         try:
             index = 0
 
-            print(new_rows)
-
             for item in row_data.get(data.get("kobo_name")).split(data.get("value_separator")):
                 if index != 0:
                     template_row = copy.copy(new_rows[0])
@@ -605,13 +603,9 @@ class FormParser:
                 table_name) and self.invalid_parsed_form_tables.get(table_name).get(row_uid)) != None
 
             if table_name_in_df and ((not form_is_already_valid or self.test) and not form_is_already_invalid):
-                # print(table_name_in_df, form_is_already_valid,
-                #       form_is_already_invalid, self.test)
-                print("parse ", str(row_uid))
                 valid_row_table_pairs = self.xform_id_string_dataframes.get(
                     xform_id_string).get(table_name)
             else:
-                print("no parse ", str(row_uid))
                 continue
 
             if table_key:
