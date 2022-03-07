@@ -62,7 +62,7 @@ class Tester:
     def fetch_shadow_data(self, uid, table_name):
         try:
             data = pd.read_sql(
-                "SELECT * FROM {} WHERE rawuid = {} And pushed_to_prod = 1".format(table_name, uid), self.live_postgres_engine, parse_dates=True)
+                "SELECT * FROM {} WHERE rawuid = {}".format(table_name, uid), self.live_postgres_engine, parse_dates=True)
         except Exception:
             data = pd.DataFrame()
 
@@ -90,7 +90,7 @@ class Tester:
 
             try:
                 shadow_data = shadow_data.drop(
-                    columns=['parsed_at', 'pushed_to_prod', 'sid', 'notes', 'submitted_by']).sort_index(axis=1)
+                    columns=['parsed_at', 'pushed_to_prod', 'sid', 'notes', 'submitted_by']).sort_index(axis=1).drop_duplicates()
                 table_data = table_data.drop(
                     columns=['parsed_at', 'pushed_to_prod', 'notes', 'submitted_by']).sort_index(axis=1).astype(shadow_data.dtypes.to_dict())
 

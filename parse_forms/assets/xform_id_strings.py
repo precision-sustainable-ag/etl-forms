@@ -54,10 +54,10 @@ from ..psa_farm_history_survey import farm_history_vszpMZ8jHiXRqH2KCzx8Zy
 from ..psa_farm_history_survey import farm_history_vUhSQRn3KbRTan9wqjFAqs
 from ..psa_farm_history_survey import farm_history_vybw9K58Yjxo7RFWNboAam
 
-from ..psa_farm_history_survey import cc_species_vjboA2N6nDU9e6cmzZvVtP
-from ..psa_farm_history_survey import cc_species_vszpMZ8jHiXRqH2KCzx8Zy
-from ..psa_farm_history_survey import cc_species_vUhSQRn3KbRTan9wqjFAqs
-from ..psa_farm_history_survey import cc_species_vybw9K58Yjxo7RFWNboAam
+from ..psa_farm_history_survey import cc_mixture_vjboA2N6nDU9e6cmzZvVtP
+from ..psa_farm_history_survey import cc_mixture_vszpMZ8jHiXRqH2KCzx8Zy
+from ..psa_farm_history_survey import cc_mixture_vUhSQRn3KbRTan9wqjFAqs
+from ..psa_farm_history_survey import cc_mixture_vybw9K58Yjxo7RFWNboAam
 
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
@@ -204,10 +204,10 @@ xform_id_strings = {
         {
             "table_name": "cc_mixture__farm_history_survey",
             "table_keys": {
-                "vjboA2N6nDU9e6cmzZvVtP": cc_species_vjboA2N6nDU9e6cmzZvVtP.data,
-                "vszpMZ8jHiXRqH2KCzx8Zy": cc_species_vszpMZ8jHiXRqH2KCzx8Zy.data,
-                "vUhSQRn3KbRTan9wqjFAqs": cc_species_vUhSQRn3KbRTan9wqjFAqs.data,
-                "vybw9K58Yjxo7RFWNboAam": cc_species_vybw9K58Yjxo7RFWNboAam.data,
+                "vjboA2N6nDU9e6cmzZvVtP": cc_mixture_vjboA2N6nDU9e6cmzZvVtP.data,
+                "vszpMZ8jHiXRqH2KCzx8Zy": cc_mixture_vszpMZ8jHiXRqH2KCzx8Zy.data,
+                "vUhSQRn3KbRTan9wqjFAqs": cc_mixture_vUhSQRn3KbRTan9wqjFAqs.data,
+                "vybw9K58Yjxo7RFWNboAam": cc_mixture_vybw9K58Yjxo7RFWNboAam.data,
             },
             "asset_name": "psa farm history survey",
         },

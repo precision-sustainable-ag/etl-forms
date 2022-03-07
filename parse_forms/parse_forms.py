@@ -597,10 +597,10 @@ class FormParser:
 
             table_name_in_df = table_name in self.xform_id_string_dataframes.get(
                 xform_id_string)
-            form_is_already_valid = (self.valid_parsed_form_tables and self.valid_parsed_form_tables.get(
-                table_name) and self.valid_parsed_form_tables.get(table_name).get(row_uid)) != None
-            form_is_already_invalid = (self.invalid_parsed_form_tables and self.invalid_parsed_form_tables.get(
-                table_name) and self.invalid_parsed_form_tables.get(table_name).get(row_uid)) != None
+            form_is_already_valid = (self.valid_parsed_form_tables != None and self.valid_parsed_form_tables.get(
+                table_name) != None and self.valid_parsed_form_tables.get(table_name).get(row_uid) != None)
+            form_is_already_invalid = (self.invalid_parsed_form_tables != None and self.invalid_parsed_form_tables.get(
+                table_name) != None and self.invalid_parsed_form_tables.get(table_name).get(row_uid) != None)
 
             if table_name_in_df and ((not form_is_already_valid or self.test) and not form_is_already_invalid):
                 valid_row_table_pairs = self.xform_id_string_dataframes.get(
