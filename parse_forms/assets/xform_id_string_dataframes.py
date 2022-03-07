@@ -29,5 +29,6 @@ xform_id_string_dataframes = {
     "aZjGUZ6htFZV5hFgxjP4oa": {
         "social_sciences_survey__farm_history_survey": empty_dataframe,
         "farm_history__farm_history_survey": empty_dataframe,
+        "cc_mixture__farm_history_survey": empty_dataframe,
     },
 }

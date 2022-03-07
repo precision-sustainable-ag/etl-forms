@@ -118,4 +118,8 @@ info = {
         "mode": "update",
         "update_not_nulls": False,
     },
+    "cc_mixture__farm_history_survey": {
+        "all_rows": ["code", "cc_specie", "total_rate"],
+        "mode": "insert",
+    },
 }
