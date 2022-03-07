@@ -60,8 +60,11 @@ class Tester:
         return data
 
     def fetch_shadow_data(self, uid, table_name):
-        data = pd.read_sql(
-            "SELECT * FROM {} WHERE rawuid = {}".format(table_name, uid), self.live_postgres_engine, parse_dates=True)
+        try:
+            data = pd.read_sql(
+                "SELECT * FROM {} WHERE rawuid = {}".format(table_name, uid), self.live_postgres_engine, parse_dates=True)
+        except Exception:
+            data = pd.DataFrame()
 
         return data
 
@@ -77,6 +80,7 @@ class Tester:
 
         dataframe_obj = fp.parse_forms()
 
+        print(uid)
         for table in dataframe_obj["valid"]:
             shadow_data = self.fetch_shadow_data(uid, table["table_name"])
             table_data = table["dataframe"]
@@ -84,16 +88,21 @@ class Tester:
             if shadow_data.empty:
                 continue
 
-            shadow_data = shadow_data.drop(
-                columns=['parsed_at', 'pushed_to_prod', 'sid', 'notes', 'submitted_by']).sort_index(axis=1)
-            table_data = table_data.drop(
-                columns=['parsed_at', 'pushed_to_prod', 'notes', 'submitted_by']).sort_index(axis=1).astype(shadow_data.dtypes.to_dict())
+            try:
+                shadow_data = shadow_data.drop(
+                    columns=['parsed_at', 'pushed_to_prod', 'sid', 'notes', 'submitted_by']).sort_index(axis=1).drop_duplicates()
+                table_data = table_data.drop(
+                    columns=['parsed_at', 'pushed_to_prod', 'notes', 'submitted_by']).sort_index(axis=1).astype(shadow_data.dtypes.to_dict())
 
-            outer_join = shadow_data.merge(
-                table_data, how='outer', indicator=True)
+                outer_join = shadow_data.merge(
+                    table_data, how='outer', indicator=True)
 
-            anti_join = outer_join[~(outer_join._merge == 'both')].drop(
-                '_merge', axis=1)
+                anti_join = outer_join[~(outer_join._merge == 'both')].drop(
+                    '_merge', axis=1)
+            except Exception:
+                print("Could not coerce data")
+                print(traceback.print_exc(file=sys.stdout))
+                anti_join = pd.DataFrame({"error": [1]})
 
             if not anti_join.empty:
                 shadow_json = shadow_data.to_json(orient="records")
