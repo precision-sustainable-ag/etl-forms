@@ -208,11 +208,11 @@ class FormParser:
 
         return True, "Passed all tests"
 
-    def add_cols(self, new_rows, extra_cols):
+    def add_cols(self, new_row, extra_cols):
         if not extra_cols:
             return
         for extra_col in extra_cols:
-            new_rows[extra_col.get("name")] = extra_col.get("value")
+            new_row[extra_col.get("name")] = extra_col.get("value")
 
     def split_data(self, names, data, seperator, indices, new_rows, index):
         split = data.split(seperator) if data is not None else None
@@ -336,12 +336,12 @@ class FormParser:
 
         return status, converted_data
 
-    def validate_row(self, kobo_row, new_rows):
+    def validate_row(self, kobo_row, new_row):
         row_is_complete_or_null = False
 
         existing_rows = 0
         for col in kobo_row.get("completeness_cols"):
-            if new_rows.get(col):
+            if new_row.get(col):
                 existing_rows += 1
 
         if existing_rows == 0 or existing_rows == len(kobo_row.get("completeness_cols")):
@@ -352,14 +352,14 @@ class FormParser:
         else:
             return False
 
-    def row_is_not_null(self, kobo_row, new_rows):
+    def row_is_not_null(self, kobo_row, new_row):
         if not kobo_row.get("all_cols"):
             return True
 
         row_is_not_null = False
 
         for col in kobo_row.get("all_cols"):
-            if new_rows.get(col):
+            if new_row.get(col):
                 row_is_not_null = True
                 break
 
@@ -368,10 +368,10 @@ class FormParser:
         else:
             return False
 
-    def assert_active(self, new_rows, row_data, end):
+    def assert_active(self, new_row, row_data, end):
         message = "Valid farm code"
 
-        farm_code = new_rows.get("code")
+        farm_code = new_row.get("code")
 
         if not end:
             end = row_data.get("end")
@@ -405,11 +405,11 @@ class FormParser:
             message = "No data " + " for " + str(year)
             return False, message
 
-    def get_producer_id(self, new_rows):
-        if new_rows.get("producer_phone") and self.valid_producers.get(new_rows.get("producer_phone")):
-            return self.valid_producers.get(new_rows.get("producer_phone"))
-        elif new_rows.get("producer_email") and self.valid_producers.get(new_rows.get("producer_email")):
-            return self.valid_producers.get(new_rows.get("producer_email"))
+    def get_producer_id(self, new_row):
+        if new_row.get("producer_phone") and self.valid_producers.get(new_row.get("producer_phone")):
+            return self.valid_producers.get(new_row.get("producer_phone"))
+        elif new_row.get("producer_email") and self.valid_producers.get(new_row.get("producer_email")):
+            return self.valid_producers.get(new_row.get("producer_email"))
         else:
             return False
 

@@ -137,7 +137,7 @@ try:
 
     t = Tester(errors_object)
     t.call_api()
-    for i in range(512, 513):
+    for i in range(0, 2200):
         t.test_data(i)
 
     errors_df = pd.DataFrame(t.return_errors_obj())
