@@ -149,10 +149,6 @@ class ProductionPusher:
             'successful_logger', './logs/successful.log')
         self.failed_unicity_constraint_logger = self.setup_logger(
             'failed_unicity_constraint_logger', './logs/failed_unicity_constraint.log')
-        self.no_rows_affected_logger = self.setup_logger(
-            'no_rows_affected_logger', './logs/no_rows_affected.log')
-        self.not_inserted_into_not_pushed_to_prod = self.setup_logger(
-            'not_inserted_into_not_pushed_to_prod', './logs/not_inserted_into_not_pushed_to_prod.log')
         self.general_error_logger = self.setup_logger(
             'general_error_logger', './logs/general_error.log')
         self.global_logger = self.setup_logger(
@@ -185,8 +181,6 @@ class ProductionPusher:
         try:
             self.local_cur.execute(prod_query, prod_values)
             if self.local_cur.rowcount == 0:
-                # self.no_rows_affected_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(
-                #     prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
                 self.update_failed_rows(table_name, sid, raw_uid)
                 self.encountered_no_rows_error += 1
                 return
