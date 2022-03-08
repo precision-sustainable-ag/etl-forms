@@ -149,36 +149,38 @@ class ProductionPusher:
             'successful_logger', './logs/successful.log')
         self.failed_unicity_constraint_logger = self.setup_logger(
             'failed_unicity_constraint_logger', './logs/failed_unicity_constraint.log')
-        self.no_rows_affected_logger = self.setup_logger(
-            'no_rows_affected_logger', './logs/no_rows_affected.log')
-        self.not_inserted_into_not_pushed_to_prod = self.setup_logger(
-            'not_inserted_into_not_pushed_to_prod', './logs/not_inserted_into_not_pushed_to_prod.log')
         self.general_error_logger = self.setup_logger(
             'general_error_logger', './logs/general_error.log')
         self.global_logger = self.setup_logger(
             'global_logger', './logs/global.log')
 
     def update_failed_rows(self, table_name, failing_sid, rawuid):
-        insert_query = "INSERT INTO not_pushed_to_prod (table_name, failing_sid, rawuid) VALUES ({values})"
+        insert_query = "INSERT INTO not_pushed_to_prod (table_name, failing_sid, rawuid) VALUES ({values}) ON CONFLICT DO NOTHING"
         insert_query = sql.SQL(insert_query).format(
             values=sql.SQL(', ').join(sql.Placeholder() * 3)
+        )
+
+        update_pushed_to_prod_query = "UPDATE {table} SET pushed_to_prod = -999 WHERE sid = {sid}"
+        update_pushed_to_prod_query = sql.SQL(update_pushed_to_prod_query).format(
+            table=sql.Identifier(table_name),
+            sid=sql.Placeholder()
         )
 
         try:
             self.shadow_cur.execute(
                 insert_query, [table_name, failing_sid, rawuid])
+
+            self.shadow_cur.execute(
+                update_pushed_to_prod_query, [failing_sid])
+
             self.shadow_con.commit()
         except Exception:
-            self.not_inserted_into_not_pushed_to_prod.error(
-                table_name + "\n" + str(failing_sid) + "\n" + str(rawuid) + "\n")
-            self.encountered_not_pushed_error += 1
+            pass
 
     def try_queries(self, shadow_query, prod_query, prod_values, sid, raw_uid, prod_table_name, table_name):
         try:
             self.local_cur.execute(prod_query, prod_values)
             if self.local_cur.rowcount == 0:
-                self.no_rows_affected_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(
-                    prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
                 self.update_failed_rows(table_name, sid, raw_uid)
                 self.encountered_no_rows_error += 1
                 return
