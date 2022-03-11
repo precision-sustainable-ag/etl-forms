@@ -13,6 +13,9 @@ xform_id_string_dataframes = {
     "aSL7dDqTn6PuPTtCDiEzcg": {
         "decomp_biomass_fresh__decomp_bag_pre_wt": empty_dataframe,
     },
+    "afHDjP6jCPMGvDDZqDqdyL": {
+        "decomp_biomass_fresh__decomp_bag_pre_wt": empty_dataframe,
+    },
     "aGPMTPpqU68JvdHK6Wuejb": {
         "decomp_biomass_dry__decomp_bag_dry_wt": empty_dataframe,
     },
@@ -33,5 +36,5 @@ xform_id_string_dataframes = {
     },
     "aWrgSHx4MJX23NZFpARCnM": {
         "yield_corn__yield": empty_dataframe,
-    }
+    },
 }

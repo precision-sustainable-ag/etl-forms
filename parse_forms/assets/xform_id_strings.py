@@ -9,6 +9,7 @@ from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vQnB8sJFc8JEhYJqXiYQRy
 from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vZvVu9PdqRHLeeJGbGha3z
 from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vgaKFRKRg54E2Z7fvayCxf
 from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vzazAbS9satE4PXaGNKwBE
+from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vW8KmVb56ug9afL9nE5XUd
 
 from ..psa_bag_dry_wt import decomp_biomass_dry_vDqdEsDav5K6hSRHrgYJmM
 from ..psa_bag_dry_wt import decomp_biomass_dry_vusvAjv42DfdfjKkFWm6H3
@@ -99,6 +100,16 @@ xform_id_strings = {
                 "vZvVu9PdqRHLeeJGbGha3z": decomp_biomass_fresh_vZvVu9PdqRHLeeJGbGha3z.data,
                 "vgaKFRKRg54E2Z7fvayCxf": decomp_biomass_fresh_vgaKFRKRg54E2Z7fvayCxf.data,
                 "vzazAbS9satE4PXaGNKwBE": decomp_biomass_fresh_vzazAbS9satE4PXaGNKwBE.data,
+            },
+            "asset_name": "psa decomp bag pre wt",
+        },
+    ],
+
+    "afHDjP6jCPMGvDDZqDqdyL": [
+        {
+            "table_name": "decomp_biomass_fresh__decomp_bag_pre_wt",
+            "table_keys": {
+                "vW8KmVb56ug9afL9nE5XUd": decomp_biomass_fresh_vW8KmVb56ug9afL9nE5XUd.data,
             },
             "asset_name": "psa decomp bag pre wt",
         },
