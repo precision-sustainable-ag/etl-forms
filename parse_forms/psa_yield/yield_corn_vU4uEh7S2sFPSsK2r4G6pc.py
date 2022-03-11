@@ -157,7 +157,7 @@ data = [
             },
         ],
         "completeness_cols": ["code", "treatment", "subplot", "row", "stand_count"],
-        "completeness_errs": ["group_005/barcode_yield_004", "group_005/stand_count_005"],
+        "completeness_errs": ["group_005/barcode_yield_005", "group_005/stand_count_005"],
         "completeness_err_message": "Barcode is malformed or missing stand count",
         "all_cols": ["code", "treatment", "subplot", "row", "stand_count"],
     },
