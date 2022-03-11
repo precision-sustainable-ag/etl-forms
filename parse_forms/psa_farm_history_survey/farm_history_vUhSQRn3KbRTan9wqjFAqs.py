@@ -5,7 +5,7 @@ data = [
             {
                 "kobo_name": "group_code_field_history/code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
+                "tests": ["not_null", "check_regex  ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {

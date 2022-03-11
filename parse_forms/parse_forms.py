@@ -171,7 +171,7 @@ class FormParser:
                 return False
 
         def check_regex(data, regex):
-            if not data:
+            if data is None:
                 return True
             try:
                 regex = re.compile(regex)
@@ -195,7 +195,7 @@ class FormParser:
         }
 
         for test in tests:
-            name_and_params = test.split(" ")
+            name_and_params = test.split("  ")
 
             if len(name_and_params) == 1:
                 response = functions.get(name_and_params[0])(data)
@@ -477,7 +477,6 @@ class FormParser:
 
         for data in kobo_row.get("cols_from_form"):
             if data.get("separate_into_multiple_rows") == True:
-                print("separate ", table_name)
                 rows_passed_tests, error_messages = self.separate_into_multiple_rows(
                     data, row_data, new_rows, rows_passed_tests, error_messages, table_name)
             else:
