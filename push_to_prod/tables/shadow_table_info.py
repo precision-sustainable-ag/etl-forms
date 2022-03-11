@@ -128,4 +128,10 @@ info = {
         "mode": "update",
         "update_not_nulls": False,
     },
+    "farm_history__yield": {
+        "values_from_table": ["row_spacing"],
+        "unique_cols": ["code"],
+        "mode": "update",
+        "update_not_nulls": False,
+    },
 }
