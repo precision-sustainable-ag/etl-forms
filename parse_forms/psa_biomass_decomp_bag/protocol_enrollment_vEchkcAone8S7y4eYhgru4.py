@@ -4,13 +4,13 @@ data = [
             {
                 "kobo_name": "code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
+                "tests": ["not_null", "check_regex  ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
                 "kobo_name": "intro_group/biomass_only",
                 "db_names": ["biomass_only"],
-                "tests": ["check_if_value_equals biomass_only"],
+                "tests": ["check_if_value_equals  biomass_only"],
             },
             {
                 "kobo_name": "WON'T BE FOUND",

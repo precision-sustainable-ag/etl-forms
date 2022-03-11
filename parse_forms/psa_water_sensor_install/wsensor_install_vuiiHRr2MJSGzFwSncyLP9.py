@@ -4,7 +4,7 @@ data = [
             {
                 "kobo_name": "What_is_your_Farm_Code",
                 "db_names": ["code"],
-                "tests": ["not_null", "check_regex ^[A-Z0-9]{3}$|^-999$"],
+                "tests": ["not_null", "check_regex  ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
@@ -18,17 +18,17 @@ data = [
             {
                 "kobo_name": "Scan_the_barcode_on_side_of_your_Gateway",
                 "db_names": ["gateway_serial_no"],
-                "tests": ["check_regex ^210[0-9]{5}$|^-999$"],
+                "tests": ["check_regex  ^210[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "Scan_your_bare_node",
                 "db_names": ["bare_node_serial_no"],
-                "tests": ["not_null", "check_regex ^180[0-9]{5}$|^-999$"],
+                "tests": ["not_null", "check_regex  ^180[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "Scan_your_cover_crop_node",
                 "db_names": ["cover_node_serial_no"],
-                "tests": ["not_null", "check_regex ^180[0-9]{5}$|^-999$"],
+                "tests": ["not_null", "check_regex  ^180[0-9]{5}$|^-999$"],
             },
             {
                 "kobo_name": "What_day_did_you_install_the_sensors",

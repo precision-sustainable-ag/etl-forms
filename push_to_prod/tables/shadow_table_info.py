@@ -122,4 +122,10 @@ info = {
         "all_rows": ["code", "cc_specie", "total_rate"],
         "mode": "insert",
     },
+    "yield_corn__yield": {
+        "values_from_table": ["stand_count"],
+        "unique_cols": ["code", "treatment", "subplot", "row"],
+        "mode": "update",
+        "update_not_nulls": False,
+    },
 }
