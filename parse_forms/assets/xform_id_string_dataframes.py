@@ -36,5 +36,6 @@ xform_id_string_dataframes = {
     },
     "aWrgSHx4MJX23NZFpARCnM": {
         "yield_corn__yield": empty_dataframe,
+        "farm_history__yield": empty_dataframe,
     },
 }

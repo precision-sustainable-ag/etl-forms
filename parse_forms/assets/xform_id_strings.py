@@ -62,6 +62,8 @@ from ..psa_farm_history_survey import cc_mixture_vybw9K58Yjxo7RFWNboAam
 
 from ..psa_yield import yield_corn_vpo2g4zsdAyZgbudeLdeKX
 from ..psa_yield import yield_corn_vU4uEh7S2sFPSsK2r4G6pc
+from ..psa_yield import farm_history_vpo2g4zsdAyZgbudeLdeKX
+from ..psa_yield import farm_history_vU4uEh7S2sFPSsK2r4G6pc
 
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
@@ -232,6 +234,14 @@ xform_id_strings = {
             "table_keys": {
                 "vpo2g4zsdAyZgbudeLdeKX": yield_corn_vpo2g4zsdAyZgbudeLdeKX.data,
                 "vU4uEh7S2sFPSsK2r4G6pc": yield_corn_vU4uEh7S2sFPSsK2r4G6pc.data,
+            },
+            "asset_name": "psa yield",
+        },
+        {
+            "table_name": "farm_history__yield",
+            "table_keys": {
+                "vpo2g4zsdAyZgbudeLdeKX": farm_history_vpo2g4zsdAyZgbudeLdeKX.data,
+                "vU4uEh7S2sFPSsK2r4G6pc": farm_history_vU4uEh7S2sFPSsK2r4G6pc.data,
             },
             "asset_name": "psa yield",
         },
