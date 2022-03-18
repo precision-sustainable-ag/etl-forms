@@ -89,9 +89,9 @@ class ListMaker:
             "entry_to_iterate": [],
             "iterator_editable_list": [],
         }
-        entry_to_iterate = None
 
         for version, obj in version_dict.items():
+            entry_to_iterate = None
             editable_list = []
             iterator_editable_list = []
             version_has_iterator = False

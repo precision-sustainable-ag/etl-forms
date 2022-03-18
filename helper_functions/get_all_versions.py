@@ -1,3 +1,5 @@
+# to run use 'python -m helper_functions.get_all_versions.py' from ./etl-forms
+
 import json
 import pandas as pd
 import re
@@ -12,6 +14,8 @@ import mysql.connector
 from pytz import timezone
 import traceback
 import logging
+
+import parse_forms.assets.xform_id_strings as xform_id_strings
 
 
 class FormParser:
@@ -39,17 +43,25 @@ class FormParser:
         version_obj = {}
 
         for index, row_entry in self.data.iterrows():
-            # print("start " + str(row_entry.get("uid")))
             row_data = json.loads(row_entry.get("data"))
             form_version = row_data.get("__version__")
             xform_id_string = row_data.get("_xform_id_string")
-            asset_name = row_data.get("asset_name")
+            asset_name = row_entry.get("asset_name")
 
-            if not version_obj.get(xform_id_string):
-                version_obj[xform_id_string] = []
+            if xform_id_string is None or asset_name is None:
+                continue
 
-            if form_version not in version_obj[xform_id_string]:
-                version_obj[xform_id_string].append(form_version)
+            if version_obj.get(xform_id_string) is None:
+                version_obj[xform_id_string] = {}
+
+            if version_obj[xform_id_string].get(form_version) is None:
+                version_obj[xform_id_string][form_version] = []
+
+            if xform_id_strings.xform_id_strings.get(xform_id_string):
+                for table in xform_id_strings.xform_id_strings.get(xform_id_string):
+                    if form_version in table.get("table_keys") and table.get("table_name") not in version_obj[xform_id_string][form_version]:
+                        version_obj[xform_id_string][form_version].append(
+                            table.get("table_name"))
 
         print(version_obj)
 
