@@ -16,6 +16,7 @@ from ..psa_bag_dry_wt import decomp_biomass_dry_vusvAjv42DfdfjKkFWm6H3
 
 from ..psa_bag_collect import decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e
 from ..psa_bag_collect import decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG
+from ..psa_bag_collect import decomp_biomass_dry_vo8zaiSq9v7LtHtitQApgi
 
 from ..psa_biomass_decomp_bag import biomass_in_field_vEchkcAone8S7y4eYhgru4
 from ..psa_biomass_decomp_bag import biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh
@@ -137,6 +138,7 @@ xform_id_strings = {
             "table_keys": {
                 "v94kLXWMrZ8fZRpCFzSn4e": decomp_biomass_dry_v94kLXWMrZ8fZRpCFzSn4e.data,
                 "v5LVmcbGVhR3C3fkW9ZhHG": decomp_biomass_dry_v5LVmcbGVhR3C3fkW9ZhHG.data,
+                "vo8zaiSq9v7LtHtitQApgi": decomp_biomass_dry_vo8zaiSq9v7LtHtitQApgi.data,
             },
             "asset_name": "psa decomp bag collect",
         },
