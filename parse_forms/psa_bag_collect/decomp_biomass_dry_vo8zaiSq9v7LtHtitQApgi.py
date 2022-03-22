@@ -25,7 +25,7 @@ data = [
             },
         ],
         "completeness_cols": ["code", "subplot", "subsample", "time"],
-        "completeness_errs": ["`barcode_bag_000` is malformed"],
+        "completeness_errs": ["`Scan_a_barcode` is malformed"],
         # {'code': 'SRT', 'subplot': '2', 'subsample': 'A', 'time': '0', 'empty_bag_wt': '146.92', 'notes': None, 'submitted_by': 'al_psa'}
         "all_cols": ["code", "subplot", "subsample", "time"]
     },
@@ -55,7 +55,7 @@ data = [
             },
         ],
         "completeness_cols": ["code", "subplot", "subsample", "time"],
-        "completeness_errs": ["`barcode_bag_001` is malformed"],
+        "completeness_errs": ["`Scan_a_barcode_001` is malformed"],
         "all_cols": ["code", "subplot", "subsample", "time"]
     },
     {
@@ -84,7 +84,7 @@ data = [
             },
         ],
         "completeness_cols": ["code", "subplot", "subsample", "time"],
-        "completeness_errs": ["`barcode_bag_002` is malformed"],
+        "completeness_errs": ["`Scan_a_barcode_002` is malformed"],
         "all_cols": ["code", "subplot", "subsample", "time"]
     },
     {
@@ -113,7 +113,7 @@ data = [
             },
         ],
         "completeness_cols": ["code", "subplot", "subsample", "time"],
-        "completeness_errs": ["`barcode_bag_003` is malformed"],
+        "completeness_errs": ["`Scan_a_barcode_003` is malformed"],
         "all_cols": ["code", "subplot", "subsample", "time"]
     },
 ]
