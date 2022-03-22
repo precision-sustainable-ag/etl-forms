@@ -83,6 +83,11 @@ data = [
             {
                 "kobo_name": "group_code_field_history/crop",
                 "db_names": ["next_cash_crop"],
+                "multi_select": {
+                    "soybean": "Soybeans",
+                    "cotton": "Cotton",
+                    "corn": "Corn"
+                },
             },
             {
                 "kobo_name": "WON'T BE FOUND",
