@@ -81,6 +81,10 @@ data = [
                 "db_names": ["cash_crop_maturity_group"],
             },
             {
+                "kobo_name": "group_code_field_history/crop",
+                "db_names": ["next_cash_crop"],
+            },
+            {
                 "kobo_name": "WON'T BE FOUND",
                 "db_names": ["notes"],
             },
@@ -99,6 +103,7 @@ data = [
             "post_harvest_fertility",
             "cash_crop_variety",
             "cash_crop_maturity_group",
+            "next_cash_crop",
         ],
     }
 ]

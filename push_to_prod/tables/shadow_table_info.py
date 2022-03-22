@@ -89,6 +89,7 @@ info = {
             "post_harvest_fertility",
             "cash_crop_variety",
             "cash_crop_maturity_group",
+            "next_cash_crop",
         ],
         "unique_cols": ["code"],
         "mode": "update",
