@@ -629,8 +629,10 @@ class FormParser:
                     self.encountered_parsing_error += 1
 
     def parse_forms(self):
-
         for index, row_entry in self.data.iterrows():
+            if 'fail' in row_entry.get("data"):
+                print("failed form " + str(row_entry.get("uid")))
+                continue
             row_data = json.loads(row_entry.get("data"))
             form_version = row_data.get("__version__")
             xform_id_string = row_data.get("_xform_id_string")
