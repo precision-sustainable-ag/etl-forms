@@ -618,10 +618,6 @@ class FormParser:
                         table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
                 else:
                     if row_failed:
-                        print("messages ")
-                        print(type(messages))
-                        print(messages)
-                        # messages.append("Something failed to scan")
                         if isinstance(messages, list):
                             messages.append("Something failed to scan")
                         else:
