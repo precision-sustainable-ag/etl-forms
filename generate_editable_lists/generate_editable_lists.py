@@ -26,6 +26,7 @@ class ListMaker:
         print(loc_dt)
 
         self.connect_to_shadow_live()
+        # self.connect_to_shadow_local()
 
     def connect_to_shadow_local(self):
         postgres_host = os.environ.get('LOCAL_SHADOW_HOST')
@@ -41,11 +42,9 @@ class ListMaker:
         self.postgres_con = psycopg2.connect(postgres_con_string)
         self.postgres_cur = self.postgres_con.cursor()
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
+        shadow_engine_string = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
             postgres_user, postgres_password, postgres_host, postgres_port, postgres_dbname)
-        self.postgres_engine = sqlalchemy.create_engine(postgres_engine_string)
-
-        self.global_logger.info("Connected to shadow local")
+        self.shadow_engine = sqlalchemy.create_engine(shadow_engine_string)
 
     def connect_to_shadow_live(self):
         postgres_host = os.environ.get('LIVE_SHADOW_HOST')
@@ -62,9 +61,9 @@ class ListMaker:
         self.shadow_cur = self.shadow_con.cursor()
         self.shadow_con.autocommit = True
 
-        postgres_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(
+        shadow_engine_string = "postgresql://{0}:{1}@{2}/{3}".format(
             postgres_user, postgres_password, postgres_host, postgres_dbname)
-        self.shadow_engine = sqlalchemy.create_engine(postgres_engine_string)
+        self.shadow_engine = sqlalchemy.create_engine(shadow_engine_string)
 
         print("connected to shadow live")
 
@@ -73,12 +72,13 @@ class ListMaker:
 
         for asset_name, data in xform_id_strings.xform_id_strings.items():
             for table in data:
+                table_name = table.get("table_name")
                 for version, obj in table.get("table_keys").items():
                     if version_dict.get(version):
-                        version_dict[version].append(obj)
+                        version_dict[version].append([obj, table_name])
                     else:
                         version_dict[version] = []
-                        version_dict.get(version).append(obj)
+                        version_dict.get(version).append([obj, table_name])
 
         return version_dict
 
@@ -88,6 +88,7 @@ class ListMaker:
             "editable_list": [],
             "entry_to_iterate": [],
             "iterator_editable_list": [],
+            "table_names": []
         }
 
         for version, obj in version_dict.items():
@@ -95,8 +96,10 @@ class ListMaker:
             editable_list = []
             iterator_editable_list = []
             version_has_iterator = False
-            for dict_list in obj:
-                for row in dict_list:
+            tables_list = []
+            for dict_list_and_table_name in obj:
+                tables_list.append(dict_list_and_table_name[1])
+                for row in dict_list_and_table_name[0]:
                     if row.get("entry_to_iterate"):
                         entry_to_iterate = row.get("entry_to_iterate")
                         version_has_iterator = True
@@ -116,6 +119,8 @@ class ListMaker:
                 json.dumps(editable_list))
             editable_list_by_version["entry_to_iterate"].append(
                 entry_to_iterate)
+            editable_list_by_version["table_names"].append(
+                json.dumps(tables_list))
 
         return editable_list_by_version
 
