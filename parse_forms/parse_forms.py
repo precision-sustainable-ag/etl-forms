@@ -606,10 +606,7 @@ class FormParser:
 
         return messages
 
-    def add_errors(self, row_entry, xform_id_string, table_name, row_uid, messages, save_errors, row_failed, failed_unicity, unicity_errors):
-        if row_failed:
-            messages = self.append_or_replace(
-                messages, "Something failed to scan")
+    def add_errors(self, row_entry, xform_id_string, table_name, row_uid, messages, save_errors, failed_unicity, unicity_errors):
         if failed_unicity:
             messages = self.append_or_replace(
                 messages, "Failed unicity for " + unicity_errors)
@@ -641,7 +638,7 @@ class FormParser:
 
         return dupes.any(), final_message
 
-    def iterate_tables(self, table_list, row_entry, row_uid, row_data, form_version, xform_id_string, row_failed):
+    def iterate_tables(self, table_list, row_entry, row_uid, row_data, form_version, xform_id_string):
         for table in table_list:
             self.temp_valid_rows = pd.DataFrame()
             valid_row_table_pairs = None
@@ -667,21 +664,17 @@ class FormParser:
                     failed_unicity, unicity_errors = self.check_unicity(self.temp_valid_rows,
                                                                         unicity_constraint)
 
-                if valid_row and not row_failed and not failed_unicity:
+                if valid_row and not failed_unicity:
                     self.successful_parse_logger.info(
                         "successfully parsed form uid {} for table {}".format(row_uid, table_name))
                     self.xform_id_string_dataframes.get(xform_id_string)[
                         table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
                 else:
                     self.add_errors(row_entry, xform_id_string, table_name, row_uid, messages,
-                                    save_errors, row_failed, failed_unicity, unicity_errors)
+                                    save_errors, failed_unicity, unicity_errors)
 
     def parse_forms(self):
         for index, row_entry in self.data.iterrows():
-            row_failed = False
-            if 'fail' in row_entry.get("data"):
-                print("failed form " + str(row_entry.get("uid")))
-                row_failed = True
             row_data = json.loads(row_entry.get("data"))
             form_version = row_data.get("__version__")
             xform_id_string = row_data.get("_xform_id_string")
@@ -692,7 +685,7 @@ class FormParser:
 
             if table_list:
                 self.iterate_tables(
-                    table_list, row_entry, row_uid, row_data, form_version, xform_id_string, row_failed)
+                    table_list, row_entry, row_uid, row_data, form_version, xform_id_string)
             else:
                 print("no table list " + str(row_entry.get("uid")))
 
