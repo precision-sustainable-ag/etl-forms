@@ -108,6 +108,7 @@ xform_id_strings = {
                 "vzazAbS9satE4PXaGNKwBE": decomp_biomass_fresh_vzazAbS9satE4PXaGNKwBE.data,
             },
             "asset_name": "psa decomp bag pre wt",
+            "unicity_constraint": ["code", "subplot", "subsample", "time"],
         },
     ],
 
@@ -118,6 +119,7 @@ xform_id_strings = {
                 "vW8KmVb56ug9afL9nE5XUd": decomp_biomass_fresh_vW8KmVb56ug9afL9nE5XUd.data,
             },
             "asset_name": "psa decomp bag pre wt",
+            "unicity_constraint": ["code", "subplot", "subsample", "time"],
         },
     ],
 
@@ -129,6 +131,7 @@ xform_id_strings = {
                 "vusvAjv42DfdfjKkFWm6H3": decomp_biomass_dry_vusvAjv42DfdfjKkFWm6H3.data,
             },
             "asset_name": "psa decomp bag dry wt",
+            "unicity_constraint": ["code", "subplot", "subsample", "time"],
         },
     ],
 
@@ -141,6 +144,7 @@ xform_id_strings = {
                 "vo8zaiSq9v7LtHtitQApgi": decomp_biomass_dry_vo8zaiSq9v7LtHtitQApgi.data,
             },
             "asset_name": "psa decomp bag collect",
+            "unicity_constraint": ["code", "subplot", "subsample", "time"],
         },
     ],
 
@@ -166,6 +170,7 @@ xform_id_strings = {
                 "vLamBBuk4isVXD6ZxyNzjs": decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs.data,
             },
             "asset_name": "psa biomass decomp bag",
+            "unicity_constraint": ["code", "subplot", "subsample", "time"],
         },
         {
             "table_name": "farm_history__biomass_decomp_bag",
@@ -244,6 +249,7 @@ xform_id_strings = {
                 "vU4uEh7S2sFPSsK2r4G6pc": yield_corn_vU4uEh7S2sFPSsK2r4G6pc.data,
             },
             "asset_name": "psa yield",
+            "unicity_constraint": ["code", "treatment", "subplot", "row"]
         },
         {
             "table_name": "farm_history__yield",

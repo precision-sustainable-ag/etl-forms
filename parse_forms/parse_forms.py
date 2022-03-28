@@ -585,23 +585,75 @@ class FormParser:
         else:
             return True, "success"
 
+    def should_parse_form(self, xform_id_string, table_name, row_uid):
+        table_name_in_df = table_name in self.xform_id_string_dataframes.get(
+            xform_id_string)
+        form_is_already_valid = (self.valid_parsed_form_tables != None and self.valid_parsed_form_tables.get(
+            table_name) != None and self.valid_parsed_form_tables.get(table_name).get(row_uid) != None)
+        form_is_already_invalid = (self.invalid_parsed_form_tables != None and self.invalid_parsed_form_tables.get(
+            table_name) != None and self.invalid_parsed_form_tables.get(table_name).get(row_uid) != None)
+
+        if table_name_in_df and ((not form_is_already_valid or self.test) and not form_is_already_invalid):
+            return True
+        else:
+            return False
+
+    def append_or_replace(self, messages, new_message):
+        if isinstance(messages, list):
+            messages.append(new_message)
+        else:
+            messages = [new_message]
+
+        return messages
+
+    def add_errors(self, row_entry, xform_id_string, table_name, row_uid, messages, save_errors, row_failed, failed_unicity, unicity_errors):
+        if row_failed:
+            messages = self.append_or_replace(
+                messages, "Something failed to scan")
+        if failed_unicity:
+            messages = self.append_or_replace(
+                messages, "Failed unicity for " + unicity_errors)
+
+        row_entry["table_name"] = table_name
+        row_entry["err"] = json.dumps(messages)
+        row_entry["xform_id_string"] = xform_id_string
+        if save_errors != False:
+            self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(
+                row_entry, ignore_index=True)
+            row_entry.pop("err")
+        self.unsuccessful_parse_logger.error(
+            "could not parse form uid {} for table {}".format(row_uid, table_name))
+        self.encountered_parsing_error += 1
+
+    def check_unicity(self, df, cols):
+        if df.empty:
+            return False, "Empty df"
+        dupes = df.duplicated(subset=cols)
+        final_message = ""
+        if dupes.any():
+            print("We found a dupe")
+            # print(df[cols][dupes].to_string())
+            messages = df[cols][dupes].reset_index().drop(['index'], axis=1).apply(
+                lambda row: '-'.join(row.values.astype(str)), axis=1)
+            for error in messages:
+                final_message += error + " "
+            final_message = final_message[:-1]
+
+        return dupes.any(), final_message
+
     def iterate_tables(self, table_list, row_entry, row_uid, row_data, form_version, xform_id_string, row_failed):
         for table in table_list:
             self.temp_valid_rows = pd.DataFrame()
             valid_row_table_pairs = None
             table_name = table.get("table_name")
             save_errors = table.get("save_errors")
+            unicity_constraint = table.get("unicity_constraint")
+            failed_unicity = False
+            unicity_errors = None
 
             table_key = table.get("table_keys").get(form_version)
 
-            table_name_in_df = table_name in self.xform_id_string_dataframes.get(
-                xform_id_string)
-            form_is_already_valid = (self.valid_parsed_form_tables != None and self.valid_parsed_form_tables.get(
-                table_name) != None and self.valid_parsed_form_tables.get(table_name).get(row_uid) != None)
-            form_is_already_invalid = (self.invalid_parsed_form_tables != None and self.invalid_parsed_form_tables.get(
-                table_name) != None and self.invalid_parsed_form_tables.get(table_name).get(row_uid) != None)
-
-            if table_name_in_df and ((not form_is_already_valid or self.test) and not form_is_already_invalid):
+            if self.should_parse_form(xform_id_string, table_name, row_uid):
                 valid_row_table_pairs = self.xform_id_string_dataframes.get(
                     xform_id_string).get(table_name)
             else:
@@ -611,27 +663,18 @@ class FormParser:
                 valid_row, messages = self.parse_form(
                     table_key, table_name, row_data, row_uid)
 
-                if valid_row and not row_failed:
+                if unicity_constraint is not None:
+                    failed_unicity, unicity_errors = self.check_unicity(self.temp_valid_rows,
+                                                                        unicity_constraint)
+
+                if valid_row and not row_failed and not failed_unicity:
                     self.successful_parse_logger.info(
                         "successfully parsed form uid {} for table {}".format(row_uid, table_name))
                     self.xform_id_string_dataframes.get(xform_id_string)[
                         table_name] = valid_row_table_pairs.append(self.temp_valid_rows, ignore_index=True)
                 else:
-                    if row_failed:
-                        if isinstance(messages, list):
-                            messages.append("Something failed to scan")
-                        else:
-                            messages = ["Something failed to scan"]
-                    row_entry["table_name"] = table_name
-                    row_entry["err"] = json.dumps(messages)
-                    row_entry["xform_id_string"] = xform_id_string
-                    if save_errors != False:
-                        self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(
-                            row_entry, ignore_index=True)
-                        row_entry.pop("err")
-                    self.unsuccessful_parse_logger.error(
-                        "could not parse form uid {} for table {}".format(row_uid, table_name))
-                    self.encountered_parsing_error += 1
+                    self.add_errors(row_entry, xform_id_string, table_name, row_uid, messages,
+                                    save_errors, row_failed, failed_unicity, unicity_errors)
 
     def parse_forms(self):
         for index, row_entry in self.data.iterrows():
