@@ -135,4 +135,8 @@ info = {
         "mode": "update",
         "update_not_nulls": False,
     },
+    "applied_chemicals__farm_history_survey": {
+        "all_rows": ["code", "chemical"],
+        "mode": "insert",
+    },
 }
