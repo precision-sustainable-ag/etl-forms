@@ -34,6 +34,7 @@ xform_id_string_dataframes = {
         "farm_history__farm_history_survey": empty_dataframe,
         "cc_mixture__farm_history_survey": empty_dataframe,
         "applied_chemicals__farm_history_survey": empty_dataframe,
+        "crop_rotation__farm_history_survey": empty_dataframe,
     },
     "aWrgSHx4MJX23NZFpARCnM": {
         "yield_corn__yield": empty_dataframe,
