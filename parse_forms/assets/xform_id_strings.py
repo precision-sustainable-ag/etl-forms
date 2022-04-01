@@ -70,6 +70,12 @@ from ..psa_farm_history_survey import applied_chemicals_vUhSQRn3KbRTan9wqjFAqs
 from ..psa_farm_history_survey import applied_chemicals_vy2JecJBAmJbqZEFvwv4jV
 from ..psa_farm_history_survey import applied_chemicals_vybw9K58Yjxo7RFWNboAam
 
+from ..psa_farm_history_survey import crop_rotation_vjboA2N6nDU9e6cmzZvVtP
+from ..psa_farm_history_survey import crop_rotation_vszpMZ8jHiXRqH2KCzx8Zy
+from ..psa_farm_history_survey import crop_rotation_vUhSQRn3KbRTan9wqjFAqs
+from ..psa_farm_history_survey import crop_rotation_vy2JecJBAmJbqZEFvwv4jV
+from ..psa_farm_history_survey import crop_rotation_vybw9K58Yjxo7RFWNboAam
+
 from ..psa_yield import yield_corn_vpo2g4zsdAyZgbudeLdeKX
 from ..psa_yield import yield_corn_vU4uEh7S2sFPSsK2r4G6pc
 from ..psa_yield import farm_history_vpo2g4zsdAyZgbudeLdeKX
@@ -254,6 +260,17 @@ xform_id_strings = {
                 "vUhSQRn3KbRTan9wqjFAqs": applied_chemicals_vUhSQRn3KbRTan9wqjFAqs.data,
                 "vy2JecJBAmJbqZEFvwv4jV": applied_chemicals_vy2JecJBAmJbqZEFvwv4jV.data,
                 "vybw9K58Yjxo7RFWNboAam": applied_chemicals_vybw9K58Yjxo7RFWNboAam.data,
+            },
+            "asset_name": "psa farm history survey",
+        },
+        {
+            "table_name": "crop_rotation__farm_history_survey",
+            "table_keys": {
+                "vjboA2N6nDU9e6cmzZvVtP": crop_rotation_vjboA2N6nDU9e6cmzZvVtP.data,
+                "vszpMZ8jHiXRqH2KCzx8Zy": crop_rotation_vszpMZ8jHiXRqH2KCzx8Zy.data,
+                "vUhSQRn3KbRTan9wqjFAqs": crop_rotation_vUhSQRn3KbRTan9wqjFAqs.data,
+                "vy2JecJBAmJbqZEFvwv4jV": crop_rotation_vy2JecJBAmJbqZEFvwv4jV.data,
+                "vybw9K58Yjxo7RFWNboAam": crop_rotation_vybw9K58Yjxo7RFWNboAam.data,
             },
             "asset_name": "psa farm history survey",
         },

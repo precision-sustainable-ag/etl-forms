@@ -139,4 +139,8 @@ info = {
         "all_rows": ["code", "chemical"],
         "mode": "insert",
     },
+    "crop_rotation__farm_history_survey": {
+        "all_rows": ["code", "crop"],
+        "mode": "insert",
+    },
 }
