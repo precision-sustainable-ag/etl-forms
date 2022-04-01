@@ -193,6 +193,7 @@ class ProductionPusher:
             self.failed_unicity_constraint_logger.error("\n" + prod_query.as_string(self.local_con) + "\n" + str(
                 prod_values) + "\n" + table_name + "\nsid: " + str(sid) + " raw_uid: " + str(raw_uid) + "\n")
             self.shadow_cur.execute(shadow_query, [sid])
+            self.update_failed_rows(table_name, sid, raw_uid)
             self.shadow_con.commit()
             self.encountered_unicity_error += 1
         except Exception:
