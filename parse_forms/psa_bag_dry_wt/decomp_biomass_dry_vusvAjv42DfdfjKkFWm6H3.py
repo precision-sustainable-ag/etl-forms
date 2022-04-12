@@ -2,7 +2,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_000/barcode_bag_000",
+                "kobo_names": ["group_000/barcode_bag_000"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -10,15 +10,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_000/dry_bag_wt_grams_000",
+                "kobo_names": ["group_000/dry_bag_wt_grams_000"],
                 "db_names": ["dry_biomass_wt"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -31,7 +31,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_001/barcode_bag_001",
+                "kobo_names": ["group_001/barcode_bag_001"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -39,15 +39,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_001/dry_bag_wt_grams_001",
+                "kobo_names": ["group_001/dry_bag_wt_grams_001"],
                 "db_names": ["dry_biomass_wt"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -59,7 +59,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_002/barcode_bag_002",
+                "kobo_names": ["group_002/barcode_bag_002"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -67,15 +67,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_002/dry_bag_wt_grams_002",
+                "kobo_names": ["group_002/dry_bag_wt_grams_002"],
                 "db_names": ["dry_biomass_wt"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -87,7 +87,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_003/barcode_bag_003",
+                "kobo_names": ["group_003/barcode_bag_003"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -95,15 +95,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_003/dry_bag_wt_grams_003",
+                "kobo_names": ["group_003/dry_bag_wt_grams_003"],
                 "db_names": ["dry_biomass_wt"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -115,7 +115,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_004/barcode_bag_004",
+                "kobo_names": ["group_004/barcode_bag_004"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -123,15 +123,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_004/dry_bag_wt_grams_004",
+                "kobo_names": ["group_004/dry_bag_wt_grams_004"],
                 "db_names": ["dry_biomass_wt"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -143,7 +143,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_005/barcode_bag_005",
+                "kobo_names": ["group_005/barcode_bag_005"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -151,15 +151,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_005/dry_bag_wt_grams_005",
+                "kobo_names": ["group_005/dry_bag_wt_grams_005"],
                 "db_names": ["dry_biomass_wt"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -171,7 +171,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_006/barcode_bag_006",
+                "kobo_names": ["group_006/barcode_bag_006"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -179,15 +179,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_006/dry_bag_wt_grams_006",
+                "kobo_names": ["group_006/dry_bag_wt_grams_006"],
                 "db_names": ["dry_biomass_wt"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -199,7 +199,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_007/barcode_bag_007",
+                "kobo_names": ["group_007/barcode_bag_007"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -207,15 +207,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_007/dry_bag_wt_grams_007",
+                "kobo_names": ["group_007/dry_bag_wt_grams_007"],
                 "db_names": ["dry_biomass_wt"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],

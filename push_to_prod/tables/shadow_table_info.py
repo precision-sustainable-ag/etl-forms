@@ -143,4 +143,10 @@ info = {
         "all_rows": ["code", "crop"],
         "mode": "insert",
     },
+    "wsensor_install__water_sensor_uninstall": {
+        "values_from_table": ["time_end"],
+        "unique_cols": ["code", "gateway_serial_no", "bare_node_serial_no", "cover_node_serial_no"],
+        "mode": "update",
+        "update_not_nulls": False,
+    },
 }
