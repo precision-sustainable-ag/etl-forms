@@ -2,19 +2,19 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "code",
+                "kobo_names": ["code"],
                 "db_names": ["code"],
                 "tests": ["not_null", "check_regex  ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "termination_date",
+                "kobo_names": ["termination_date"],
                 "db_names": ["cc_termination_date"],
                 "tests": ["not_null"],
                 "datatype": "date",
             },
             {
-                "kobo_name": "group_cc_growth_species/growth_stage_grains",
+                "kobo_names": ["group_cc_growth_species/growth_stage_grains"],
                 "db_names": ["growth_stage_grains"],
                 "multi_select": {
                     "tillering": "Tillering",
@@ -24,7 +24,7 @@ data = [
                 },
             },
             {
-                "kobo_name": "group_cc_growth_species/growth_stage_legumes",
+                "kobo_names": ["group_cc_growth_species/growth_stage_legumes"],
                 "db_names": ["growth_stage_legumes"],
                 "multi_select": {
                     "decay_winterkilled": "Decay (winterkilled)",
@@ -34,7 +34,7 @@ data = [
                 },
             },
             {
-                "kobo_name": "group_cc_growth_species/growth_stage_brassicas",
+                "kobo_names": ["group_cc_growth_species/growth_stage_brassicas"],
                 "db_names": ["growth_stage_brassicas"],
                 "multi_select": {
                     "decay_winterkilled": "Decay (winterkilled)",
@@ -44,11 +44,11 @@ data = [
                 },
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],

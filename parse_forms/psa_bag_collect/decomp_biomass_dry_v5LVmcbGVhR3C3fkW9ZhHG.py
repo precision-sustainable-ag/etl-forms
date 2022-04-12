@@ -2,7 +2,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_001/barcode_bag_001",
+                "kobo_names": ["group_001/barcode_bag_001"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -10,17 +10,17 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "decomp_bag_collect_date",
+                "kobo_names": ["decomp_bag_collect_date"],
                 "db_names": ["recovery_date"],
                 "datatype": "date",
                 "tests": ["not_null"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -32,7 +32,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_002/barcode_bag_002",
+                "kobo_names": ["group_002/barcode_bag_002"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -40,17 +40,17 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "decomp_bag_collect_date",
+                "kobo_names": ["decomp_bag_collect_date"],
                 "db_names": ["recovery_date"],
                 "datatype": "date",
                 "tests": ["not_null"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -61,7 +61,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_003/barcode_bag_003",
+                "kobo_names": ["group_003/barcode_bag_003"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -69,17 +69,17 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "decomp_bag_collect_date",
+                "kobo_names": ["decomp_bag_collect_date"],
                 "db_names": ["recovery_date"],
                 "datatype": "date",
                 "tests": ["not_null"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -90,7 +90,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_004/barcode_bag_004",
+                "kobo_names": ["group_004/barcode_bag_004"],
                 "db_names": ["code", "subplot", "subsample", "time"],
                 "separator": "-",
                 "indices": [0, 1, 2, 3],
@@ -98,17 +98,17 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "decomp_bag_collect_date",
+                "kobo_names": ["decomp_bag_collect_date"],
                 "db_names": ["recovery_date"],
                 "datatype": "date",
                 "tests": ["not_null"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],

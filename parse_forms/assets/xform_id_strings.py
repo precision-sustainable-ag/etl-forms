@@ -81,6 +81,9 @@ from ..psa_yield import yield_corn_vU4uEh7S2sFPSsK2r4G6pc
 from ..psa_yield import farm_history_vpo2g4zsdAyZgbudeLdeKX
 from ..psa_yield import farm_history_vU4uEh7S2sFPSsK2r4G6pc
 
+from ..psa_water_sensor_uninstall import wsensor_install_v4LfmyHseAfUaoVYRLAWXJ
+from ..psa_water_sensor_uninstall import wsensor_install_vzGhaV6eKX3FME9X48au9k
+
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
         {
@@ -293,5 +296,15 @@ xform_id_strings = {
             },
             "asset_name": "psa yield",
         },
-    ]
+    ],
+    "aopWzXVq3CenbenqmgyJex": [
+        {
+            "table_name": "wsensor_install__water_sensor_uninstall",
+            "table_keys": {
+                "v4LfmyHseAfUaoVYRLAWXJ": wsensor_install_v4LfmyHseAfUaoVYRLAWXJ.data,
+                "vzGhaV6eKX3FME9X48au9k": wsensor_install_vzGhaV6eKX3FME9X48au9k.data,
+            },
+            "asset_name": "psa water sensor uninstall",
+        },
+    ],
 }

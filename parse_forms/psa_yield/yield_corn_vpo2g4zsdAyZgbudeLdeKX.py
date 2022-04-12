@@ -2,7 +2,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_000/barcode_yield_000",
+                "kobo_names": ["group_000/barcode_yield_000"],
                 "db_names": ["code", "treatment", "subplot", "row"],
                 "separator": "-",
                 "indices": [1, 2, 3, 4],
@@ -10,15 +10,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_000/stand_count_000",
+                "kobo_names": ["group_000/stand_count_000"],
                 "db_names": ["stand_count"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -30,7 +30,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_001/barcode_yield_001",
+                "kobo_names": ["group_001/barcode_yield_001"],
                 "db_names": ["code", "treatment", "subplot", "row"],
                 "separator": "-",
                 "indices": [1, 2, 3, 4],
@@ -38,15 +38,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_001/stand_count_001",
+                "kobo_names": ["group_001/stand_count_001"],
                 "db_names": ["stand_count"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -58,7 +58,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_002/barcode_yield_002",
+                "kobo_names": ["group_002/barcode_yield_002"],
                 "db_names": ["code", "treatment", "subplot", "row"],
                 "separator": "-",
                 "indices": [1, 2, 3, 4],
@@ -66,15 +66,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_002/stand_count_002",
+                "kobo_names": ["group_002/stand_count_002"],
                 "db_names": ["stand_count"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -86,7 +86,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_003/barcode_yield_003",
+                "kobo_names": ["group_003/barcode_yield_003"],
                 "db_names": ["code", "treatment", "subplot", "row"],
                 "separator": "-",
                 "indices": [1, 2, 3, 4],
@@ -94,15 +94,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_003/stand_count_003",
+                "kobo_names": ["group_003/stand_count_003"],
                 "db_names": ["stand_count"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -114,7 +114,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_004/barcode_yield_004",
+                "kobo_names": ["group_004/barcode_yield_004"],
                 "db_names": ["code", "treatment", "subplot", "row"],
                 "separator": "-",
                 "indices": [1, 2, 3, 4],
@@ -122,15 +122,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_004/stand_count_004",
+                "kobo_names": ["group_004/stand_count_004"],
                 "db_names": ["stand_count"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -142,7 +142,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_005/barcode_yield_005",
+                "kobo_names": ["group_005/barcode_yield_005"],
                 "db_names": ["code", "treatment", "subplot", "row"],
                 "separator": "-",
                 "indices": [1, 2, 3, 4],
@@ -150,15 +150,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_005/stand_count_005",
+                "kobo_names": ["group_005/stand_count_005"],
                 "db_names": ["stand_count"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -170,7 +170,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_006/barcode_yield_006",
+                "kobo_names": ["group_006/barcode_yield_006"],
                 "db_names": ["code", "treatment", "subplot", "row"],
                 "separator": "-",
                 "indices": [1, 2, 3, 4],
@@ -178,15 +178,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_006/stand_count_006",
+                "kobo_names": ["group_006/stand_count_006"],
                 "db_names": ["stand_count"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -198,7 +198,7 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "group_007/barcode_yield_007",
+                "kobo_names": ["group_007/barcode_yield_007"],
                 "db_names": ["code", "treatment", "subplot", "row"],
                 "separator": "-",
                 "indices": [1, 2, 3, 4],
@@ -206,15 +206,15 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "group_007/stand_count_007",
+                "kobo_names": ["group_007/stand_count_007"],
                 "db_names": ["stand_count"],
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
