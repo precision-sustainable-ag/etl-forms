@@ -105,12 +105,12 @@ class ListMaker:
                         version_has_iterator = True
 
                     for col in row.get("cols_from_form"):
-                        kobo_name = col.get("kobo_name")
-                        if kobo_name not in editable_list and kobo_name != "WON'T BE FOUND" and not kobo_name.startswith("_") and "gps" not in kobo_name.lower():
-                            if version_has_iterator:
-                                iterator_editable_list.append(kobo_name)
-                            else:
-                                editable_list.append(kobo_name)
+                        for name in col.get("kobo_names"):
+                            if name not in editable_list and name != "WON'T BE FOUND" and not name.startswith("_") and "gps" not in name.lower():
+                                if version_has_iterator:
+                                    iterator_editable_list.append(name)
+                                else:
+                                    editable_list.append(name)
 
             editable_list_by_version["version"].append(version)
             editable_list_by_version["iterator_editable_list"].append(
