@@ -319,22 +319,45 @@ class FormParser:
         return data_types.get(datatype)(data)
 
     def test_and_format_data(self, data, row_data):
-        converted_data = self.convert_data(row_data.get(
-            data.get("kobo_name")), data.get("conversions"))
+        final_data = ""
+        length = len(data.get("kobo_names"))
+        joiner = data.get("joiner")
+        add_keys = data.get("add_keys")
 
-        status = True
+        for name in data.get("kobo_names"):
+            converted_data = self.convert_data(row_data.get(
+                name), data.get("conversions"))
 
-        if data.get("tests"):
-            status, message = self.test_data(converted_data, data.get("tests"))
+            status = True
 
-        if data.get("datatype"):
-            converted_data = self.cast_data(
-                converted_data, data.get("datatype"))
+            if data.get("tests"):
+                status, message = self.test_data(
+                    converted_data, data.get("tests"))
 
-        if data.get("multi_select"):
-            converted_data = data.get("multi_select").get(converted_data)
+            if data.get("datatype"):
+                converted_data = self.cast_data(
+                    converted_data, data.get("datatype"))
 
-        return status, converted_data
+            if data.get("multi_select"):
+                converted_data = data.get("multi_select").get(converted_data)
+
+            if length > 1:
+                if add_keys:
+                    if joiner is not None:
+                        final_data += str(name) + str(joiner) + \
+                            str(converted_data) + str(joiner)
+                    else:
+                        final_data += str(name) + " " + \
+                            str(converted_data) + " "
+                else:
+                    if joiner is not None:
+                        final_data += str(converted_data) + str(joiner)
+                    else:
+                        final_data += str(converted_data) + " "
+            else:
+                final_data = converted_data
+
+        return status, final_data
 
     def validate_row(self, kobo_row, new_row):
         row_is_complete_or_null = False
@@ -441,13 +464,13 @@ class FormParser:
         try:
             index = 0
 
-            for item in row_data.get(data.get("kobo_name")).split(data.get("value_separator")):
+            for item in row_data.get(data.get("kobo_names")[0]).split(data.get("value_separator")):
                 if index != 0:
                     template_row = copy.copy(new_rows[0])
                     new_rows.append(template_row)
 
                 new_row_data = row_data
-                new_row_data[data.get("kobo_name")] = item
+                new_row_data[data.get("kobo_names")[0]] = item
 
                 status, converted_data = self.test_and_format_data(
                     data, new_row_data)
@@ -462,7 +485,7 @@ class FormParser:
                 else:
                     rows_passed_tests = False
                     error_messages.append(
-                        "`[\"" + str(data.get("kobo_name")) + "\"]`" + " row failed tests for table " + table_name)
+                        "`[\"" + str(data.get("kobo_names")) + "\"]`" + " row failed tests for table " + table_name)
 
                 index += 1
 
@@ -493,7 +516,7 @@ class FormParser:
                 else:
                     rows_passed_tests = False
                     error_messages.append(
-                        "`[\"" + str(data.get("kobo_name")) + "\"]`" + " row failed tests for table " + table_name)
+                        "`[\"" + str(data.get("kobo_names")) + "\"]`" + " row failed tests for table " + table_name)
 
         return rows_passed_tests, error_messages
 

@@ -40,4 +40,7 @@ xform_id_string_dataframes = {
         "yield_corn__yield": empty_dataframe,
         "farm_history__yield": empty_dataframe,
     },
+    "aopWzXVq3CenbenqmgyJex": {
+        "wsensor_install__water_sensor_uninstall": empty_dataframe,
+    },
 }

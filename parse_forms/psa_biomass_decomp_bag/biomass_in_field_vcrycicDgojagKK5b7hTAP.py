@@ -2,29 +2,29 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "code",
+                "kobo_names": ["code"],
                 "db_names": ["code"],
                 "tests": ["not_null", "check_regex  ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "fresh_wt_group/fresh_wt_a1",
+                "kobo_names": ["fresh_wt_group/fresh_wt_a1"],
                 "db_names": ["fresh_wt_a"],
             },
             {
-                "kobo_name": "fresh_wt_group/fresh_wt_b1",
+                "kobo_names": ["fresh_wt_group/fresh_wt_b1"],
                 "db_names": ["fresh_wt_b"],
             },
             {
-                "kobo_name": "empty_bag_group/bag_a1",
+                "kobo_names": ["empty_bag_group/bag_a1"],
                 "db_names": ["bag_wt_a"],
             },
             {
-                "kobo_name": "empty_bag_group/bag_b1",
+                "kobo_names": ["empty_bag_group/bag_b1"],
                 "db_names": ["bag_wt_b"],
             },
             {
-                "kobo_name": "You_have_finished_wi_vest_for_PSA_On_Farm/sub1_legume",
+                "kobo_names": ["You_have_finished_wi_vest_for_PSA_On_Farm/sub1_legume"],
                 "db_names": ["legumes_40"],
                 "tests": ["not_null"],
                 "multi_select": {
@@ -33,11 +33,11 @@ data = [
                 },
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
@@ -48,29 +48,29 @@ data = [
     {
         "cols_from_form": [
             {
-                "kobo_name": "code",
+                "kobo_names": ["code"],
                 "db_names": ["code"],
                 "tests": ["not_null", "check_regex  ^[A-Z0-9]{3}$|^-999$"],
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_name": "fresh_wt2_group/fresh_wt_a2",
+                "kobo_names": ["fresh_wt2_group/fresh_wt_a2"],
                 "db_names": ["fresh_wt_a"],
             },
             {
-                "kobo_name": "fresh_wt2_group/fresh_wt_b2",
+                "kobo_names": ["fresh_wt2_group/fresh_wt_b2"],
                 "db_names": ["fresh_wt_b"],
             },
             {
-                "kobo_name": "bag_2_group/bag_a2",
+                "kobo_names": ["bag_2_group/bag_a2"],
                 "db_names": ["bag_wt_a"],
             },
             {
-                "kobo_name": "bag_2_group/bag_b2",
+                "kobo_names": ["bag_2_group/bag_b2"],
                 "db_names": ["bag_wt_b"],
             },
             {
-                "kobo_name": "You_have_finished_wi_vest_for_PSA_On_Farm/sub2_legume",
+                "kobo_names": ["You_have_finished_wi_vest_for_PSA_On_Farm/sub2_legume"],
                 "db_names": ["legumes_40"],
                 "tests": ["not_null"],
                 "multi_select": {
@@ -79,11 +79,11 @@ data = [
                 },
             },
             {
-                "kobo_name": "WON'T BE FOUND",
+                "kobo_names": ["WON'T BE FOUND"],
                 "db_names": ["notes"],
             },
             {
-                "kobo_name": "_submitted_by",
+                "kobo_names": ["_submitted_by"],
                 "db_names": ["submitted_by"],
             },
         ],
