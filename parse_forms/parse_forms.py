@@ -158,6 +158,11 @@ class FormParser:
             numeric_filter = filter(str.isdigit, data)
             data = "".join(numeric_filter)
 
+        for conversion in conversions:
+            if "divide_by" in conversion:
+                divisor = float(conversion.split("  ")[1])
+                data = float(data) / divisor
+
         return data
 
     def test_data(self, data, tests):
@@ -520,7 +525,7 @@ class FormParser:
 
         return rows_passed_tests, error_messages
 
-    def extract_row(self, row_uid, kobo_row, row_data, table_name, error_list, empty_form, valid_producer, end=False, submitted_by=False):
+    def extract_row(self, row_uid, kobo_row, row_data, table_name, error_list, empty_form, valid_producer, end=False, submitted_by=False, cols_to_add_to_each_row=None):
         new_rows = [{
             "rawuid": row_uid,
             "parsed_at": datetime.datetime.now()
@@ -528,6 +533,9 @@ class FormParser:
 
         if kobo_row.get("extra_cols"):
             self.add_cols(new_rows[0], kobo_row.get("extra_cols"))
+
+        if cols_to_add_to_each_row is not None:
+            self.add_cols(new_rows[0], cols_to_add_to_each_row)
 
         rows_passed_tests, error_messages = self.get_cols_from_form(
             kobo_row, row_data, new_rows, table_name)
@@ -575,9 +583,22 @@ class FormParser:
         entry_to_iterate = kobo_row.get("entry_to_iterate")
         end = row_data.get("end")
         submitted_by = row_data.get("_submitted_by")
-        for item in row_data.get(entry_to_iterate):
-            error_list, empty_form, valid_producer = self.extract_row(
-                row_uid, kobo_row, item, table_name, error_list, empty_form, valid_producer, end, submitted_by)
+        top_level_cols = kobo_row.get("top_level_cols")
+        cols_to_add_to_each_row = []
+
+        if top_level_cols is not None:
+            for col in top_level_cols:
+                cols_to_add_to_each_row.append({
+                    "name": col.get("db_name"),
+                    "value": row_data.get(col.get("key"))
+                })
+
+        if row_data.get(entry_to_iterate) is not None:
+            for item in row_data.get(entry_to_iterate):
+                error_list, empty_form, valid_producer = self.extract_row(
+                    row_uid, kobo_row, item, table_name, error_list, empty_form, valid_producer, end, submitted_by, cols_to_add_to_each_row)
+        else:
+            error_list.append("no entry to iterate")
 
         return error_list, empty_form, valid_producer
 
@@ -603,7 +624,12 @@ class FormParser:
 
         if empty_form:
             error_list.append("Empty form" + " for table " + table_name)
+
         if len(error_list) != 0:
+            if kobo_row.get("ignore_empty_forms") is True:
+                error_list = list(filter(lambda error: (
+                    "no entry to iterate" not in error and "Empty form" not in error), error_list))
+
             return False, error_list
         else:
             return True, "success"
@@ -637,7 +663,7 @@ class FormParser:
         row_entry["table_name"] = table_name
         row_entry["err"] = json.dumps(messages)
         row_entry["xform_id_string"] = xform_id_string
-        if save_errors != False:
+        if save_errors != False and len(messages) != 0:
             self.invalid_row_table_pairs = self.invalid_row_table_pairs.append(
                 row_entry, ignore_index=True)
             row_entry.pop("err")

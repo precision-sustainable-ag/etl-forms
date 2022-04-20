@@ -1,5 +1,6 @@
 data = [
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_000/barcode_yield_000"],
@@ -28,6 +29,7 @@ data = [
         "all_cols": ["code", "treatment", "subplot", "row", "stand_count"],
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_001/barcode_yield_001"],
@@ -56,6 +58,7 @@ data = [
         "all_cols": ["code", "treatment", "subplot", "row", "stand_count"],
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_002/barcode_yield_002"],
@@ -84,6 +87,7 @@ data = [
         "all_cols": ["code", "treatment", "subplot", "row", "stand_count"],
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_003/barcode_yield_003"],
@@ -112,6 +116,7 @@ data = [
         "all_cols": ["code", "treatment", "subplot", "row", "stand_count"],
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_004/barcode_yield_004"],
@@ -140,6 +145,7 @@ data = [
         "all_cols": ["code", "treatment", "subplot", "row", "stand_count"],
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_005/barcode_yield_005"],
@@ -168,6 +174,7 @@ data = [
         "all_cols": ["code", "treatment", "subplot", "row", "stand_count"],
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_006/barcode_yield_006"],
@@ -196,6 +203,7 @@ data = [
         "all_cols": ["code", "treatment", "subplot", "row", "stand_count"],
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_007/barcode_yield_007"],

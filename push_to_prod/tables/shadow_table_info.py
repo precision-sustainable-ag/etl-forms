@@ -149,4 +149,57 @@ info = {
         "mode": "update",
         "update_not_nulls": False,
     },
+    "farm_history__yield_weights": {
+        "values_from_table": ["cash_crop_harvest_date", "next_cash_crop"],
+        "unique_cols": ["code"],
+        "mode": "update",
+        "update_not_nulls": True,
+    },
+    "yield_corn__yield_weights": {
+        "values_from_table": [
+            "fresh_harvest_wt",
+            "moisture_1",
+            "grain_test_1",
+            "moisture_2",
+            "grain_test_2",
+            "oven_dried",
+        ],
+        "unique_cols": ["code", "treatment", "subplot", "row"],
+        "mode": "update",
+        "update_not_nulls": False,
+    },
+    "yield_soybeans__yield_weights": {
+        "values_from_table": [
+            "fresh_harvest_wt",
+            "moisture_1",
+            "grain_test_1",
+            "moisture_2",
+            "grain_test_2",
+            "oven_dried",
+        ],
+        "unique_cols": ["code", "treatment", "subplot", "row"],
+        "mode": "update",
+        "update_not_nulls": False,
+    },
+    "yield_cotton__yield_weights": {
+        "values_from_table": [
+            "boll_wt",
+            "ginned_lint_wt",
+        ],
+        "unique_cols": ["code", "treatment", "subplot", "row"],
+        "mode": "update",
+        "update_not_nulls": False,
+    },
+    "yield_wagon__yield_weights": {
+        "all_rows": [
+            "code",
+            "treatment",
+            "subplot",
+            "wagon_area_ft2",
+            "wagon_weight_lbs",
+            "bushels_acre",
+            "moisture_pct",
+        ],
+        "mode": "insert",
+    },
 }
