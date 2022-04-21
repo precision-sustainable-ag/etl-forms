@@ -1,5 +1,6 @@
 data = [
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_000/barcode_bag_000"],
@@ -28,6 +29,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_001/barcode_bag_001"],
@@ -56,6 +58,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_002/barcode_bag_002"],
@@ -84,6 +87,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_003/barcode_bag_003"],
@@ -112,6 +116,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_004/barcode_bag_004"],
@@ -140,6 +145,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_005/barcode_bag_005"],
@@ -168,6 +174,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_006/barcode_bag_006"],
@@ -196,6 +203,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_007/barcode_bag_007"],
@@ -224,6 +232,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_008/barcode_bag_008"],
@@ -252,6 +261,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_009/barcode_bag_009"],
@@ -280,6 +290,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_010/barcode_bag_010"],
@@ -308,6 +319,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_011/barcode_bag_011"],
@@ -336,6 +348,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_012/barcode_bag_012"],
@@ -364,6 +377,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_013/barcode_bag_013"],
@@ -392,6 +406,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_014/barcode_bag_014"],
@@ -420,6 +435,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_015/barcode_bag_015"],
@@ -448,6 +464,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_016/barcode_bag_016"],
@@ -476,6 +493,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_017/barcode_bag_017"],
@@ -504,6 +522,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_018/barcode_bag_018"],
@@ -532,6 +551,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_019/barcode_bag_019"],
@@ -560,6 +580,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_020/barcode_bag_020"],
@@ -588,6 +609,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_021/barcode_bag_021"],
@@ -616,6 +638,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_022/barcode_bag_022"],
@@ -644,6 +667,7 @@ data = [
         "all_cols": ["code", "subplot", "subsample", "time", "fresh_biomass_wt"]
     },
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["group_023/barcode_bag_023"],

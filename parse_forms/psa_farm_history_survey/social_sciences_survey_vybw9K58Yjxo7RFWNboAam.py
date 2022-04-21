@@ -1,5 +1,6 @@
 data = [
     {
+        "ignore_empty_forms": True,
         "cols_from_form": [
             {
                 "kobo_names": ["_submission_time"],

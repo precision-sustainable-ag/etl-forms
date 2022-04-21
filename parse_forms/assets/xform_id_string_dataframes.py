@@ -43,4 +43,11 @@ xform_id_string_dataframes = {
     "aopWzXVq3CenbenqmgyJex": {
         "wsensor_install__water_sensor_uninstall": empty_dataframe,
     },
+    "aK58LtJJkQZx8ZRJ8uyiLq": {
+        "farm_history__yield_weights": empty_dataframe,
+        "yield_corn__yield_weights": empty_dataframe,
+        "yield_soybeans__yield_weights": empty_dataframe,
+        "yield_cotton__yield_weights": empty_dataframe,
+        "yield_wagon__yield_weights": empty_dataframe,
+    },
 }

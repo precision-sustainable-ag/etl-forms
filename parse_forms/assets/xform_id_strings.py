@@ -84,6 +84,12 @@ from ..psa_yield import farm_history_vU4uEh7S2sFPSsK2r4G6pc
 from ..psa_water_sensor_uninstall import wsensor_install_v4LfmyHseAfUaoVYRLAWXJ
 from ..psa_water_sensor_uninstall import wsensor_install_vzGhaV6eKX3FME9X48au9k
 
+from ..psa_yield_weights import farm_history_vLYYD5moEeaTRber2XemW4
+from ..psa_yield_weights import yield_corn_vLYYD5moEeaTRber2XemW4
+from ..psa_yield_weights import yield_soybeans_vLYYD5moEeaTRber2XemW4
+from ..psa_yield_weights import yield_cotton_vLYYD5moEeaTRber2XemW4
+from ..psa_yield_weights import yield_wagon_vLYYD5moEeaTRber2XemW4
+
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
         {
@@ -305,6 +311,43 @@ xform_id_strings = {
                 "vzGhaV6eKX3FME9X48au9k": wsensor_install_vzGhaV6eKX3FME9X48au9k.data,
             },
             "asset_name": "psa water sensor uninstall",
+        },
+    ],
+    "aK58LtJJkQZx8ZRJ8uyiLq": [
+        {
+            "table_name": "farm_history__yield_weights",
+            "table_keys": {
+                "vLYYD5moEeaTRber2XemW4": farm_history_vLYYD5moEeaTRber2XemW4.data,
+            },
+            "asset_name": "psa yield weights",
+        },
+        {
+            "table_name": "yield_corn__yield_weights",
+            "table_keys": {
+                "vLYYD5moEeaTRber2XemW4": yield_corn_vLYYD5moEeaTRber2XemW4.data,
+            },
+            "asset_name": "psa yield weights",
+        },
+        {
+            "table_name": "yield_soybeans__yield_weights",
+            "table_keys": {
+                "vLYYD5moEeaTRber2XemW4": yield_soybeans_vLYYD5moEeaTRber2XemW4.data,
+            },
+            "asset_name": "psa yield weights",
+        },
+        {
+            "table_name": "yield_cotton__yield_weights",
+            "table_keys": {
+                "vLYYD5moEeaTRber2XemW4": yield_cotton_vLYYD5moEeaTRber2XemW4.data,
+            },
+            "asset_name": "psa yield weights",
+        },
+        {
+            "table_name": "yield_wagon__yield_weights",
+            "table_keys": {
+                "vLYYD5moEeaTRber2XemW4": yield_wagon_vLYYD5moEeaTRber2XemW4.data,
+            },
+            "asset_name": "psa yield weights",
         },
     ],
 }
