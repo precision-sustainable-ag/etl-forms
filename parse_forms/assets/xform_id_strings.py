@@ -90,6 +90,10 @@ from ..psa_yield_weights import yield_soybeans_vLYYD5moEeaTRber2XemW4
 from ..psa_yield_weights import yield_cotton_vLYYD5moEeaTRber2XemW4
 from ..psa_yield_weights import yield_wagon_vLYYD5moEeaTRber2XemW4
 
+from ..psa_field import applied_chemicals_v3DpsT6Du9LUEGdw6mYpTP
+from ..psa_field import cc_mixture_v3DpsT6Du9LUEGdw6mYpTP
+from ..psa_field import farm_history_v3DpsT6Du9LUEGdw6mYpTP
+
 xform_id_strings = {
     "ak6HVZZJPwC2EgR3qVWTsA": [
         {
@@ -348,6 +352,29 @@ xform_id_strings = {
                 "vLYYD5moEeaTRber2XemW4": yield_wagon_vLYYD5moEeaTRber2XemW4.data,
             },
             "asset_name": "psa yield weights",
+        },
+    ],
+    "aA9uqiWgqbCJ9Rj6fvtdoa": [
+        {
+            "table_name": "applied_chemicals__field",
+            "table_keys": {
+                "v3DpsT6Du9LUEGdw6mYpTP": applied_chemicals_v3DpsT6Du9LUEGdw6mYpTP.data,
+            },
+            "asset_name": "psa field",
+        },
+        {
+            "table_name": "cc_mixture__field",
+            "table_keys": {
+                "v3DpsT6Du9LUEGdw6mYpTP": cc_mixture_v3DpsT6Du9LUEGdw6mYpTP.data,
+            },
+            "asset_name": "psa field",
+        },
+        {
+            "table_name": "farm_history__field",
+            "table_keys": {
+                "v3DpsT6Du9LUEGdw6mYpTP": farm_history_v3DpsT6Du9LUEGdw6mYpTP.data,
+            },
+            "asset_name": "psa field",
         },
     ],
 }
