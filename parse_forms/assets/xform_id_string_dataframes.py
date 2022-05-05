@@ -50,4 +50,9 @@ xform_id_string_dataframes = {
         "yield_cotton__yield_weights": empty_dataframe,
         "yield_wagon__yield_weights": empty_dataframe,
     },
+    "aA9uqiWgqbCJ9Rj6fvtdoa": {
+        "farm_history__field": empty_dataframe,
+        "cc_mixture__field": empty_dataframe,
+        "applied_chemicals__field": empty_dataframe,
+    },
 }

@@ -202,4 +202,26 @@ info = {
         ],
         "mode": "insert",
     },
+    "applied_chemicals__field": {
+        "all_rows": ["code", "chemical"],
+        "mode": "insert",
+    },
+    "cc_mixture__field": {
+        "all_rows": ["code", "cc_specie", "total_rate"],
+        "mode": "insert",
+    },
+    "farm_history__field": {
+        "values_from_table": [
+            "previous_cash_crop",
+            "total_n_previous_crop",
+            "cc_planting_date",
+            "cc_planting_method",
+            "post_harvest_fertility",
+            "cc_tillage",
+            "cc_termination_method",
+        ],
+        "unique_cols": ["code"],
+        "mode": "update",
+        "update_not_nulls": False,
+    },
 }
