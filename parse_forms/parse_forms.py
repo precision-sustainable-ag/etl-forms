@@ -434,7 +434,9 @@ class FormParser:
             return False, message
 
     def get_producer_id(self, new_row):
-        if new_row.get("producer_phone") and self.valid_producers.get(new_row.get("producer_phone")):
+        if new_row.get("producer_id") and self.valid_producers.get(new_row.get("producer_id")):
+            return self.valid_producers.get(new_row.get("producer_id"))
+        elif new_row.get("producer_phone") and self.valid_producers.get(new_row.get("producer_phone")):
             return self.valid_producers.get(new_row.get("producer_phone"))
         elif new_row.get("producer_email") and self.valid_producers.get(new_row.get("producer_email")):
             return self.valid_producers.get(new_row.get("producer_email"))
