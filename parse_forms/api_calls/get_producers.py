@@ -40,7 +40,6 @@ def create_object(data):
         producers_object[producer.get("email")] = producer.get("producer_id")
         producers_object[producer.get("phone")] = producer.get("producer_id")
 
-    print(producers_object)
     return producers_object
 
 
