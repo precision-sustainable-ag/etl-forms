@@ -1,4 +1,4 @@
-# to run use 'python -m helper_functions.get_all_versions.py' from ./etl-forms
+# to run use 'python -m helper_functions.get_all_versions' from ./etl-forms
 
 import json
 import pandas as pd
