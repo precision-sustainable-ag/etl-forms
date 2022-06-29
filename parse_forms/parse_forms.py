@@ -302,10 +302,20 @@ class FormParser:
             return data
 
         def convert_string(data):
-            return str(data)
+            try:
+                return str(data)
+            except Exception:
+                self.global_logger.info("not a valid string")
+                self.encountered_parsing_error += 1
+                return False
 
         def convert_int(data):
-            return int(data)
+            try:
+                return int(data)
+            except Exception:
+                self.global_logger.info("not a valid int")
+                self.encountered_parsing_error += 1
+                return False
 
         def convert_date(data):
             try:
@@ -313,7 +323,7 @@ class FormParser:
             except Exception:
                 self.global_logger.info("not a valid date")
                 self.encountered_parsing_error += 1
-                return data
+                return False
 
         data_types = {
             "string": convert_string,
@@ -343,8 +353,13 @@ class FormParser:
                 converted_data = data.get("multi_select").get(converted_data)
 
             if data.get("datatype"):
-                converted_data = self.cast_data(
+                casted_data = self.cast_data(
                     converted_data, data.get("datatype"))
+
+                if casted_data:
+                    converted_data = casted_data
+                else:
+                    status = False
 
             if length > 1:
                 if add_keys:
