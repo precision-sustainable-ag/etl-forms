@@ -36,6 +36,7 @@ data = [
             {
                 "kobo_names": ["group_social_sci_survey/cover_crop_acres_terminated"],
                 "db_names": ["cover_crop_acres_terminated"],
+                "datatype": "int",
             },
             {
                 "kobo_names": ["group_social_sci_survey/cover_crop_acres_typical"],
