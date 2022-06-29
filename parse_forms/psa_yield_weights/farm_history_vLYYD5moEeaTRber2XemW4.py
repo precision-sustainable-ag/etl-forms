@@ -10,6 +10,7 @@ data = [
             {
                 "kobo_names": ["group_000/date"],
                 "db_names": ["cash_crop_harvest_date"],
+                "datatype": "date",
             },
             {
                 "kobo_names": ["begin_group_WpWlBMQcF/crop"],
