@@ -5,6 +5,7 @@ from ..psa_water_sensor_install import wsensor_install_vCK5tppVaNkkfWMhtddxEb
 from ..psa_water_sensor_install import wsensor_install_vGvEojkB3q2Zo2ZUocTYWB
 
 from ..psa_water_sensor_install import farm_history_vCK5tppVaNkkfWMhtddxEb
+from ..psa_water_sensor_install import farm_history_vGvEojkB3q2Zo2ZUocTYWB
 
 from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vQnB8sJFc8JEhYJqXiYQRy
 from ..psa_decomp_bag_pre_wt import decomp_biomass_fresh_vZvVu9PdqRHLeeJGbGha3z
@@ -120,6 +121,7 @@ xform_id_strings = {
             "table_name": "farm_history__water_sensor_install",
             "table_keys": {
                 "vCK5tppVaNkkfWMhtddxEb": farm_history_vCK5tppVaNkkfWMhtddxEb.data,
+                "vGvEojkB3q2Zo2ZUocTYWB": farm_history_vGvEojkB3q2Zo2ZUocTYWB.data,
             },
             "asset_name": "psa water sensor install",
         },
