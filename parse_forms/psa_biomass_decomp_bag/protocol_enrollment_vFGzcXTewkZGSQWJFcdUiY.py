@@ -8,10 +8,9 @@ data = [
                 "conversions": ["strip_whitespace", "to_uppercase"],
             },
             {
-                "kobo_names": ["biomass_harvest_date"],
-                "db_names": ["recovery_date"],
-                "tests": ["not_null"],
-                "datatype": "date",
+                "kobo_names": ["intro_group/biomass_only"],
+                "db_names": ["biomass_only"],
+                "tests": ["check_if_value_equals  biomass_only"],
             },
             {
                 "kobo_names": ["WON'T BE FOUND"],
@@ -23,7 +22,9 @@ data = [
             },
         ],
         "extra_cols": [
-            {"name": "time", "value": 0}
+            {"name": "in_field_biomass", "value": 1},
+            {"name": "decomp_biomass", "value": 0},
         ],
+        "all_cols": ["code", "biomass_only"],
     },
 ]
