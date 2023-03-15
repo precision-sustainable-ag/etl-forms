@@ -25,14 +25,17 @@ from ..psa_biomass_decomp_bag import biomass_in_field_vyYD9Bt3WSjzKorvPhLvLh
 from ..psa_biomass_decomp_bag import biomass_in_field_vcrycicDgojagKK5b7hTAP
 from ..psa_biomass_decomp_bag import biomass_in_field_va4wrosaFh5fN8rUZnKZHz
 from ..psa_biomass_decomp_bag import biomass_in_field_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import biomass_in_field_vFGzcXTewkZGSQWJFcdUiY
 
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vEchkcAone8S7y4eYhgru4
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vyYD9Bt3WSjzKorvPhLvLh
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz
 from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import decomp_biomass_fresh_vFGzcXTewkZGSQWJFcdUiY
 
 from ..psa_biomass_decomp_bag import farm_history_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import farm_history_vFGzcXTewkZGSQWJFcdUiY
 from ..psa_biomass_decomp_bag import farm_history_vEchkcAone8S7y4eYhgru4
 from ..psa_biomass_decomp_bag import farm_history_vcrycicDgojagKK5b7hTAP
 
@@ -41,12 +44,14 @@ from ..psa_biomass_decomp_bag import decomp_biomass_dry_vyYD9Bt3WSjzKorvPhLvLh
 from ..psa_biomass_decomp_bag import decomp_biomass_dry_vcrycicDgojagKK5b7hTAP
 from ..psa_biomass_decomp_bag import decomp_biomass_dry_va4wrosaFh5fN8rUZnKZHz
 from ..psa_biomass_decomp_bag import decomp_biomass_dry_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import decomp_biomass_dry_vFGzcXTewkZGSQWJFcdUiY
 
 from ..psa_biomass_decomp_bag import protocol_enrollment_vEchkcAone8S7y4eYhgru4
 from ..psa_biomass_decomp_bag import protocol_enrollment_vyYD9Bt3WSjzKorvPhLvLh
 from ..psa_biomass_decomp_bag import protocol_enrollment_vcrycicDgojagKK5b7hTAP
 from ..psa_biomass_decomp_bag import protocol_enrollment_va4wrosaFh5fN8rUZnKZHz
 from ..psa_biomass_decomp_bag import protocol_enrollment_vLamBBuk4isVXD6ZxyNzjs
+from ..psa_biomass_decomp_bag import protocol_enrollment_vFGzcXTewkZGSQWJFcdUiY
 
 from ..psa_farm_history_survey import social_sciences_survey_vybw9K58Yjxo7RFWNboAam
 from ..psa_farm_history_survey import social_sciences_survey_vszpMZ8jHiXRqH2KCzx8Zy
@@ -186,6 +191,7 @@ xform_id_strings = {
                 "vcrycicDgojagKK5b7hTAP": biomass_in_field_vcrycicDgojagKK5b7hTAP.data,
                 "va4wrosaFh5fN8rUZnKZHz": biomass_in_field_va4wrosaFh5fN8rUZnKZHz.data,
                 "vLamBBuk4isVXD6ZxyNzjs": biomass_in_field_vLamBBuk4isVXD6ZxyNzjs.data,
+                "vFGzcXTewkZGSQWJFcdUiY": biomass_in_field_vFGzcXTewkZGSQWJFcdUiY.data,
             },
             "asset_name": "psa biomass decomp bag",
         },
@@ -197,6 +203,7 @@ xform_id_strings = {
                 "vcrycicDgojagKK5b7hTAP": decomp_biomass_fresh_vcrycicDgojagKK5b7hTAP.data,
                 "va4wrosaFh5fN8rUZnKZHz": decomp_biomass_fresh_va4wrosaFh5fN8rUZnKZHz.data,
                 "vLamBBuk4isVXD6ZxyNzjs": decomp_biomass_fresh_vLamBBuk4isVXD6ZxyNzjs.data,
+                "vFGzcXTewkZGSQWJFcdUiY": decomp_biomass_fresh_vFGzcXTewkZGSQWJFcdUiY.data,
             },
             "asset_name": "psa biomass decomp bag",
             "unicity_constraint": ["code", "subplot", "subsample", "time"],
@@ -205,6 +212,7 @@ xform_id_strings = {
             "table_name": "farm_history__biomass_decomp_bag",
             "table_keys": {
                 "vLamBBuk4isVXD6ZxyNzjs": farm_history_vLamBBuk4isVXD6ZxyNzjs.data,
+                "vFGzcXTewkZGSQWJFcdUiY": farm_history_vFGzcXTewkZGSQWJFcdUiY.data,
                 "vEchkcAone8S7y4eYhgru4": farm_history_vEchkcAone8S7y4eYhgru4.data,
                 "vcrycicDgojagKK5b7hTAP": farm_history_vcrycicDgojagKK5b7hTAP.data,
             },
@@ -218,6 +226,7 @@ xform_id_strings = {
                 "vcrycicDgojagKK5b7hTAP": decomp_biomass_dry_vcrycicDgojagKK5b7hTAP.data,
                 "va4wrosaFh5fN8rUZnKZHz": decomp_biomass_dry_va4wrosaFh5fN8rUZnKZHz.data,
                 "vLamBBuk4isVXD6ZxyNzjs": decomp_biomass_dry_vLamBBuk4isVXD6ZxyNzjs.data,
+                "vFGzcXTewkZGSQWJFcdUiY": decomp_biomass_dry_vFGzcXTewkZGSQWJFcdUiY.data,
             },
             "asset_name": "psa biomass decomp bag",
         },
@@ -229,6 +238,7 @@ xform_id_strings = {
                 "vcrycicDgojagKK5b7hTAP": protocol_enrollment_vcrycicDgojagKK5b7hTAP.data,
                 "va4wrosaFh5fN8rUZnKZHz": protocol_enrollment_va4wrosaFh5fN8rUZnKZHz.data,
                 "vLamBBuk4isVXD6ZxyNzjs": protocol_enrollment_vLamBBuk4isVXD6ZxyNzjs.data,
+                "vFGzcXTewkZGSQWJFcdUiY": protocol_enrollment_vFGzcXTewkZGSQWJFcdUiY.data,
             },
             "asset_name": "psa biomass decomp bag",
             "save_errors": False,
